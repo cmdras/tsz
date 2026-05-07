@@ -19,6 +19,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AnimalDbContext>();
     db.Database.EnsureCreated();
+    await AnimalSeeder.SeedAsync(db);
 }
 
 // app.UseHttpsRedirection();
