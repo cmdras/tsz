@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { getAnimals, type AnimalDTO } from '#/api/animals/index';
 
-export const Route = createFileRoute('/animals')({
+export const Route = createFileRoute('/animals/')({
   loader: async () => {
     const { data } = await getAnimals();
     return data ?? [];
