@@ -11,11 +11,6 @@ const config = defineConfig({
     tsconfigPaths: true,
   },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
-  server: {
-    proxy: {
-      '/api': 'http://localhost:5204',
-    },
-  },
 });
 
 export default config;
