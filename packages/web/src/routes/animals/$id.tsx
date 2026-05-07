@@ -42,22 +42,26 @@ function AnimalDetail() {
   return (
     <main>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">
-          {editing
-            ? <Input
-                value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                onKeyDown={handleKeyDown}
-                autoFocus
-              />
-            : animal.name}
-        </h1>
+        <h1 className="text-2xl font-bold text-foreground">{animal.name}</h1>
         {!editing && (
           <Button size="sm" onClick={startEditing}>Edit</Button>
         )}
       </div>
 
       <dl className="mt-6 divide-y divide-border rounded-lg border border-border bg-card shadow-sm">
+        <div className="flex items-center gap-4 px-4 py-3">
+          <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">Name</dt>
+          <dd className="flex-1 text-sm text-foreground">
+            {editing
+              ? <Input
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  onKeyDown={handleKeyDown}
+                  autoFocus
+                />
+              : animal.name}
+          </dd>
+        </div>
         <div className="flex items-center gap-4 px-4 py-3">
           <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">Species</dt>
           <dd className="flex-1 text-sm text-foreground">
