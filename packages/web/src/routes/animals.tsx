@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { getAnimals, type AnimalDTO } from '#/api/animals';
 
 export const Route = createFileRoute('/animals')({
@@ -26,7 +26,11 @@ function Animals() {
         <tbody>
           {animals.map((animal: AnimalDTO) => (
             <tr key={animal.id} className="border-b last:border-0">
-              <td className="py-2">{animal.name}</td>
+              <td className="py-2">
+                <Link to="/animals/$id" params={{ id: String(animal.id) }} className="hover:underline">
+                  {animal.name}
+                </Link>
+              </td>
               <td className="py-2">{animal.species}</td>
               <td className="py-2">{animal.age}</td>
             </tr>
