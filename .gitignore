@@ -44,5 +44,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # all files marked local
 *.local.*
 
-# # Zone identifiers
-# *.Zone.Identifier
+# Zone identifiers
+*.Zone.Identifier
