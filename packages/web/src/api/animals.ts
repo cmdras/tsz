@@ -5,7 +5,7 @@ export type AnimalDTO = components['schemas']['Animal'];
 export type CreateAnimalRequestDTO = components['schemas']['CreateAnimalRequest'];
 export type UpdateAnimalRequestDTO = components['schemas']['UpdateAnimalRequest'];
 
-const client = createClient<paths>({ baseUrl: 'http://localhost:5204' });
+const client = createClient<paths>({ baseUrl: '/' });
 
 export const getAnimals = async () => {
   return client.GET('/api/animals');
