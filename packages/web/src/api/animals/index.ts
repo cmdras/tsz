@@ -1,4 +1,4 @@
-import { type components, type paths } from './schema';
+import { type components, type paths } from '../schema';
 import createClient from 'openapi-fetch';
 
 export type AnimalDTO = components['schemas']['Animal'];
@@ -9,16 +9,6 @@ const client = createClient<paths>({ baseUrl: '/' });
 
 export const getAnimals = async () => {
   return client.GET('/api/animals');
-};
-
-export const getAnimalById = async (id: number) => {
-  return client.GET(`/api/animals/{id}`, {
-    params: {
-      path: {
-        id,
-      },
-    },
-  });
 };
 
 export const createAnimal = async (animal: CreateAnimalRequestDTO) => {

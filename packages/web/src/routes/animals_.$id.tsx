@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { getAnimalById } from '#/api/animals';
+import { getAnimalById } from '#/api/animals/id';
 
 export const Route = createFileRoute('/animals_/$id')({
   loader: async ({ params }) => {
