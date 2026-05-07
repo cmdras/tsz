@@ -2,11 +2,10 @@ import { createServerFn } from '@tanstack/react-start';
 import { getAnimals, updateAnimal, type UpdateAnimalRequestDTO } from './index';
 import { getAnimalById } from './id';
 
-export const fetchAnimals = createServerFn({ method: 'GET' })
-  .handler(async () => {
-    const { data } = await getAnimals();
-    return data ?? [];
-  });
+export const fetchAnimals = createServerFn({ method: 'GET' }).handler(async () => {
+  const { data } = await getAnimals();
+  return data ?? [];
+});
 
 export const fetchAnimalById = createServerFn({ method: 'GET' })
   .inputValidator((id: number) => id)
