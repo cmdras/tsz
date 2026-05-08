@@ -55,3 +55,12 @@ function FieldError({ field }: { field: { state: { meta: { isTouched: boolean; e
 
 ![](2026-05-08-10-46-37.png)
 ![](2026-05-08-10-48-07.png)
+
+- Enable more strict openapi specs, better for the TS types generation.
+
+```c#
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
+});
+```
