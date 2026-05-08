@@ -1,3 +1,9 @@
+---
+name: git-commit
+description: Commit open changes in the current git repository
+user-invocable: true
+---
+
 # Context
 
 This repository is a project to display animals and their data.
