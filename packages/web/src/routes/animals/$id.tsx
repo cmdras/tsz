@@ -2,8 +2,11 @@ import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { fetchAnimalById, saveAnimal } from '#/api/animals/server';
+import { updateAnimalSchema } from '#/api/animals/schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
+import { Label } from '#/components/ui/label';
+import { FieldError } from '#/components/field-error';
 
 export const Route = createFileRoute('/animals/$id')({
   loader: ({ params }) => fetchAnimalById({ data: Number(params.id) }),
@@ -20,6 +23,9 @@ function AnimalDetail() {
       name: animal?.name ?? '',
       species: animal?.species ?? '',
       age: animal?.age ?? 0,
+    },
+    validators: {
+      onChange: updateAnimalSchema,
     },
     onSubmit: async ({ value }) => {
       await saveAnimal({ data: { id: animal!.id!, animal: value } });
@@ -61,94 +67,79 @@ function AnimalDetail() {
       </div>
 
       <dl className="mt-6 divide-y divide-border rounded-lg border border-border bg-card shadow-sm">
-        <div className="flex items-center gap-4 px-4 py-3">
-          <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">Name</dt>
-          <dd className="flex-1 text-sm text-foreground">
-            {editing ? (
-              <form.Field
-                name="name"
-                validators={{
-                  onChange: ({ value }) => (!value.trim() ? 'Name is required' : undefined),
-                }}
-              >
-                {(field) => (
-                  <div>
-                    <Input
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      onBlur={field.handleBlur}
-                      autoFocus
-                    />
-                    {field.state.meta.errors.length > 0 && (
-                      <p className="mt-1 text-xs text-destructive">{field.state.meta.errors.join(', ')}</p>
-                    )}
-                  </div>
-                )}
-              </form.Field>
-            ) : (
-              animal.name
-            )}
-          </dd>
-        </div>
+        <DetailRow label="Name">
+          {editing ? (
+            <form.Field name="name">
+              {(field) => (
+                <div className="grid gap-1">
+                  <Label htmlFor={field.name} className="sr-only">
+                    Name
+                  </Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    autoFocus
+                  />
+                  <FieldError field={field} />
+                </div>
+              )}
+            </form.Field>
+          ) : (
+            animal.name
+          )}
+        </DetailRow>
 
-        <div className="flex items-center gap-4 px-4 py-3">
-          <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">Species</dt>
-          <dd className="flex-1 text-sm text-foreground">
-            {editing ? (
-              <form.Field
-                name="species"
-                validators={{
-                  onChange: ({ value }) => (!value.trim() ? 'Species is required' : undefined),
-                }}
-              >
-                {(field) => (
-                  <div>
-                    <Input
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      onBlur={field.handleBlur}
-                    />
-                    {field.state.meta.errors.length > 0 && (
-                      <p className="mt-1 text-xs text-destructive">{field.state.meta.errors.join(', ')}</p>
-                    )}
-                  </div>
-                )}
-              </form.Field>
-            ) : (
-              animal.species
-            )}
-          </dd>
-        </div>
+        <DetailRow label="Species">
+          {editing ? (
+            <form.Field name="species">
+              {(field) => (
+                <div className="grid gap-1">
+                  <Label htmlFor={field.name} className="sr-only">
+                    Species
+                  </Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <FieldError field={field} />
+                </div>
+              )}
+            </form.Field>
+          ) : (
+            animal.species
+          )}
+        </DetailRow>
 
-        <div className="flex items-center gap-4 px-4 py-3">
-          <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">Age</dt>
-          <dd className="flex-1 text-sm text-foreground">
-            {editing ? (
-              <form.Field
-                name="age"
-                validators={{
-                  onChange: ({ value }) => (value < 0 ? 'Age must be 0 or greater' : undefined),
-                }}
-              >
-                {(field) => (
-                  <div>
-                    <Input
-                      type="number"
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.valueAsNumber)}
-                      onBlur={field.handleBlur}
-                    />
-                    {field.state.meta.errors.length > 0 && (
-                      <p className="mt-1 text-xs text-destructive">{field.state.meta.errors.join(', ')}</p>
-                    )}
-                  </div>
-                )}
-              </form.Field>
-            ) : (
-              animal.age
-            )}
-          </dd>
-        </div>
+        <DetailRow label="Age">
+          {editing ? (
+            <form.Field name="age">
+              {(field) => (
+                <div className="grid gap-1">
+                  <Label htmlFor={field.name} className="sr-only">
+                    Age
+                  </Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="number"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                  />
+                  <FieldError field={field} />
+                </div>
+              )}
+            </form.Field>
+          ) : (
+            animal.age
+          )}
+        </DetailRow>
       </dl>
 
       {editing && (
@@ -162,5 +153,14 @@ function AnimalDetail() {
         </div>
       )}
     </form>
+  );
+}
+
+function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-4 px-4 py-3">
+      <dt className="w-24 shrink-0 text-sm font-medium text-muted-foreground">{label}</dt>
+      <dd className="flex-1 text-sm text-foreground">{children}</dd>
+    </div>
   );
 }

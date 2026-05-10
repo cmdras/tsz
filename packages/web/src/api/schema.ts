@@ -80,12 +80,14 @@ export interface paths {
         };
       };
       responses: {
-        /** @description OK */
-        200: {
+        /** @description Created */
+        201: {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': components['schemas']['Animal'];
+          };
         };
       };
     };
@@ -118,6 +120,15 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
+          content: {
+            'application/json': components['schemas']['Animal'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
           content?: never;
         };
       };
@@ -142,6 +153,15 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
+          content: {
+            'application/json': components['schemas']['Animal'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
           content?: never;
         };
       };
@@ -158,8 +178,15 @@ export interface paths {
       };
       requestBody?: never;
       responses: {
-        /** @description OK */
-        200: {
+        /** @description No Content */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Not Found */
+        404: {
           headers: {
             [name: string]: unknown;
           };
@@ -178,11 +205,11 @@ export interface components {
   schemas: {
     Animal: {
       /** Format: int32 */
-      id?: number | string;
-      name?: string;
-      species?: string;
+      id: number;
+      name: string;
+      species: string;
       /** Format: int32 */
-      age?: number | string;
+      age: number;
     };
     AnonymousTypeOfstringAndstring: {
       name: null | string;
@@ -192,13 +219,13 @@ export interface components {
       name: string;
       species: string;
       /** Format: int32 */
-      age?: number | string;
+      age: number;
     };
     UpdateAnimalRequest: {
       name: string;
       species: string;
       /** Format: int32 */
-      age?: number | string;
+      age: number;
     };
   };
   responses: never;
