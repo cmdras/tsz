@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { type AnimalDTO } from '#/api/animals';
-import { fetchAnimals } from '#/api/animals/server';
+import { fetchAnimals } from './-server';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';
 
 export const Route = createFileRoute('/animals/')({

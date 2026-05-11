@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import type { AnimalDTO } from '#/api/animals';
-import { updateAnimalSchema, type UpdateAnimalInput } from '#/api/animals/schemas';
+import { updateAnimalSchema, type UpdateAnimalInput } from '../-schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { Label } from '#/components/ui/label';

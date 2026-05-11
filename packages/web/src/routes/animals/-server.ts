@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getAnimals, getAnimalById, updateAnimal } from './index';
-import { ApiRequestError } from '../client';
-import { saveAnimalSchema } from './schemas';
+import { getAnimals, getAnimalById, updateAnimal } from '#/api/animals';
+import { ApiRequestError } from '#/api/client';
+import { saveAnimalSchema } from './-schemas';
 
 export const fetchAnimals = createServerFn({ method: 'GET' }).handler(async () => {
   return await getAnimals();

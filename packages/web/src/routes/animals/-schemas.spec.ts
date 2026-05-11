@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vite-plus/test';
-import { updateAnimalSchema, saveAnimalSchema } from './schemas';
+import { updateAnimalSchema, saveAnimalSchema } from './-schemas';
 
 describe('updateAnimalSchema', () => {
   it('accepts a valid animal', () => {

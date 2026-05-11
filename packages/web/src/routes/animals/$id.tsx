@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
-import { fetchAnimalById, saveAnimal } from '#/api/animals/server';
+import { fetchAnimalById, saveAnimal } from './-server';
 import { Button } from '#/components/ui/button';
 import { AnimalForm } from './-components/animal-form';
 
