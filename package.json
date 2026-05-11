@@ -11,7 +11,6 @@
     "dev:api": "dotnet watch run --project packages/api",
     "check": "bun run --filter '*' check",
     "fallow": "bun run --filter '*' fallow",
-    "test": "dotnet test packages/api.tests",
     "test:api": "dotnet test packages/api.tests",
     "test:api:int": "dotnet test packages/api.tests.integration",
     "test:web": "bun run --filter 'web-tanstack-start' test --run",

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vite-plus/test';
 import { ApiRequestError } from '../client';
 import { getAnimals, getAnimalById, createAnimal, updateAnimal, removeAnimal } from './index';
-import { emptyResponse, jsonResponse } from 'tests/fetch-util';
+import { emptyResponse, jsonResponse } from '@tests/fetch-util';
 
 const mockFetch = vi.hoisted(() => {
   const mockFetch = vi.fn();
