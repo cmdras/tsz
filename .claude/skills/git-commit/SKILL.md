@@ -3,7 +3,7 @@ name: git-commit
 description: Commit open changes using the Conventional Commits specification
 user-invocable: true
 model: haiku
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git commit:*), Bash(git ls-files:*), Bash(xargs:*)
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git commit:*), Bash(git ls-files:*), Bash(git rev-parse:*), Bash(xargs:*), Bash(date:*), Read, Write, Edit
 ---
 
 ## Context
@@ -12,6 +12,8 @@ allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git l
 - Current git diff (tracked + untracked, via intent-to-add): !`git ls-files --others --exclude-standard -z | xargs -0 git add --intent-to-add 2>/dev/null; git diff HEAD`
 - Current branch: !`git branch --show-current`
 - Recent commits: !`git log --oneline -10`
+- Today's date: !`date +%Y-%m-%d`
+- Repo root: !`git rev-parse --show-toplevel`
 
 ## Your task
 
@@ -85,6 +87,29 @@ BREAKING CHANGE: `env` option removed
 6. Avoid committing files that likely contain secrets (.env, credentials.json, etc.).
 
 Stage relevant files — including untracked files that belong with the change (e.g. new source files, their colocated tests, new fixtures) — and create the commit in a single message. Note: the diff above marks untracked files as intent-to-add so their content is visible, but they still need an explicit `git add <path>` to be committed. Do not use any other tools or do anything else.
+
+### Update CHANGELOG.md (before committing)
+
+Maintain a `CHANGELOG.md` at the **repo root** (the path from `git rev-parse --show-toplevel` above). It tracks the **first line** of each commit message, grouped by day in reverse-chronological order.
+
+Steps:
+
+1. After deciding the commit message, determine its first line (the `<type>(<scope>): <description>` line).
+2. Read `CHANGELOG.md` at the repo root. If it does not exist, create it with this initial content:
+
+   ```markdown
+   # Changelog
+
+   ## <today's date — YYYY-MM-DD>
+
+   - <commit message first line>
+   ```
+
+3. If it exists:
+   - If a `## <today's date>` section already exists, append `- <commit message first line>` to the bottom of that section's bullet list.
+   - Otherwise, insert a new `## <today's date>` section directly below the `# Changelog` heading (above any existing day sections), containing the single bullet.
+
+4. Stage `CHANGELOG.md` together with the other files so it lands in the same commit.
 
 ## Output
 
