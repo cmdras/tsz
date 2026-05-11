@@ -2,6 +2,7 @@
 
 ## 2026-05-11
 
+- chore(gitignore): exclude Claude Code scheduled_tasks lock file
 - feat(shell): implement S0 shell with layout and routes
 - chore(git-commit): add changelog automation to skill
 - docs(planning): introduce S0 shell slice, adjust S1 scope

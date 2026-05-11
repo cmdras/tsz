@@ -46,3 +46,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Zone identifiers
 *.Zone.Identifier
+
+# Claude Code runtime state
+.claude/scheduled_tasks.lock
