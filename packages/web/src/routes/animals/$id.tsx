@@ -16,15 +16,15 @@ function AnimalDetail() {
 
   if (!animal) {
     return (
-      <main className="rounded-lg border border-destructive/30 bg-destructive/10 p-6">
+      <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-6">
         <h1 className="text-xl font-semibold text-destructive">Animal not found</h1>
         <p className="mt-1 text-sm text-destructive/80">No animal exists with this ID.</p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">{animal.name}</h1>
         {!editing && (
@@ -53,7 +53,7 @@ function AnimalDetail() {
           <DetailRow label="Age">{animal.age}</DetailRow>
         </dl>
       )}
-    </main>
+    </>
   );
 }
 

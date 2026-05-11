@@ -15,3 +15,7 @@ Render each field as `<Label>` + `<Input>` (or shadcn equivalent) + `<FieldError
 Every `createServerFn` must pass a Zod schema to `.inputValidator`, not a typed identity function. The schema is the source of truth for the input type — don't separately declare a TS type alongside it.
 
 Share schemas between the form and its server function: define the Zod schema once (typically next to the server function in `src/api/<resource>/`) and import it into the route. This keeps client and server validation aligned.
+
+## Testing
+
+- Skip creating tests for components

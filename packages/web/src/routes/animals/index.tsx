@@ -12,7 +12,7 @@ function Animals() {
   const animals = Route.useLoaderData();
 
   return (
-    <main>
+    <>
       <h1 className="text-2xl font-bold">Animals</h1>
       <Table className="mt-4">
         <TableHeader>
@@ -36,6 +36,6 @@ function Animals() {
           ))}
         </TableBody>
       </Table>
-    </main>
+    </>
   );
 }

@@ -1,17 +1,17 @@
-import { HeadContent, Link, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
-import { Moon, Sun } from 'lucide-react';
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
 
 import appCss from '../styles.css?url';
-import { Button } from '#/components/ui/button';
+import { AppHeader } from '#/components/app-header';
+import { AppSidebar } from '#/components/app-sidebar';
 import { ErrorBoundary } from '#/components/error-boundary';
-import { useTheme } from '#/hooks/use-theme';
+import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar';
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'TanStack Start' },
+      { title: 'Timesheet Zone' },
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
@@ -19,10 +19,10 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
   errorComponent: ErrorBoundary,
   notFoundComponent: () => (
-    <main>
+    <>
       <h1 className="text-2xl font-bold">Page not found</h1>
-      <p className="mt-2 text-gray-600">The page you're looking for doesn't exist.</p>
-    </main>
+      <p className="mt-2 text-muted-foreground">The page you're looking for doesn't exist.</p>
+    </>
   ),
 });
 
@@ -44,22 +44,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 }
 
 function RootLayout() {
-  const { isDark, toggle } = useTheme();
-
   return (
-    <div className="mx-auto max-w-3xl p-6">
-      <nav className="mb-6 flex items-center gap-4 text-sm">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>
-        <Link to="/animals" className="[&.active]:font-bold">
-          Animals
-        </Link>
-        <Button variant="ghost" size="icon-sm" onClick={toggle} className="ml-auto" aria-label="Toggle theme">
-          {isDark ? <Sun /> : <Moon />}
-        </Button>
-      </nav>
-      <Outlet />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <AppHeader />
+        <div className="p-6">
+          <Outlet />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
