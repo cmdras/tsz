@@ -5,19 +5,19 @@ Scope target: **Prio 1 only.** Prio 2 and Out-of-Scope items from the spec stay 
 
 ## Locked conventions
 
-- **Auth:** stub-first. In S0, 3 hardcoded users in code (Admin / User / Client Manager) + middleware that reads `X-Impersonate-User` header or `tsz-impersonate-user` cookie and attaches a `ClaimsPrincipal`. `useCurrentUser()` hook + header role-switcher dropdown on the web side. S2 moves users into the DB. Azure Entra ID swap happens after Prio 1 features work.
-- **DB:** SQLite via EF Core. **Single `AppDbContext`** in `packages/api/Common/Database/`; every module registers its `IEntityTypeConfiguration<T>` into it. New DB file `tsz.db`. The legacy `animals.db` + `AnimalDbContext` stays separate until S11 deletes it.
+- **Auth:** deferred. S0–S5 ship anonymous (no current user, no `[Authorize]`, `/admin/*` ungated). **S6** wires real OAuth via Azure Entra ID — ASP.NET OIDC, `/api/auth/me`, `useCurrentUser` hook, login/logout UI, `/admin/*` UI guard, and `[Authorize(Roles="Admin")]` retroactively applied to S1–S5 admin route groups. No stub-auth boundary is ever built — OAuth is wired once, at the slice that first needs identity (Time Entry, S7). Role-assignment strategy (Entra app roles vs Users-table email lookup) decided in S6's plan.
+- **DB:** SQLite via EF Core. **Single `AppDbContext`** in `packages/api/Common/Database/`; every module registers its `IEntityTypeConfiguration<T>` into it. New DB file `tsz.db`. The legacy `animals.db` + `AnimalDbContext` stays separate until S12 deletes it.
 - **IDs:** GUID primary keys. Customers additionally get a 6-digit business `Number` (sequential, starts at 100000, generated via shared `Common/Counters/` service — `ICounterService.NextAsync("customer")`). Contracts' identifier strategy is TBD in the S3 plan (the original `K-0001` convention is dropped).
 - **Deletes:** soft-delete (`is_archived` flag). API exposes PATCH `/{id}/archive` + PATCH `/{id}/unarchive`; no hard DELETE on admin entities. Lists show active by default + a "Show archived" toggle. Pickers (S3+) hide archived rows. No cascade.
 - **Routes:** admin pages nested under `/admin/*`. Edit UX = dedicated route per entity (`/admin/<entity>/$id` and `/admin/<entity>/new`). End-user pages stay at top level.
-- **Role gating:** `/admin/*` is Admin-only. UI loader redirect for non-admins established in S0; server-side gating on the API route group established in S1 with the first admin endpoint.
+- **Role gating:** `/admin/*` is Admin-only — UI redirect + server-side `[Authorize(Roles="Admin")]` both land in S6. S1–S5 admin endpoints are publicly callable in dev until S6 retroactively applies the attribute.
 - **UI language:** English by default; occasional Dutch terms (e.g. month names, "ancientiteit") to be confirmed with the PO.
 - **Non-editable days in v1:** weekends only. Belgian holidays land in Prio 2 via openholidaysapi.
 - **Approval:** self-submit. Clicking "submit" sets the week to `approved`; no separate approver step.
 - **UI library:** shadcn/ui only. Forms wrapped in shadcn `Card`. Mutations toast via shadcn `Sonner`. Archive confirms via shadcn `AlertDialog`; unarchive is direct.
 - **Forms:** TanStack Form + Zod (via the form's validator adapter, never inline). `FieldError` component per field. Country fields use a shadcn `Select` with Belgium default + "Other" → free-text fallback.
 - **Server functions:** every `createServerFn` uses `.inputValidator(<zodSchema>)`; schemas live with the server function and are imported by the route's form.
-- **Reference scaffold:** the `animals` module (API: `packages/api/Modules/Animals/*`, web: `packages/web/src/api/animals/*` + `packages/web/src/routes/animals/*`) is the template every slice copies — though admin slices wrap forms in `Card` (animals is left as-is until S11 deletes it). Deleted in S11.
+- **Reference scaffold:** the `animals` module (API: `packages/api/Modules/Animals/*`, web: `packages/web/src/api/animals/*` + `packages/web/src/routes/animals/*`) is the template every slice copies — though admin slices wrap forms in `Card` (animals is left as-is until S12 deletes it). Deleted in S12.
 
 ## Slicing principles
 
@@ -28,25 +28,25 @@ Scope target: **Prio 1 only.** Prio 2 and Out-of-Scope items from the spec stay 
 
 ## Dependency picture
 
-Time Entry sits at the top. It needs a current user (auth), tasks (via Contracts, which need Customers + Users), leaves (via Leave Types + per-user leave config), and date logic. So admin CRUD first, user features on top.
+Time Entry sits at the top. It needs a current user (auth), tasks (via Contracts, which need Customers + Users), leaves (via Leave Types + per-user leave config), and date logic. Admin CRUD ships first without auth; OAuth lands just before user-scoped features begin.
 
 ## Slices
 
-### S0 — Shell + Stub Auth
+### S0 — Shell
 
-**Includes:** stub auth (3 hardcoded users + middleware + `/api/auth/me`), `useCurrentUser` hook, RoleSwitcher header dropdown, top header + left sidebar chrome (shadcn `sidebar`), placeholder routes for every Prio 1 destination (Time entry, Timesheets, Leave overview, plus admin entity placeholders), `/admin/*` UI loader redirect for non-Admin users.
+**Includes:** top header + left sidebar chrome (shadcn `sidebar`), placeholder routes for every Prio 1 destination (Time entry, Timesheets, Leave overview, plus admin entity placeholders). No auth, no identity, no DB.
 
-**Why first:** lands the visual shell and the identity that powers it together, so every later slice ships features into a working app instead of bolting nav on alongside them. Makes manual verification feel real from S1 onward.
+**Why first:** lands the visual shell so every later slice ships features into a working app instead of bolting nav on alongside them.
 
-**No DB / no entity:** `AppDbContext`, `tsz.db`, and the Counters service all wait for S1 to introduce them alongside the first persisted entity.
+**Why no auth:** none of S1–S5 (admin CRUD) actually needs identity — they just need the route to exist. Wiring real OAuth before then would be throwaway. S6 lands it once, the right way, at the slice that first needs "who is the current user?".
 
 ### S1 — Foundation + Customers
 
-**Includes:** persistence foundation (`AppDbContext`, EF Core migrations, Counters service), Customer entity (number, name, address fields, contact name/email, `is_archived`), CRUD endpoints with server-side admin role gating, list page, create/edit form, archive/unarchive, seed data.
+**Includes:** persistence foundation (`AppDbContext`, EF Core migrations, Counters service), Customer entity (number, name, address fields, contact name/email, `is_archived`), CRUD endpoints (no admin gating yet — added in S6), list page, create/edit form, archive/unarchive, seed data.
 
-**Why bundled:** the persistence foundation needs a feature on top to be testable end-to-end. Bundling Customers lands the OpenAPI codegen pipeline, the first server-side admin gating, and the Zod/form/server-function pattern in one slice. The resulting structure becomes the template every later slice copies — so it's worth getting right here.
+**Why bundled:** the persistence foundation needs a feature on top to be testable end-to-end. Bundling Customers lands the OpenAPI codegen pipeline and the Zod/form/server-function pattern in one slice. The resulting structure becomes the template every later slice copies.
 
-**Risk:** largest data-side slice (sets DB + first CRUD pattern), but lighter than it was before S0 absorbed the chrome and auth boundary.
+**Risk:** largest data-side slice (sets DB + first CRUD pattern).
 
 ### S2 — Users (basic CRUD)
 
@@ -74,39 +74,47 @@ Time Entry sits at the top. It needs a current user (auth), tasks (via Contracts
 
 **Why before Time Entry:** the leave picker in Time Entry is gated by what each user is allowed to take.
 
-### S6 — Time Entry (single-week grid)
+### S6 — OAuth Auth (Entra ID)
+
+**Includes:** Azure Entra ID OAuth wiring. ASP.NET OIDC (cookie + OIDC scheme, or pure JWT bearer — decided in plan) against a dev app registration with localhost redirect URIs. `GET /api/auth/me` returning `{ id, name, email, role }`. `useCurrentUser()` hook on the web side reading from a root-loader `/api/auth/me` call. Login / logout flow. User card at the top of the sidebar; user display in the header. `/admin/*` UI loader redirect for non-Admin users. `[Authorize(Roles="Admin")]` retroactively applied to S1–S5 admin route groups (Customers, Users, Contracts, Leave Types).
+
+**Why here:** S1–S5 are all admin CRUD — no slice actually needs "who is the current user?" until Time Entry (S7). Wiring real OAuth right before Time Entry means we build the auth boundary once, in production form, with no stub to throw away.
+
+**Open in plan:** role-assignment strategy — Entra app roles (claim arrives in token) vs Users-table email lookup (role lives in DB, which exists from S2). Dev-flow story — real Entra login against the dev tenant, or a localhost-only shim. Both surfaced in `/piv-plan`.
+
+### S7 — Time Entry (single-week grid)
 
 **Includes:** per-week view locked to the current week; add-task picker (filtered to in-range contracts + consultant); rows of task × day cells with time entry; total per task, per day, per week; weekends non-editable; manual save (button).
 
-**Why split from S7:** Time Entry is the biggest feature in the spec. Landing the grid mechanics on a single week first lets us verify the load-bearing UX before introducing navigation state and the data-loss surface of auto-save.
+**Why split from S8:** Time Entry is the biggest feature in the spec. Landing the grid mechanics on a single week first lets us verify the load-bearing UX before introducing navigation state and the data-loss surface of auto-save.
 
-### S7 — Time Entry (navigation + auto-save)
+### S8 — Time Entry (navigation + auto-save)
 
-**Includes:** week navigation (prev/next/today/calendar picker); auto-save on navigation away or week change — replaces the manual save from S6.
+**Includes:** week navigation (prev/next/today/calendar picker); auto-save on navigation away or week change — replaces the manual save from S7.
 
-**Why split from S6:** auto-save pairs naturally with navigation because the triggers *are* navigation events. Splitting them out lets us prove the grid behavior in isolation first, then layer state transitions on top.
+**Why split from S7:** auto-save pairs naturally with navigation because the triggers *are* navigation events. Splitting them out lets us prove the grid behavior in isolation first, then layer state transitions on top.
 
-### S8 — Time Entry (leaves + hotkeys + submit)
+### S9 — Time Entry (leaves + hotkeys + submit)
 
 **Includes:** add-leave picker (filtered by per-user allowed leave types); hotkeys (`d` = full day, `h` = half day, `del` = empty); submit-for-approval action that marks the week `approved`.
 
-**Why split from S6/S7:** additive features on the same grid; cheap to layer in once the grid and navigation work.
+**Why split from S7/S8:** additive features on the same grid; cheap to layer in once the grid and navigation work.
 
-### S9 — Timesheets
+### S10 — Timesheets
 
 **Includes:** per-month read view of entered time entries; light-green → dark-green coloring based on weekly approval status; per-task day-count summary; month navigation (prev/next/today).
 
-**Why before Leave Overview:** same calendar-grid shape we'll reuse, and the data already exists from S6–S8.
+**Why before Leave Overview:** same calendar-grid shape we'll reuse, and the data already exists from S7–S9.
 
-### S10 — Leave Overview
+### S11 — Leave Overview
 
 **Includes:** per-year calendar with leave days marked; current-date and weekend indicators; balance summary per leave type for the year; year navigation.
 
 **Why last feature:** depends on everything else — entries to display, leave types defined, per-user balances populated.
 
-### S11 — Cleanup
+### S12 — Cleanup
 
-**Includes:** delete the `animals` module (API + web + tests + DB file), remove route entry, clean up references. Prepare the auth boundary for Entra-ID integration (Entra swap itself may be its own slice if scheduled before v1 ships).
+**Includes:** delete the `animals` module (API + web + tests + DB file), remove route entry, clean up references.
 
 **Why last:** animals stays as the live reference scaffold while we copy from it; only safe to delete once every slice has its own concrete example to refer back to.
 
@@ -124,8 +132,9 @@ No stage auto-chains into the next — the user inspects each artifact and decid
 ## Open items to resolve in-slice
 
 - **Contract-number generation strategy (S3):** decide in S3's plan. Customers use GUID + Counters service; contracts may follow the same shape or use something different per PO direction.
-- **Time-entry storage format (15-min integer minutes vs float hours vs other):** decide in S6's plan.
-- **Whether Entra swap is a pre-v1 slice or a post-Prio-1 follow-up:** revisit after S10.
+- **OAuth role-assignment strategy (S6):** Entra app roles vs Users-table email lookup. Decide in S6's plan.
+- **OAuth dev-flow (S6):** real Entra login against the dev tenant vs localhost-only shim. Decide in S6's plan.
+- **Time-entry storage format (15-min integer minutes vs float hours vs other):** decide in S7's plan.
 
 ## Resolved in earlier slices
 
