@@ -1,23 +1,26 @@
 {
   "name": "template-dotnet-spa-react",
-  "type": "module",
   "private": true,
   "description": "AI Masterclass SPA Template",
-  "devDependencies": {
-    "rimraf": "^6.1.3",
-    "vite-plus": "^0.1.14"
-  },
   "workspaces": [
     "packages/*"
   ],
+  "type": "module",
   "scripts": {
     "dev": "bun run --filter 'web-tanstack-start' dev",
     "dev:api": "dotnet watch run --project packages/api",
     "check": "bun run --filter '*' check",
     "fallow": "bun run --filter '*' fallow",
+    "test": "dotnet test packages/api.tests",
     "test:api": "dotnet test packages/api.tests",
     "test:api:int": "dotnet test packages/api.tests.integration",
+    "test:web": "bun run --filter 'web-tanstack-start' test --run",
+    "test:all": "bun run test:web && dotnet test tsz.sln",
     "cleanup": "bun run --filter '*' cleanup"
+  },
+  "devDependencies": {
+    "rimraf": "^6.1.3",
+    "vite-plus": "^0.1.14"
   },
   "packageManager": "bun@1.3.6"
 }

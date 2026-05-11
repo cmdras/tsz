@@ -11,6 +11,9 @@ const config = defineConfig({
     tsconfigPaths: true,
   },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  test: {
+    setupFiles: ['./tests/setup.ts'],
+  },
 });
 
 export default config;

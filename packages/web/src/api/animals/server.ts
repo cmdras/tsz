@@ -1,19 +1,22 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getAnimals, updateAnimal } from './index';
-import { getAnimalById } from './id';
+import { getAnimals, getAnimalById, updateAnimal } from './index';
+import { ApiRequestError } from '../client';
 import { saveAnimalSchema } from './schemas';
 
 export const fetchAnimals = createServerFn({ method: 'GET' }).handler(async () => {
-  const { data } = await getAnimals();
-  return data ?? [];
+  return await getAnimals();
 });
 
 export const fetchAnimalById = createServerFn({ method: 'GET' })
   .inputValidator(z.number().int())
   .handler(async ({ data: id }) => {
-    const { data } = await getAnimalById(id);
-    return data ?? null;
+    try {
+      return await getAnimalById(id);
+    } catch (err) {
+      if (err instanceof ApiRequestError && err.status === 404) return null;
+      throw err;
+    }
   });
 
 export const saveAnimal = createServerFn({ method: 'POST' })
