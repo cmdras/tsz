@@ -5,6 +5,7 @@ import { AppHeader } from '#/components/app-header';
 import { AppSidebar } from '#/components/app-sidebar';
 import { ErrorBoundary } from '#/components/error-boundary';
 import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar';
+import { Toaster } from '#/components/ui/sonner';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -53,6 +54,7 @@ function RootLayout() {
           <Outlet />
         </div>
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   );
 }

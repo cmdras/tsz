@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-12
+
+- feat(customers): implement S1 customers admin with database foundation
+
 ## 2026-05-11
 
 - chore(gitignore): exclude Claude Code scheduled_tasks lock file

@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Api.Common.Database;
 using Api.Modules.Animals;
+using Api.Modules.Customers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
@@ -37,13 +39,24 @@ builder.Services.AddDbContext<AnimalDbContext>(options =>
 });
 builder.Services.AddScoped<AnimalService>();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("AppDb")
+           ?? "Data Source=tsz.db");
+});
+builder.Services.AddScoped<CustomerService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AnimalDbContext>();
-    db.Database.EnsureCreated();
-    await AnimalSeeder.SeedAsync(db);
+    var animalDb = scope.ServiceProvider.GetRequiredService<AnimalDbContext>();
+    animalDb.Database.EnsureCreated();
+    await AnimalSeeder.SeedAsync(animalDb);
+
+    var appDb = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await appDb.Database.MigrateAsync();
+    await CustomerSeeder.SeedAsync(appDb);
 }
 
 // app.UseHttpsRedirection();
@@ -60,5 +73,6 @@ app.MapGet("/", () => new
 });
 
 AnimalEndpoints.Map(app);
+CustomerEndpoints.Map(app);
 
 app.Run();
