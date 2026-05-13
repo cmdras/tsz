@@ -5,6 +5,7 @@
 - refactor: apply descriptive variable naming throughout codebase
 - feat(customers): implement sorting and pagination
 - chore(agents): add crud-entity pattern reference skill
+- chore(customers): expand customer seed data to 30 records
 
 ## 2026-05-12
 
