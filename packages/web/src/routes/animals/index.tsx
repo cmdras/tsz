@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { type AnimalDTO } from '#/api/animals';
+import { type Animal } from '#/api/animals';
 import { fetchAnimals } from './-server';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';
 
@@ -23,7 +23,7 @@ function Animals() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {animals.map((animal: AnimalDTO) => (
+          {animals.map((animal: Animal) => (
             <TableRow key={animal.id}>
               <TableCell>
                 <Link to="/animals/$id" params={{ id: String(animal.id) }} className="hover:underline">

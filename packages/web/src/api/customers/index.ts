@@ -1,40 +1,40 @@
 import { type components } from '../schema';
 import { client } from '../client';
 
-export type CustomerDTO = components['schemas']['Customer'];
-export type CustomerRequestDTO = components['schemas']['CustomerRequest'];
-export type PagedCustomersDTO = components['schemas']['PagedCustomers'];
-export type CustomerSortDTO = NonNullable<components['schemas']['CustomerSort']>;
-export type SortDirectionDTO = NonNullable<components['schemas']['SortDirection']>;
+export type Customer = components['schemas']['Customer'];
+export type CustomerRequest = components['schemas']['CustomerRequest'];
+export type PagedCustomers = components['schemas']['PagedCustomers'];
+export type CustomerSort = NonNullable<components['schemas']['CustomerSort']>;
+export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
 export interface ListCustomersParams {
   search?: string;
-  sort?: CustomerSortDTO;
-  dir?: SortDirectionDTO;
+  sort?: CustomerSort;
+  sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
 }
 
-export const getCustomers = async (params: ListCustomersParams = {}): Promise<PagedCustomersDTO> => {
-  const resp = await client.GET('/api/customers', {
+export const getCustomers = async (params: ListCustomersParams = {}): Promise<PagedCustomers> => {
+  const response = await client.GET('/api/customers', {
     params: { query: params },
   });
-  return resp.data!;
+  return response.data!;
 };
 
-export const getCustomerById = async (id: string): Promise<CustomerDTO> => {
-  const resp = await client.GET('/api/customers/{id}', { params: { path: { id } } });
-  return resp.data!;
+export const getCustomerById = async (id: string): Promise<Customer> => {
+  const response = await client.GET('/api/customers/{id}', { params: { path: { id } } });
+  return response.data!;
 };
 
-export const createCustomer = async (body: CustomerRequestDTO): Promise<CustomerDTO> => {
-  const resp = await client.POST('/api/customers', { body });
-  return resp.data!;
+export const createCustomer = async (body: CustomerRequest): Promise<Customer> => {
+  const response = await client.POST('/api/customers', { body });
+  return response.data!;
 };
 
-export const updateCustomer = async (id: string, body: CustomerRequestDTO): Promise<CustomerDTO> => {
-  const resp = await client.PUT('/api/customers/{id}', { params: { path: { id } }, body });
-  return resp.data!;
+export const updateCustomer = async (id: string, body: CustomerRequest): Promise<Customer> => {
+  const response = await client.PUT('/api/customers/{id}', { params: { path: { id } }, body });
+  return response.data!;
 };
 
 export const archiveCustomer = async (id: string): Promise<void> => {

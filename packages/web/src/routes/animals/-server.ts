@@ -13,9 +13,9 @@ export const fetchAnimalById = createServerFn({ method: 'GET' })
   .handler(async ({ data: id }) => {
     try {
       return await getAnimalById(id);
-    } catch (err) {
-      if (err instanceof ApiRequestError && err.status === 404) return null;
-      throw err;
+    } catch (error) {
+      if (error instanceof ApiRequestError && error.status === 404) return null;
+      throw error;
     }
   });
 

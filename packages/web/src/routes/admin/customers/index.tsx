@@ -27,7 +27,7 @@ export const Route = createFileRoute('/admin/customers/')({
   loaderDeps: ({ search }) => ({
     search: search.search,
     sort: search.sort,
-    dir: search.dir,
+    sortDirection: search.sortDirection,
     page: search.page,
   }),
   loader: ({ deps }) => fetchCustomers({ data: deps }),
@@ -36,7 +36,7 @@ export const Route = createFileRoute('/admin/customers/')({
 
 function CustomerList() {
   const { items, total } = Route.useLoaderData();
-  const { search, sort = 'Number', dir = 'Asc', page = 1 } = Route.useSearch();
+  const { search, sort = 'Number', sortDirection = 'Asc', page = 1 } = Route.useSearch();
   const router = useRouter();
   const navigate = Route.useNavigate();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -47,7 +47,7 @@ function CustomerList() {
     (value: string) => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => {
-        navigate({ search: (prev) => ({ ...prev, search: value || undefined, page: undefined }) });
+        navigate({ search: (previousSearch) => ({ ...previousSearch, search: value || undefined, page: undefined }) });
       }, 300);
     },
     [navigate],
@@ -72,17 +72,17 @@ function CustomerList() {
 
   const toggleSort = (column: SortColumn) => {
     navigate({
-      search: (prev) => ({
-        ...prev,
+      search: (previousSearch) => ({
+        ...previousSearch,
         sort: column,
-        dir: prev.sort === column && prev.dir === 'Asc' ? 'Desc' : 'Asc',
+        sortDirection: previousSearch.sort === column && previousSearch.sortDirection === 'Asc' ? 'Desc' : 'Asc',
         page: undefined,
       }),
     });
   };
 
-  const goToPage = (next: number) => {
-    navigate({ search: (prev) => ({ ...prev, page: next === 1 ? undefined : next }) });
+  const goToPage = (targetPage: number) => {
+    navigate({ search: (previousSearch) => ({ ...previousSearch, page: targetPage === 1 ? undefined : targetPage }) });
   };
 
   return (
@@ -98,7 +98,7 @@ function CustomerList() {
         <Input
           placeholder="Search name or contact…"
           defaultValue={search ?? ''}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
           className="max-w-xs"
         />
       </div>
@@ -106,11 +106,35 @@ function CustomerList() {
       <Table>
         <TableHeader>
           <TableRow>
-            <SortableHeader column="Number" label="Number" active={sort} dir={dir} onToggle={toggleSort} />
-            <SortableHeader column="Name" label="Name" active={sort} dir={dir} onToggle={toggleSort} />
-            <SortableHeader column="ContactName" label="Contact" active={sort} dir={dir} onToggle={toggleSort} />
+            <SortableHeader
+              column="Number"
+              label="Number"
+              active={sort}
+              sortDirection={sortDirection}
+              onToggle={toggleSort}
+            />
+            <SortableHeader
+              column="Name"
+              label="Name"
+              active={sort}
+              sortDirection={sortDirection}
+              onToggle={toggleSort}
+            />
+            <SortableHeader
+              column="ContactName"
+              label="Contact"
+              active={sort}
+              sortDirection={sortDirection}
+              onToggle={toggleSort}
+            />
             <TableHead>Email</TableHead>
-            <SortableHeader column="City" label="City" active={sort} dir={dir} onToggle={toggleSort} />
+            <SortableHeader
+              column="City"
+              label="City"
+              active={sort}
+              sortDirection={sortDirection}
+              onToggle={toggleSort}
+            />
             <TableHead>Country</TableHead>
             <TableHead />
           </TableRow>

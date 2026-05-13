@@ -1,25 +1,25 @@
 import { type components } from '../schema';
 import { client } from '../client';
 
-export type AnimalDTO = components['schemas']['Animal'];
-export type CreateAnimalRequestDTO = components['schemas']['CreateAnimalRequest'];
-export type UpdateAnimalRequestDTO = components['schemas']['UpdateAnimalRequest'];
+export type Animal = components['schemas']['Animal'];
+export type CreateAnimalRequest = components['schemas']['CreateAnimalRequest'];
+export type UpdateAnimalRequest = components['schemas']['UpdateAnimalRequest'];
 
-export const getAnimals = async (): Promise<AnimalDTO[]> => {
-  const resp = await client.GET('/api/animals');
-  return resp.data!;
+export const getAnimals = async (): Promise<Animal[]> => {
+  const response = await client.GET('/api/animals');
+  return response.data!;
 };
 
-export const getAnimalById = async (id: number): Promise<AnimalDTO> => {
-  const resp = await client.GET('/api/animals/{id}', { params: { path: { id } } });
-  return resp.data!;
+export const getAnimalById = async (id: number): Promise<Animal> => {
+  const response = await client.GET('/api/animals/{id}', { params: { path: { id } } });
+  return response.data!;
 };
 
-export const createAnimal = async (animal: CreateAnimalRequestDTO): Promise<void> => {
+export const createAnimal = async (animal: CreateAnimalRequest): Promise<void> => {
   await client.POST('/api/animals', { body: animal });
 };
 
-export const updateAnimal = async (id: number, animal: UpdateAnimalRequestDTO): Promise<void> => {
+export const updateAnimal = async (id: number, animal: UpdateAnimalRequest): Promise<void> => {
   await client.PUT('/api/animals/{id}', { params: { path: { id } }, body: animal });
 };
 

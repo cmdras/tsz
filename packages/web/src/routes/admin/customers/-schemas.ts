@@ -18,7 +18,7 @@ export type SortColumn = (typeof sortColumns)[number];
 export const searchSchema = z.object({
   search: z.string().optional(),
   sort: z.enum(sortColumns).optional(),
-  dir: z.enum(['Asc', 'Desc']).optional(),
+  sortDirection: z.enum(['Asc', 'Desc']).optional(),
   page: z.coerce.number().int().positive().optional(),
 });
 

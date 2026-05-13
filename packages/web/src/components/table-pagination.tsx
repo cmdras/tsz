@@ -28,8 +28,8 @@ export function TablePagination({ page, totalPages, total, onChange }: TablePagi
               href="#"
               aria-disabled={prevDisabled}
               className={prevDisabled ? 'pointer-events-none opacity-50' : undefined}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={(clickEvent) => {
+                clickEvent.preventDefault();
                 if (!prevDisabled) onChange(page - 1);
               }}
             />
@@ -39,8 +39,8 @@ export function TablePagination({ page, totalPages, total, onChange }: TablePagi
               href="#"
               aria-disabled={nextDisabled}
               className={nextDisabled ? 'pointer-events-none opacity-50' : undefined}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={(clickEvent) => {
+                clickEvent.preventDefault();
                 if (!nextDisabled) onChange(page + 1);
               }}
             />

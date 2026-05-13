@@ -2,6 +2,7 @@
 
 ## 2026-05-13
 
+- refactor: apply descriptive variable naming throughout codebase
 - feat(customers): implement sorting and pagination
 - chore(agents): add crud-entity pattern reference skill
 

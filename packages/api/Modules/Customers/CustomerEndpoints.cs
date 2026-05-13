@@ -13,29 +13,29 @@ public static class CustomerEndpoints
         group.MapGet("/", async (
             string? search,
             CustomerSort? sort,
-            SortDirection? dir,
+            SortDirection? sortDirection,
             int? page,
             int? pageSize,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            var p = page is > 0 ? page.Value : 1;
+            var pageNumber = page is > 0 ? page.Value : 1;
             var size = pageSize is > 0 and <= 100 ? pageSize.Value : 25;
             return TypedResults.Ok(await service.GetAllAsync(
                 search,
                 sort ?? CustomerSort.Number,
-                dir ?? SortDirection.Asc,
-                p,
+                sortDirection ?? SortDirection.Asc,
+                pageNumber,
                 size,
-                ct));
+                cancellationToken));
         });
 
         group.MapGet("/{id:guid}", async Task<Results<Ok<Customer>, NotFound>> (
             Guid id,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            var customer = await service.GetByIdAsync(id, ct);
+            var customer = await service.GetByIdAsync(id, cancellationToken);
             return customer is not null
                 ? TypedResults.Ok(customer)
                 : TypedResults.NotFound();
@@ -44,9 +44,9 @@ public static class CustomerEndpoints
         group.MapPost("/", async Task<CreatedAtRoute<Customer>> (
             CustomerRequest request,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            var customer = await service.CreateAsync(request, ct);
+            var customer = await service.CreateAsync(request, cancellationToken);
             return TypedResults.CreatedAtRoute(customer, "GetCustomerById", new { id = customer.Id });
         }).AddEndpointFilter<ValidationFilter<CustomerRequest>>();
 
@@ -54,9 +54,9 @@ public static class CustomerEndpoints
             Guid id,
             CustomerRequest request,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            var customer = await service.UpdateAsync(id, request, ct);
+            var customer = await service.UpdateAsync(id, request, cancellationToken);
             return customer is not null
                 ? TypedResults.Ok(customer)
                 : TypedResults.NotFound();
@@ -65,9 +65,9 @@ public static class CustomerEndpoints
         group.MapPatch("/{id:guid}/archive", async Task<Results<NoContent, NotFound>> (
             Guid id,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            return await service.ArchiveAsync(id, ct)
+            return await service.ArchiveAsync(id, cancellationToken)
                 ? TypedResults.NoContent()
                 : TypedResults.NotFound();
         });
@@ -75,9 +75,9 @@ public static class CustomerEndpoints
         group.MapPatch("/{id:guid}/unarchive", async Task<Results<NoContent, NotFound>> (
             Guid id,
             CustomerService service,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            return await service.UnarchiveAsync(id, ct)
+            return await service.UnarchiveAsync(id, cancellationToken)
                 ? TypedResults.NoContent()
                 : TypedResults.NotFound();
         });

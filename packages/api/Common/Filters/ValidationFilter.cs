@@ -16,10 +16,10 @@ public class ValidationFilter<T> : IEndpointFilter where T : class
         if (!Validator.TryValidateObject(model, validationContext, validationResults, validateAllProperties: true))
         {
             var errors = validationResults
-                .Where(r => r.ErrorMessage is not null)
+                .Where(validationResult => validationResult.ErrorMessage is not null)
                 .ToDictionary(
-                    r => r.MemberNames.FirstOrDefault() ?? string.Empty,
-                    r => new[] { r.ErrorMessage! }
+                    validationResult => validationResult.MemberNames.FirstOrDefault() ?? string.Empty,
+                    validationResult => new[] { validationResult.ErrorMessage! }
                 );
             return Results.ValidationProblem(errors);
         }

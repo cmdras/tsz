@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-import type { AnimalDTO } from '#/api/animals';
+import type { Animal } from '#/api/animals';
 import { updateAnimalSchema, type UpdateAnimalInput } from '../-schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
@@ -7,7 +7,7 @@ import { Label } from '#/components/ui/label';
 import { FieldError } from '#/components/field-error';
 
 interface AnimalFormProps {
-  animal?: AnimalDTO | null;
+  animal?: Animal | null;
   onSubmit: (values: UpdateAnimalInput) => Promise<void> | void;
   onCancel?: () => void;
   submitLabel?: string;
@@ -30,9 +30,9 @@ export function AnimalForm({ animal, onSubmit, onCancel, submitLabel = 'Save' }:
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      onSubmit={(submitEvent) => {
+        submitEvent.preventDefault();
+        submitEvent.stopPropagation();
         form.handleSubmit();
       }}
       className="grid gap-4"
@@ -46,7 +46,7 @@ export function AnimalForm({ animal, onSubmit, onCancel, submitLabel = 'Save' }:
               name={field.name}
               value={field.state.value}
               onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
+              onChange={(changeEvent) => field.handleChange(changeEvent.target.value)}
               autoFocus
             />
             <FieldError field={field} />
@@ -63,7 +63,7 @@ export function AnimalForm({ animal, onSubmit, onCancel, submitLabel = 'Save' }:
               name={field.name}
               value={field.state.value}
               onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
+              onChange={(changeEvent) => field.handleChange(changeEvent.target.value)}
             />
             <FieldError field={field} />
           </div>
@@ -80,7 +80,9 @@ export function AnimalForm({ animal, onSubmit, onCancel, submitLabel = 'Save' }:
               type="number"
               value={field.state.value}
               onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value === '' ? 0 : e.target.valueAsNumber)}
+              onChange={(changeEvent) =>
+                field.handleChange(changeEvent.target.value === '' ? 0 : changeEvent.target.valueAsNumber)
+              }
             />
             <FieldError field={field} />
           </div>

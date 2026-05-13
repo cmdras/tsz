@@ -5,20 +5,20 @@ namespace Api.Modules.Animals;
 
 public class AnimalService
 {
-    private readonly AnimalDbContext _db;
+    private readonly AnimalDbContext _dbContext;
 
-    public AnimalService(AnimalDbContext db)
+    public AnimalService(AnimalDbContext dbContext)
     {
-        _db = db;
+        _dbContext = dbContext;
     }
 
-    public Task<List<Animal>> GetAllAsync(CancellationToken ct = default) =>
-        _db.Animals.ToListAsync(ct);
+    public Task<List<Animal>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        _dbContext.Animals.ToListAsync(cancellationToken);
 
-    public Task<Animal?> GetByIdAsync(int id, CancellationToken ct = default) =>
-        _db.Animals.FindAsync([id], ct).AsTask();
+    public Task<Animal?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+        _dbContext.Animals.FindAsync([id], cancellationToken).AsTask();
 
-    public async Task<Animal> CreateAsync(CreateAnimalRequest request, CancellationToken ct = default)
+    public async Task<Animal> CreateAsync(CreateAnimalRequest request, CancellationToken cancellationToken = default)
     {
         var animal = new Animal
         {
@@ -26,30 +26,30 @@ public class AnimalService
             Species = request.Species,
             Age = request.Age
         };
-        await _db.Animals.AddAsync(animal, ct);
-        await _db.SaveChangesAsync(ct);
+        await _dbContext.Animals.AddAsync(animal, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return animal;
     }
 
-    public async Task<Animal?> UpdateAsync(int id, UpdateAnimalRequest request, CancellationToken ct = default)
+    public async Task<Animal?> UpdateAsync(int id, UpdateAnimalRequest request, CancellationToken cancellationToken = default)
     {
-        var animal = await _db.Animals.FindAsync([id], ct);
+        var animal = await _dbContext.Animals.FindAsync([id], cancellationToken);
         if (animal is null) return null;
 
         animal.Name = request.Name;
         animal.Species = request.Species;
         animal.Age = request.Age;
-        await _db.SaveChangesAsync(ct);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return animal;
     }
 
-    public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        var animal = await _db.Animals.FindAsync([id], ct);
+        var animal = await _dbContext.Animals.FindAsync([id], cancellationToken);
         if (animal is null) return false;
 
-        _db.Animals.Remove(animal);
-        await _db.SaveChangesAsync(ct);
+        _dbContext.Animals.Remove(animal);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

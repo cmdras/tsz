@@ -23,7 +23,7 @@ builder.Services.AddOpenApi(options =>
             schema.Required ??= new HashSet<string>();
             foreach (var (name, property) in schema.Properties)
             {
-                var isNullable = property.Type is { } t && (t & JsonSchemaType.Null) != 0;
+                var isNullable = property.Type is { } schemaType && (schemaType & JsonSchemaType.Null) != 0;
                 if (!isNullable)
                 {
                     schema.Required.Add(name);

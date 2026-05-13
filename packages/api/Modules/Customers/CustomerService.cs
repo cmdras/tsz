@@ -5,108 +5,108 @@ namespace Api.Modules.Customers;
 
 public class CustomerService
 {
-    private readonly AppDbContext _db;
+    private readonly AppDbContext _dbContext;
 
-    public CustomerService(AppDbContext db)
+    public CustomerService(AppDbContext dbContext)
     {
-        _db = db;
+        _dbContext = dbContext;
     }
 
     public async Task<PagedCustomers> GetAllAsync(
         string? search,
         CustomerSort sort,
-        SortDirection dir,
+        SortDirection sortDirection,
         int page,
         int pageSize,
-        CancellationToken ct = default)
+        CancellationToken cancellationToken = default)
     {
-        var query = _db.Customers.Where(c => !c.IsArchived);
+        var query = _dbContext.Customers.Where(customer => !customer.IsArchived);
 
         if (!string.IsNullOrWhiteSpace(search))
         {
             var term = search.Trim().ToLower();
-            query = query.Where(c =>
-                c.Name.ToLower().Contains(term) ||
-                c.ContactName.ToLower().Contains(term));
+            query = query.Where(customer =>
+                customer.Name.ToLower().Contains(term) ||
+                customer.ContactName.ToLower().Contains(term));
         }
 
-        var desc = dir == SortDirection.Desc;
+        var isDescending = sortDirection == SortDirection.Desc;
         query = sort switch
         {
-            CustomerSort.Name => desc ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
-            CustomerSort.ContactName => desc ? query.OrderByDescending(c => c.ContactName) : query.OrderBy(c => c.ContactName),
-            CustomerSort.City => desc ? query.OrderByDescending(c => c.City) : query.OrderBy(c => c.City),
-            _ => desc ? query.OrderByDescending(c => c.Number) : query.OrderBy(c => c.Number),
+            CustomerSort.Name => isDescending ? query.OrderByDescending(customer => customer.Name) : query.OrderBy(customer => customer.Name),
+            CustomerSort.ContactName => isDescending ? query.OrderByDescending(customer => customer.ContactName) : query.OrderBy(customer => customer.ContactName),
+            CustomerSort.City => isDescending ? query.OrderByDescending(customer => customer.City) : query.OrderBy(customer => customer.City),
+            _ => isDescending ? query.OrderByDescending(customer => customer.Number) : query.OrderBy(customer => customer.Number),
         };
 
-        var total = await query.CountAsync(ct);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        var total = await query.CountAsync(cancellationToken);
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
         return new PagedCustomers(items, total);
     }
 
-    public Task<Customer?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
-        _db.Customers.FindAsync([id], ct).AsTask();
+    public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _dbContext.Customers.FindAsync([id], cancellationToken).AsTask();
 
-    public async Task<Customer> CreateAsync(CustomerRequest req, CancellationToken ct = default)
+    public async Task<Customer> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
     {
-        await using var tx = await _db.Database.BeginTransactionAsync(
-            System.Data.IsolationLevel.Serializable, ct);
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(
+            System.Data.IsolationLevel.Serializable, cancellationToken);
 
-        var nextNumber = (await _db.Customers.MaxAsync(c => (int?)c.Number, ct) ?? 99999) + 1;
+        var nextNumber = (await _dbContext.Customers.MaxAsync(customer => (int?)customer.Number, cancellationToken) ?? 99999) + 1;
 
         var customer = new Customer
         {
             Id = Guid.NewGuid(),
             Number = nextNumber,
-            Name = req.Name,
-            Street = req.Street,
-            Zip = req.Zip,
-            City = req.City,
-            Country = req.Country,
-            ContactName = req.ContactName,
-            ContactEmail = req.ContactEmail,
+            Name = request.Name,
+            Street = request.Street,
+            Zip = request.Zip,
+            City = request.City,
+            Country = request.Country,
+            ContactName = request.ContactName,
+            ContactEmail = request.ContactEmail,
         };
 
-        await _db.Customers.AddAsync(customer, ct);
-        await _db.SaveChangesAsync(ct);
-        await tx.CommitAsync(ct);
+        await _dbContext.Customers.AddAsync(customer, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
         return customer;
     }
 
-    public async Task<Customer?> UpdateAsync(Guid id, CustomerRequest req, CancellationToken ct = default)
+    public async Task<Customer?> UpdateAsync(Guid id, CustomerRequest request, CancellationToken cancellationToken = default)
     {
-        var customer = await _db.Customers.FindAsync([id], ct);
+        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
         if (customer is null) return null;
 
-        customer.Name = req.Name;
-        customer.Street = req.Street;
-        customer.Zip = req.Zip;
-        customer.City = req.City;
-        customer.Country = req.Country;
-        customer.ContactName = req.ContactName;
-        customer.ContactEmail = req.ContactEmail;
+        customer.Name = request.Name;
+        customer.Street = request.Street;
+        customer.Zip = request.Zip;
+        customer.City = request.City;
+        customer.Country = request.Country;
+        customer.ContactName = request.ContactName;
+        customer.ContactEmail = request.ContactEmail;
 
-        await _db.SaveChangesAsync(ct);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return customer;
     }
 
-    public async Task<bool> ArchiveAsync(Guid id, CancellationToken ct = default)
+    public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var customer = await _db.Customers.FindAsync([id], ct);
+        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
         if (customer is null) return false;
 
         customer.IsArchived = true;
-        await _db.SaveChangesAsync(ct);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 
-    public async Task<bool> UnarchiveAsync(Guid id, CancellationToken ct = default)
+    public async Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var customer = await _db.Customers.FindAsync([id], ct);
+        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
         if (customer is null) return false;
 
         customer.IsArchived = false;
-        await _db.SaveChangesAsync(ct);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

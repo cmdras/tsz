@@ -9,37 +9,37 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.ToTable("Customers");
 
-        builder.HasKey(c => c.Id);
+        builder.HasKey(customer => customer.Id);
 
-        builder.Property(c => c.Number)
+        builder.Property(customer => customer.Number)
             .IsRequired();
 
-        builder.HasIndex(c => c.Number)
+        builder.HasIndex(customer => customer.Number)
             .IsUnique();
 
-        builder.Property(c => c.Name)
+        builder.Property(customer => customer.Name)
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(c => c.Street)
+        builder.Property(customer => customer.Street)
             .HasMaxLength(200);
 
-        builder.Property(c => c.Zip)
+        builder.Property(customer => customer.Zip)
             .HasMaxLength(20);
 
-        builder.Property(c => c.City)
+        builder.Property(customer => customer.City)
             .HasMaxLength(100);
 
-        builder.Property(c => c.Country)
+        builder.Property(customer => customer.Country)
             .HasMaxLength(100);
 
-        builder.Property(c => c.ContactName)
+        builder.Property(customer => customer.ContactName)
             .HasMaxLength(200);
 
-        builder.Property(c => c.ContactEmail)
+        builder.Property(customer => customer.ContactEmail)
             .HasMaxLength(254);
 
-        builder.Property(c => c.IsArchived)
+        builder.Property(customer => customer.IsArchived)
             .IsRequired()
             .HasDefaultValue(false);
     }

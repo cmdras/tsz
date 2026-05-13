@@ -4,7 +4,7 @@ export function FieldError({ field }: { field: AnyFieldApi }) {
   if (!field.state.meta.isTouched || field.state.meta.errors.length === 0) return null;
 
   const message = field.state.meta.errors
-    .map((err) => (typeof err === 'string' ? err : (err as { message?: string } | null)?.message))
+    .map((error) => (typeof error === 'string' ? error : (error as { message?: string } | null)?.message))
     .filter(Boolean)
     .join(', ');
 

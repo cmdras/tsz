@@ -4,9 +4,9 @@ namespace Api.Modules.Animals;
 
 public static class AnimalSeeder
 {
-    public static async Task SeedAsync(AnimalDbContext db)
+    public static async Task SeedAsync(AnimalDbContext dbContext)
     {
-        if (await db.Animals.AnyAsync())
+        if (await dbContext.Animals.AnyAsync())
             return;
 
         var animals = new List<Animal>
@@ -111,7 +111,7 @@ public static class AnimalSeeder
             new() { Name = "Axolotl",   Species = "Axolotl",        Age = 4  },
         };
 
-        db.Animals.AddRange(animals);
-        await db.SaveChangesAsync();
+        dbContext.Animals.AddRange(animals);
+        await dbContext.SaveChangesAsync();
     }
 }

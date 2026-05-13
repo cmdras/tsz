@@ -9,17 +9,17 @@ public class AnimalConfiguration : IEntityTypeConfiguration<Animal>
     {
         builder.ToTable("Animals");
 
-        builder.HasKey(a => a.Id);
+        builder.HasKey(animal => animal.Id);
 
-        builder.Property(a => a.Name)
+        builder.Property(animal => animal.Name)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(a => a.Species)
+        builder.Property(animal => animal.Species)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(a => a.Age)
+        builder.Property(animal => animal.Age)
             .IsRequired();
     }
 }

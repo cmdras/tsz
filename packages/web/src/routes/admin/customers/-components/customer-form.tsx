@@ -46,9 +46,9 @@ export function CustomerForm({ initial, onSubmit, title }: CustomerFormProps) {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
+          onSubmit={(submitEvent) => {
+            submitEvent.preventDefault();
+            submitEvent.stopPropagation();
             form.handleSubmit();
           }}
           className="grid gap-4"
