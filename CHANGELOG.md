@@ -3,6 +3,7 @@
 ## 2026-05-13
 
 - feat(customers): implement sorting and pagination
+- chore(agents): add crud-entity pattern reference skill
 
 ## 2026-05-12
 
