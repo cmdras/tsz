@@ -7,7 +7,7 @@ import { customerSchema, searchSchema } from './-schemas';
 export const fetchCustomers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
   .handler(async ({ data }) => {
-    return await getCustomers(data.search);
+    return await getCustomers(data);
   });
 
 export const fetchCustomerById = createServerFn({ method: 'GET' })

@@ -3,10 +3,21 @@ import { client } from '../client';
 
 export type CustomerDTO = components['schemas']['Customer'];
 export type CustomerRequestDTO = components['schemas']['CustomerRequest'];
+export type PagedCustomersDTO = components['schemas']['PagedCustomers'];
+export type CustomerSortDTO = NonNullable<components['schemas']['CustomerSort']>;
+export type SortDirectionDTO = NonNullable<components['schemas']['SortDirection']>;
 
-export const getCustomers = async (search?: string): Promise<CustomerDTO[]> => {
+export interface ListCustomersParams {
+  search?: string;
+  sort?: CustomerSortDTO;
+  dir?: SortDirectionDTO;
+  page?: number;
+  pageSize?: number;
+}
+
+export const getCustomers = async (params: ListCustomersParams = {}): Promise<PagedCustomersDTO> => {
   const resp = await client.GET('/api/customers', {
-    params: { query: { search } },
+    params: { query: params },
   });
   return resp.data!;
 };

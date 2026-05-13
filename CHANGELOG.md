@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-13
+
+- feat(customers): implement sorting and pagination
+
 ## 2026-05-12
 
 - feat(customers): implement S1 customers admin with database foundation

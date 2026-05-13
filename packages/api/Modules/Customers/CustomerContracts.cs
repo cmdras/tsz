@@ -2,6 +2,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Modules.Customers;
 
+public enum CustomerSort
+{
+    Number,
+    Name,
+    ContactName,
+    City,
+}
+
+public enum SortDirection
+{
+    Asc,
+    Desc,
+}
+
+public record PagedCustomers(IReadOnlyList<Customer> Items, int Total);
+
 public class CustomerRequest
 {
     [Required]

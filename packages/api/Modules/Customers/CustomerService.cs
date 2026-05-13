@@ -12,7 +12,13 @@ public class CustomerService
         _db = db;
     }
 
-    public Task<List<Customer>> GetAllAsync(string? search, CancellationToken ct = default)
+    public async Task<PagedCustomers> GetAllAsync(
+        string? search,
+        CustomerSort sort,
+        SortDirection dir,
+        int page,
+        int pageSize,
+        CancellationToken ct = default)
     {
         var query = _db.Customers.Where(c => !c.IsArchived);
 
@@ -24,7 +30,18 @@ public class CustomerService
                 c.ContactName.ToLower().Contains(term));
         }
 
-        return query.OrderBy(c => c.Number).ToListAsync(ct);
+        var desc = dir == SortDirection.Desc;
+        query = sort switch
+        {
+            CustomerSort.Name => desc ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
+            CustomerSort.ContactName => desc ? query.OrderByDescending(c => c.ContactName) : query.OrderBy(c => c.ContactName),
+            CustomerSort.City => desc ? query.OrderByDescending(c => c.City) : query.OrderBy(c => c.City),
+            _ => desc ? query.OrderByDescending(c => c.Number) : query.OrderBy(c => c.Number),
+        };
+
+        var total = await query.CountAsync(ct);
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return new PagedCustomers(items, total);
     }
 
     public Task<Customer?> GetByIdAsync(Guid id, CancellationToken ct = default) =>

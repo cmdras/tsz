@@ -12,9 +12,23 @@ public static class CustomerEndpoints
 
         group.MapGet("/", async (
             string? search,
+            CustomerSort? sort,
+            SortDirection? dir,
+            int? page,
+            int? pageSize,
             CustomerService service,
             CancellationToken ct) =>
-            TypedResults.Ok(await service.GetAllAsync(search, ct)));
+        {
+            var p = page is > 0 ? page.Value : 1;
+            var size = pageSize is > 0 and <= 100 ? pageSize.Value : 25;
+            return TypedResults.Ok(await service.GetAllAsync(
+                search,
+                sort ?? CustomerSort.Number,
+                dir ?? SortDirection.Asc,
+                p,
+                size,
+                ct));
+        });
 
         group.MapGet("/{id:guid}", async Task<Results<Ok<Customer>, NotFound>> (
             Guid id,

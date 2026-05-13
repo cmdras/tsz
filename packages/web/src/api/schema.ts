@@ -210,6 +210,10 @@ export interface paths {
       parameters: {
         query?: {
           search?: string;
+          sort?: components['schemas']['CustomerSort'];
+          dir?: components['schemas']['SortDirection'];
+          page?: number;
+          pageSize?: number;
         };
         header?: never;
         path?: never;
@@ -223,7 +227,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['Customer'][];
+            'application/json': components['schemas']['PagedCustomers'];
           };
         };
       };
@@ -436,6 +440,15 @@ export interface components {
       contactName: string;
       contactEmail: string;
     };
+    /** @enum {unknown} */
+    CustomerSort: 'Number' | 'Name' | 'ContactName' | 'City' | null;
+    PagedCustomers: {
+      items: components['schemas']['Customer'][];
+      /** Format: int32 */
+      total: number;
+    };
+    /** @enum {unknown} */
+    SortDirection: 'Asc' | 'Desc' | null;
     UpdateAnimalRequest: {
       name: string;
       species: string;

@@ -12,8 +12,14 @@ export const customerSchema = z.object({
 
 export type CustomerInput = z.infer<typeof customerSchema>;
 
+export const sortColumns = ['Number', 'Name', 'ContactName', 'City'] as const;
+export type SortColumn = (typeof sortColumns)[number];
+
 export const searchSchema = z.object({
   search: z.string().optional(),
+  sort: z.enum(sortColumns).optional(),
+  dir: z.enum(['Asc', 'Desc']).optional(),
+  page: z.coerce.number().int().positive().optional(),
 });
 
 export type SearchInput = z.infer<typeof searchSchema>;
