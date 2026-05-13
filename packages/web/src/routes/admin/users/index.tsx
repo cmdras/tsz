@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
-import { fetchCustomers, archiveCustomerFn } from './-server';
-import { searchSchema, type SortColumn } from './-schemas';
+import { fetchUsers, archiveUserFn } from './-server';
+import { searchSchema, roleLabels, type SortColumn } from './-schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';
@@ -22,7 +22,7 @@ import {
 
 const PAGE_SIZE = 25;
 
-export const Route = createFileRoute('/admin/customers/')({
+export const Route = createFileRoute('/admin/users/')({
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({
     search: search.search,
@@ -30,13 +30,13 @@ export const Route = createFileRoute('/admin/customers/')({
     sortDirection: search.sortDirection,
     page: search.page,
   }),
-  loader: ({ deps }) => fetchCustomers({ data: deps }),
-  component: CustomerList,
+  loader: ({ deps }) => fetchUsers({ data: deps }),
+  component: UserList,
 });
 
-function CustomerList() {
+function UserList() {
   const { items, total } = Route.useLoaderData();
-  const { search, sort = 'Number', sortDirection = 'Asc', page = 1 } = Route.useSearch();
+  const { search, sort = 'Name', sortDirection = 'Asc', page = 1 } = Route.useSearch();
   const router = useRouter();
   const navigate = Route.useNavigate();
 
@@ -48,11 +48,11 @@ function CustomerList() {
 
   const handleArchive = async (id: string) => {
     try {
-      await archiveCustomerFn({ data: id });
-      toast.success('Customer archived');
+      await archiveUserFn({ data: id });
+      toast.success('User archived');
       router.invalidate();
     } catch {
-      toast.error('Failed to archive customer');
+      toast.error('Failed to archive user');
     }
   };
 
@@ -74,15 +74,15 @@ function CustomerList() {
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Customers</h1>
+        <h1 className="text-2xl font-bold">Users</h1>
         <Button asChild>
-          <Link to="/admin/customers/new">New customer</Link>
+          <Link to="/admin/users/new">New user</Link>
         </Button>
       </div>
 
       <div className="flex items-center gap-4 mb-4">
         <Input
-          placeholder="Search name or contact…"
+          placeholder="Search name, email or role…"
           defaultValue={search ?? ''}
           onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
           className="max-w-xs"
@@ -93,13 +93,6 @@ function CustomerList() {
         <TableHeader>
           <TableRow>
             <SortableHeader
-              column="Number"
-              label="Number"
-              active={sort}
-              sortDirection={sortDirection}
-              onToggle={toggleSort}
-            />
-            <SortableHeader
               column="Name"
               label="Name"
               active={sort}
@@ -107,68 +100,64 @@ function CustomerList() {
               onToggle={toggleSort}
             />
             <SortableHeader
-              column="ContactName"
-              label="Contact"
+              column="Email"
+              label="Email"
               active={sort}
               sortDirection={sortDirection}
               onToggle={toggleSort}
             />
-            <TableHead>Email</TableHead>
             <SortableHeader
-              column="City"
-              label="City"
+              column="Role"
+              label="Role"
               active={sort}
               sortDirection={sortDirection}
               onToggle={toggleSort}
             />
-            <TableHead>Country</TableHead>
             <TableHead />
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((customer) => (
-            <TableRow key={customer.id}>
-              <TableCell className="font-mono">
-                <Link to="/admin/customers/$id" params={{ id: customer.id }} className="hover:underline">
-                  {String(customer.number).padStart(6, '0')}
-                </Link>
-              </TableCell>
+          {items.map((user) => (
+            <TableRow key={user.id}>
               <TableCell>
-                <Link to="/admin/customers/$id" params={{ id: customer.id }} className="hover:underline">
-                  {customer.name}
+                <Link to="/admin/users/$id" params={{ id: user.id }} className="hover:underline">
+                  {user.name}
                 </Link>
               </TableCell>
-              <TableCell>{customer.contactName}</TableCell>
-              <TableCell>{customer.contactEmail}</TableCell>
-              <TableCell>{customer.city}</TableCell>
-              <TableCell>{customer.country}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{roleLabels[user.role]}</TableCell>
               <TableCell className="text-right">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button size="sm" variant="outline">
-                      Archive
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Archive customer?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        {customer.name} will be removed from the customer list.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleArchive(customer.id)}>Archive</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <div className="flex gap-2 justify-end">
+                  <Button size="sm" variant="outline" asChild>
+                    <Link to="/admin/users/$id" params={{ id: user.id }}>
+                      Edit
+                    </Link>
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        Archive
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Archive user?</AlertDialogTitle>
+                        <AlertDialogDescription>{user.name} will be removed from the user list.</AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleArchive(user.id)}>Archive</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </TableCell>
             </TableRow>
           ))}
           {items.length === 0 && (
             <TableRow>
-              <TableCell colSpan={7} className="text-center text-muted-foreground">
-                No customers found.
+              <TableCell colSpan={4} className="text-center text-muted-foreground">
+                No users found.
               </TableCell>
             </TableRow>
           )}

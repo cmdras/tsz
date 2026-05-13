@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bunx shadcn@latest add table input --yes)",
+      "WebFetch(domain:tanstack.com)",
+      "Bash(bun run *)",
+      "Bash(bun check *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(gh auth *)",
+      "Bash(gh project *)",
+      "Bash(gh repo *)",
+      "Bash(gh issue *)",
+      "Bash(find *)",
+      "Bash(curl -sf http://localhost:5204/openapi/v1.json -o /dev/null)",
+      "Bash(dotnet run *)",
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet tool *)"
+    ]
+  },
+  "enabledMcpjsonServers": ["Ref", "exa"]
+}

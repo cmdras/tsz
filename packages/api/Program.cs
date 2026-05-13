@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Api.Common.Database;
-using Api.Modules.Animals;
 using Api.Modules.Customers;
+using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
@@ -33,12 +33,6 @@ builder.Services.AddOpenApi(options =>
         return Task.CompletedTask;
     });
 });
-builder.Services.AddDbContext<AnimalDbContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
-           ?? "Data Source=animals.db");
-});
-builder.Services.AddScoped<AnimalService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -46,18 +40,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
            ?? "Data Source=tsz.db");
 });
 builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var animalDb = scope.ServiceProvider.GetRequiredService<AnimalDbContext>();
-    animalDb.Database.EnsureCreated();
-    await AnimalSeeder.SeedAsync(animalDb);
-
+    using var scope = app.Services.CreateScope();
     var appDb = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await appDb.Database.MigrateAsync();
     await CustomerSeeder.SeedAsync(appDb);
+    await UserSeeder.SeedAsync(appDb);
 }
 
 // app.UseHttpsRedirection();
@@ -69,11 +62,11 @@ app.MapScalarApiReference("/openapi", options =>
 
 app.MapGet("/", () => new
 {
-    name = "Animal API",
+    name = "TSZ API",
     version = Assembly.GetExecutingAssembly().GetName().Version?.ToString()
 });
 
-AnimalEndpoints.Map(app);
 CustomerEndpoints.Map(app);
+UserEndpoints.Map(app);
 
 app.Run();

@@ -1,32 +1,35 @@
 @api_HostAddress = http://localhost:5204
 
-### Get all animals
-GET {{api_HostAddress}}/api/animals/
+### Get all users
+GET {{api_HostAddress}}/api/users/
 Accept: application/json
 
-### Get animal by id
-GET {{api_HostAddress}}/api/animals/1
+### Get user by id
+GET {{api_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000
 Accept: application/json
 
-### Create animal
-POST {{api_HostAddress}}/api/animals/
+### Create user
+POST {{api_HostAddress}}/api/users/
 Content-Type: application/json
 
 {
-  "name": "Rex",
-  "species": "Dog",
-  "age": 2
+  "name": "Alice",
+  "email": "alice@example.com",
+  "role": "User"
 }
 
-### Update animal
-PUT {{api_HostAddress}}/api/animals/1
+### Update user
+PUT {{api_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000
 Content-Type: application/json
 
 {
-  "name": "Buddy",
-  "species": "Dog",
-  "age": 4
+  "name": "Alice Updated",
+  "email": "alice@example.com",
+  "role": "Admin"
 }
 
-### Delete animal
-DELETE {{api_HostAddress}}/api/animals/1
+### Archive user
+PATCH {{api_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000/archive
+
+### Unarchive user
+PATCH {{api_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000/unarchive

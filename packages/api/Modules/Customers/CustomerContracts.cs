@@ -10,12 +10,6 @@ public enum CustomerSort
     City,
 }
 
-public enum SortDirection
-{
-    Asc,
-    Desc,
-}
-
 public record PagedCustomers(IReadOnlyList<Customer> Items, int Total);
 
 public class CustomerRequest

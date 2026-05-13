@@ -30,10 +30,6 @@ const navGroups = [
       { label: 'Leave types', to: '/admin/leave-types' },
     ],
   },
-  {
-    label: 'Dev',
-    items: [{ label: 'Animals', to: '/animals' }],
-  },
 ] as const satisfies ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }>;
 
 function NavGroup({

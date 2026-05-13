@@ -13,13 +13,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TimesheetsIndexRouteImport } from './routes/timesheets/index'
 import { Route as TimeEntryIndexRouteImport } from './routes/time-entry/index'
 import { Route as LeaveOverviewIndexRouteImport } from './routes/leave-overview/index'
-import { Route as AnimalsIndexRouteImport } from './routes/animals/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AnimalsIdRouteImport } from './routes/animals/$id'
-import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AdminLeaveTypesRouteImport } from './routes/admin/leave-types'
 import { Route as AdminContractsRouteImport } from './routes/admin/contracts'
+import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminCustomersIndexRouteImport } from './routes/admin/customers/index'
+import { Route as AdminUsersNewRouteImport } from './routes/admin/users/new'
+import { Route as AdminUsersIdRouteImport } from './routes/admin/users/$id'
 import { Route as AdminCustomersNewRouteImport } from './routes/admin/customers/new'
 import { Route as AdminCustomersIdRouteImport } from './routes/admin/customers/$id'
 
@@ -43,24 +43,9 @@ const LeaveOverviewIndexRoute = LeaveOverviewIndexRouteImport.update({
   path: '/leave-overview/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnimalsIndexRoute = AnimalsIndexRouteImport.update({
-  id: '/animals/',
-  path: '/animals/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnimalsIdRoute = AnimalsIdRouteImport.update({
-  id: '/animals/$id',
-  path: '/animals/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/admin/users',
-  path: '/admin/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLeaveTypesRoute = AdminLeaveTypesRouteImport.update({
@@ -73,9 +58,24 @@ const AdminContractsRoute = AdminContractsRouteImport.update({
   path: '/admin/contracts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
+  id: '/admin/users/',
+  path: '/admin/users/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminCustomersIndexRoute = AdminCustomersIndexRouteImport.update({
   id: '/admin/customers/',
   path: '/admin/customers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersNewRoute = AdminUsersNewRouteImport.update({
+  id: '/admin/users/new',
+  path: '/admin/users/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersIdRoute = AdminUsersIdRouteImport.update({
+  id: '/admin/users/$id',
+  path: '/admin/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCustomersNewRoute = AdminCustomersNewRouteImport.update({
@@ -93,47 +93,47 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin/contracts': typeof AdminContractsRoute
   '/admin/leave-types': typeof AdminLeaveTypesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/animals/$id': typeof AnimalsIdRoute
   '/admin/': typeof AdminIndexRoute
-  '/animals/': typeof AnimalsIndexRoute
   '/leave-overview/': typeof LeaveOverviewIndexRoute
   '/time-entry/': typeof TimeEntryIndexRoute
   '/timesheets/': typeof TimesheetsIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/users/$id': typeof AdminUsersIdRoute
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/contracts': typeof AdminContractsRoute
   '/admin/leave-types': typeof AdminLeaveTypesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/animals/$id': typeof AnimalsIdRoute
   '/admin': typeof AdminIndexRoute
-  '/animals': typeof AnimalsIndexRoute
   '/leave-overview': typeof LeaveOverviewIndexRoute
   '/time-entry': typeof TimeEntryIndexRoute
   '/timesheets': typeof TimesheetsIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/users/$id': typeof AdminUsersIdRoute
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/customers': typeof AdminCustomersIndexRoute
+  '/admin/users': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin/contracts': typeof AdminContractsRoute
   '/admin/leave-types': typeof AdminLeaveTypesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/animals/$id': typeof AnimalsIdRoute
   '/admin/': typeof AdminIndexRoute
-  '/animals/': typeof AnimalsIndexRoute
   '/leave-overview/': typeof LeaveOverviewIndexRoute
   '/time-entry/': typeof TimeEntryIndexRoute
   '/timesheets/': typeof TimesheetsIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/users/$id': typeof AdminUsersIdRoute
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,62 +141,62 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/contracts'
     | '/admin/leave-types'
-    | '/admin/users'
-    | '/animals/$id'
     | '/admin/'
-    | '/animals/'
     | '/leave-overview/'
     | '/time-entry/'
     | '/timesheets/'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/users/$id'
+    | '/admin/users/new'
     | '/admin/customers/'
+    | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin/contracts'
     | '/admin/leave-types'
-    | '/admin/users'
-    | '/animals/$id'
     | '/admin'
-    | '/animals'
     | '/leave-overview'
     | '/time-entry'
     | '/timesheets'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/users/$id'
+    | '/admin/users/new'
     | '/admin/customers'
+    | '/admin/users'
   id:
     | '__root__'
     | '/'
     | '/admin/contracts'
     | '/admin/leave-types'
-    | '/admin/users'
-    | '/animals/$id'
     | '/admin/'
-    | '/animals/'
     | '/leave-overview/'
     | '/time-entry/'
     | '/timesheets/'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/users/$id'
+    | '/admin/users/new'
     | '/admin/customers/'
+    | '/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminContractsRoute: typeof AdminContractsRoute
   AdminLeaveTypesRoute: typeof AdminLeaveTypesRoute
-  AdminUsersRoute: typeof AdminUsersRoute
-  AnimalsIdRoute: typeof AnimalsIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  AnimalsIndexRoute: typeof AnimalsIndexRoute
   LeaveOverviewIndexRoute: typeof LeaveOverviewIndexRoute
   TimeEntryIndexRoute: typeof TimeEntryIndexRoute
   TimesheetsIndexRoute: typeof TimesheetsIndexRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminCustomersNewRoute: typeof AdminCustomersNewRoute
+  AdminUsersIdRoute: typeof AdminUsersIdRoute
+  AdminUsersNewRoute: typeof AdminUsersNewRoute
   AdminCustomersIndexRoute: typeof AdminCustomersIndexRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -229,32 +229,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeaveOverviewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/animals/': {
-      id: '/animals/'
-      path: '/animals'
-      fullPath: '/animals/'
-      preLoaderRoute: typeof AnimalsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/animals/$id': {
-      id: '/animals/$id'
-      path: '/animals/$id'
-      fullPath: '/animals/$id'
-      preLoaderRoute: typeof AnimalsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/users': {
-      id: '/admin/users'
-      path: '/admin/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/leave-types': {
@@ -271,11 +250,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminContractsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/admin/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/customers/': {
       id: '/admin/customers/'
       path: '/admin/customers'
       fullPath: '/admin/customers/'
       preLoaderRoute: typeof AdminCustomersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users/new': {
+      id: '/admin/users/new'
+      path: '/admin/users/new'
+      fullPath: '/admin/users/new'
+      preLoaderRoute: typeof AdminUsersNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users/$id': {
+      id: '/admin/users/$id'
+      path: '/admin/users/$id'
+      fullPath: '/admin/users/$id'
+      preLoaderRoute: typeof AdminUsersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/customers/new': {
@@ -299,16 +299,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminContractsRoute: AdminContractsRoute,
   AdminLeaveTypesRoute: AdminLeaveTypesRoute,
-  AdminUsersRoute: AdminUsersRoute,
-  AnimalsIdRoute: AnimalsIdRoute,
   AdminIndexRoute: AdminIndexRoute,
-  AnimalsIndexRoute: AnimalsIndexRoute,
   LeaveOverviewIndexRoute: LeaveOverviewIndexRoute,
   TimeEntryIndexRoute: TimeEntryIndexRoute,
   TimesheetsIndexRoute: TimesheetsIndexRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminCustomersNewRoute: AdminCustomersNewRoute,
+  AdminUsersIdRoute: AdminUsersIdRoute,
+  AdminUsersNewRoute: AdminUsersNewRoute,
   AdminCustomersIndexRoute: AdminCustomersIndexRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
