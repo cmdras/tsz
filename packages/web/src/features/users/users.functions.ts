@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getUsers, getUserById, createUser, updateUser, archiveUser } from '#/api/users';
+import { getUsers, getUserById, createUser, updateUser, archiveUser } from './users.server';
 import { ApiRequestError } from '#/api/client';
-import { userSchema, searchSchema, sortSlugs, type SortSlug } from './-schemas';
+import { userSchema, searchSchema, sortSlugs, type SortSlug } from './users.schemas';
 
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)

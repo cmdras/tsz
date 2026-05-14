@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
-import { fetchCustomers, archiveCustomerFn } from './-server';
-import { searchSchema } from './-schemas';
+import { fetchCustomers, archiveCustomerFn } from '#/features/customers/customers.functions';
+import { searchSchema } from '#/features/customers/customers.schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';

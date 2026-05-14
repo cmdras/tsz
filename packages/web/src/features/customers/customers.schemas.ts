@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { CustomerSort } from '#/api/customers';
+import type { CustomerSort } from './customers.server';
 
 export const customerSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),

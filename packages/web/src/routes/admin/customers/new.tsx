@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CustomerForm } from './-components/customer-form';
-import { createCustomerFn } from './-server';
+import { CustomerForm } from './-components/form';
+import { createCustomerFn } from '#/features/customers/customers.functions';
 
 export const Route = createFileRoute('/admin/customers/new')({
   component: NewCustomer,

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vite-plus/test';
-import { customerSchema } from './-schemas';
+import { customerSchema } from './customers.schemas';
 
 const valid = {
   name: 'Alpha Corp',

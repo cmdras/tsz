@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CustomerForm } from './-components/customer-form';
-import { fetchCustomerById, updateCustomerFn } from './-server';
+import { CustomerForm } from './-components/form';
+import { fetchCustomerById, updateCustomerFn } from '#/features/customers/customers.functions';
 import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
 
 export const Route = createFileRoute('/admin/customers/$id')({

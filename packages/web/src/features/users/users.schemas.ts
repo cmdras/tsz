@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { UserSort } from '#/api/users';
+import type { UserSort } from './users.server';
 
 export const userRoles = ['Admin', 'ClientManager', 'User'] as const;
 export type UserRole = (typeof userRoles)[number];

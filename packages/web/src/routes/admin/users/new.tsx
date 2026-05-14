@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { UserForm } from './-components/user-form';
-import { createUserFn } from './-server';
+import { UserForm } from './-components/form';
+import { createUserFn } from '#/features/users/users.functions';
 
 export const Route = createFileRoute('/admin/users/new')({
   component: NewUser,

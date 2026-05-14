@@ -1,5 +1,5 @@
-import { type components } from '../schema';
-import { client } from '../client';
+import { type components } from '#/api/schema';
+import { client } from '#/api/client';
 
 export type User = components['schemas']['User'];
 export type UserRequest = components['schemas']['UserRequest'];

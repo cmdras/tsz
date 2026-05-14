@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
-import { customerSchema, type CustomerInput } from '../-schemas';
+import { customerSchema, type CustomerInput } from '#/features/customers/customers.schemas';
 import { Button } from '#/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
 import { TextField } from '#/components/text-field';
