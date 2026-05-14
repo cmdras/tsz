@@ -2,6 +2,7 @@
 
 ## 2026-05-14
 
+- chore(agents): add CRUD endpoint and service skills
 - refactor(web): consolidate admin entity logic in features directory
 - refactor(admin): consolidate sort params into slug-based URL param
 
