@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { fetchUsers, archiveUserFn } from './-server';
-import { searchSchema, roleLabels, type SortColumn } from './-schemas';
+import { searchSchema, roleLabels } from './-schemas';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';
@@ -27,7 +27,6 @@ export const Route = createFileRoute('/admin/users/')({
   loaderDeps: ({ search }) => ({
     search: search.search,
     sort: search.sort,
-    sortDirection: search.sortDirection,
     page: search.page,
   }),
   loader: ({ deps }) => fetchUsers({ data: deps }),
@@ -36,7 +35,7 @@ export const Route = createFileRoute('/admin/users/')({
 
 function UserList() {
   const { items, total } = Route.useLoaderData();
-  const { search, sort = 'Name', sortDirection = 'Asc', page = 1 } = Route.useSearch();
+  const { search, sort, page = 1 } = Route.useSearch();
   const router = useRouter();
   const navigate = Route.useNavigate();
 
@@ -56,12 +55,11 @@ function UserList() {
     }
   };
 
-  const toggleSort = (column: SortColumn) => {
+  const toggleSort = (column: string) => {
     navigate({
       search: (previousSearch) => ({
         ...previousSearch,
-        sort: column,
-        sortDirection: previousSearch.sort === column && previousSearch.sortDirection === 'Asc' ? 'Desc' : 'Asc',
+        sort: previousSearch.sort === column ? `${column}-` : column,
         page: undefined,
       }),
     });
@@ -92,27 +90,9 @@ function UserList() {
       <Table>
         <TableHeader>
           <TableRow>
-            <SortableHeader
-              column="Name"
-              label="Name"
-              active={sort}
-              sortDirection={sortDirection}
-              onToggle={toggleSort}
-            />
-            <SortableHeader
-              column="Email"
-              label="Email"
-              active={sort}
-              sortDirection={sortDirection}
-              onToggle={toggleSort}
-            />
-            <SortableHeader
-              column="Role"
-              label="Role"
-              active={sort}
-              sortDirection={sortDirection}
-              onToggle={toggleSort}
-            />
+            <SortableHeader column="name" label="Name" active={sort} onToggle={toggleSort} />
+            <SortableHeader column="email" label="Email" active={sort} onToggle={toggleSort} />
+            <SortableHeader column="role" label="Role" active={sort} onToggle={toggleSort} />
             <TableHead />
           </TableRow>
         </TableHeader>

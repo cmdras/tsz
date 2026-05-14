@@ -1,25 +1,17 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { TableHead } from '#/components/ui/table';
 
-export type SortDirection = 'Asc' | 'Desc';
-
-interface SortableHeaderProps<T extends string> {
-  column: T;
+interface SortableHeaderProps {
+  column: string;
   label: string;
-  active: T;
-  sortDirection: SortDirection;
-  onToggle: (column: T) => void;
+  active: string | undefined;
+  onToggle: (column: string) => void;
 }
 
-export function SortableHeader<T extends string>({
-  column,
-  label,
-  active,
-  sortDirection,
-  onToggle,
-}: SortableHeaderProps<T>) {
-  const isActive = active === column;
-  const Icon = isActive ? (sortDirection === 'Asc' ? ArrowUp : ArrowDown) : ArrowUpDown;
+export function SortableHeader({ column, label, active, onToggle }: SortableHeaderProps) {
+  const isAsc = active === column;
+  const isDesc = active === `${column}-`;
+  const Icon = isAsc ? ArrowUp : isDesc ? ArrowDown : ArrowUpDown;
   return (
     <TableHead>
       <button

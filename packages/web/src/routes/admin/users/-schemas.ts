@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { UserSort } from '#/api/users';
 
 export const userRoles = ['Admin', 'ClientManager', 'User'] as const;
 export type UserRole = (typeof userRoles)[number];
@@ -17,13 +18,20 @@ export const userSchema = z.object({
 
 export type UserInput = z.infer<typeof userSchema>;
 
-export const sortColumns = ['Name', 'Email', 'Role'] as const;
-export type SortColumn = (typeof sortColumns)[number];
+export const sortSlugs = {
+  name: 'Name',
+  email: 'Email',
+  role: 'Role',
+} as const satisfies Record<string, UserSort>;
+
+export type SortSlug = keyof typeof sortSlugs;
+
+const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
+const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
 export const searchSchema = z.object({
   search: z.string().optional(),
-  sort: z.enum(sortColumns).optional(),
-  sortDirection: z.enum(['Asc', 'Desc']).optional(),
+  sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
 });
 

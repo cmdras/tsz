@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-14
+
+- refactor(admin): consolidate sort params into slug-based URL param
+
 ## 2026-05-13
 
 - feat(users): implement basic CRUD with pagination, sorting, and search

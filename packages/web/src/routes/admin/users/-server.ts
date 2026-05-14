@@ -2,12 +2,20 @@ import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { getUsers, getUserById, createUser, updateUser, archiveUser } from '#/api/users';
 import { ApiRequestError } from '#/api/client';
-import { userSchema, searchSchema } from './-schemas';
+import { userSchema, searchSchema, sortSlugs, type SortSlug } from './-schemas';
 
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
   .handler(async ({ data }) => {
-    return await getUsers(data);
+    const { sort, ...rest } = data;
+    if (!sort) return await getUsers(rest);
+    const isDesc = sort.endsWith('-');
+    const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
+    return await getUsers({
+      ...rest,
+      sort: sortSlugs[slug],
+      sortDirection: isDesc ? 'Desc' : 'Asc',
+    });
   });
 
 export const fetchUserById = createServerFn({ method: 'GET' })

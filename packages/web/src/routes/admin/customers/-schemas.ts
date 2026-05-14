@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { CustomerSort } from '#/api/customers';
 
 export const customerSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
@@ -12,13 +13,21 @@ export const customerSchema = z.object({
 
 export type CustomerInput = z.infer<typeof customerSchema>;
 
-export const sortColumns = ['Number', 'Name', 'ContactName', 'City'] as const;
-export type SortColumn = (typeof sortColumns)[number];
+export const sortSlugs = {
+  number: 'Number',
+  name: 'Name',
+  contact: 'ContactName',
+  city: 'City',
+} as const satisfies Record<string, CustomerSort>;
+
+export type SortSlug = keyof typeof sortSlugs;
+
+const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
+const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
 export const searchSchema = z.object({
   search: z.string().optional(),
-  sort: z.enum(sortColumns).optional(),
-  sortDirection: z.enum(['Asc', 'Desc']).optional(),
+  sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
 });
 

@@ -2,12 +2,20 @@ import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { getCustomers, getCustomerById, createCustomer, updateCustomer, archiveCustomer } from '#/api/customers';
 import { ApiRequestError } from '#/api/client';
-import { customerSchema, searchSchema } from './-schemas';
+import { customerSchema, searchSchema, sortSlugs, type SortSlug } from './-schemas';
 
 export const fetchCustomers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
   .handler(async ({ data }) => {
-    return await getCustomers(data);
+    const { sort, ...rest } = data;
+    if (!sort) return await getCustomers(rest);
+    const isDesc = sort.endsWith('-');
+    const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
+    return await getCustomers({
+      ...rest,
+      sort: sortSlugs[slug],
+      sortDirection: isDesc ? 'Desc' : 'Asc',
+    });
   });
 
 export const fetchCustomerById = createServerFn({ method: 'GET' })
