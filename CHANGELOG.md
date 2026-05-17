@@ -3,6 +3,7 @@
 ## 2026-05-17
 
 - feat(contracts): implement S3 contracts and tasks with shared counters
+- chore(skills): sync git-commit skill from awesome-copilot
 
 ## 2026-05-14
 
