@@ -449,6 +449,221 @@ export interface paths {
     };
     trace?: never;
   };
+  '/api/contracts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          search?: string;
+          sort?: components['schemas']['ContractSort'];
+          sortDirection?: components['schemas']['SortDirection'];
+          page?: number;
+          pageSize?: number;
+          archived?: boolean;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['PagedContracts'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['ContractRequest'];
+        };
+      };
+      responses: {
+        /** @description Created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Contract'];
+          };
+        };
+        /** @description Unprocessable Entity */
+        422: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/problem+json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/contracts/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['GetContractById'];
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['ContractRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Contract'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Unprocessable Entity */
+        422: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/problem+json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/contracts/{id}/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description No Content */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    trace?: never;
+  };
+  '/api/contracts/{id}/unarchive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description No Content */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -456,6 +671,58 @@ export interface components {
     AnonymousTypeOfstringAndstring: {
       name: null | string;
       version: null | string;
+    };
+    Contract: {
+      /** Format: uuid */
+      id: string;
+      /** Format: int32 */
+      number: number;
+      /** Format: uuid */
+      customerId: string;
+      customer: components['schemas']['Customer'];
+      /** Format: uuid */
+      consultantId: string;
+      consultant: components['schemas']['User'];
+      subject: string;
+      /** Format: date */
+      startDate: string;
+      /** Format: date */
+      endDate?: null | string;
+      isArchived: boolean;
+      tasks: components['schemas']['ContractTask'][];
+    };
+    ContractRequest: {
+      /** Format: uuid */
+      customerId: string;
+      /** Format: uuid */
+      consultantId: string;
+      subject: string;
+      /** Format: date */
+      startDate: string;
+      /** Format: date */
+      endDate?: null | string;
+      tasks: components['schemas']['ContractTaskRequest'][];
+    };
+    /** @enum {unknown} */
+    ContractSort: 'Number' | 'Customer' | 'Subject' | 'Consultant' | 'StartDate' | 'EndDate' | null;
+    ContractTask: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      contractId: string;
+      name: string;
+      /** Format: double */
+      dayRate: number;
+      /** Format: int32 */
+      order: number;
+      isArchived: boolean;
+    };
+    ContractTaskRequest: {
+      /** Format: uuid */
+      id?: null | string;
+      name: string;
+      /** Format: double */
+      dayRate: number;
     };
     Customer: {
       /** Format: uuid */
@@ -482,6 +749,11 @@ export interface components {
     };
     /** @enum {unknown} */
     CustomerSort: 'Number' | 'Name' | 'ContactName' | 'City' | null;
+    PagedContracts: {
+      items: components['schemas']['Contract'][];
+      /** Format: int32 */
+      total: number;
+    };
     PagedCustomers: {
       items: components['schemas']['Customer'][];
       /** Format: int32 */
@@ -575,6 +847,35 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['User'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GetContractById: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Contract'];
         };
       };
       /** @description Not Found */

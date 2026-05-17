@@ -7,8 +7,8 @@ Scope target: **Prio 1 only.** Prio 2 and Out-of-Scope items from the spec stay 
 
 - **Auth:** deferred. S0–S5 ship anonymous (no current user, no `[Authorize]`, `/admin/*` ungated). **S6** wires real OAuth via Azure Entra ID — ASP.NET OIDC, `/api/auth/me`, `useCurrentUser` hook, login/logout UI, `/admin/*` UI guard, and `[Authorize(Roles="Admin")]` retroactively applied to S1–S5 admin route groups. No stub-auth boundary is ever built — OAuth is wired once, at the slice that first needs identity (Time Entry, S7). Role-assignment strategy (Entra app roles vs Users-table email lookup) decided in S6's plan.
 - **DB:** SQLite via EF Core. **Single `AppDbContext`** in `packages/api/Common/Database/`; every module registers its `IEntityTypeConfiguration<T>` into it. New DB file `tsz.db`. The legacy `animals.db` + `AnimalDbContext` stays separate until S12 deletes it.
-- **IDs:** GUID primary keys. Customers additionally get a 6-digit business `Number` (sequential, starts at 100000, generated via shared `Common/Counters/` service — `ICounterService.NextAsync("customer")`). Contracts' identifier strategy is TBD in the S3 plan (the original `K-0001` convention is dropped).
-- **Deletes:** soft-delete (`is_archived` flag). API exposes PATCH `/{id}/archive` + PATCH `/{id}/unarchive`; no hard DELETE on admin entities. Lists show active by default + a "Show archived" toggle. Pickers (S3+) hide archived rows. No cascade.
+- **IDs:** GUID primary keys. Customers and Contracts each get a 6-digit business `Number` (sequential, starts at 100000, generated via shared `Common/Counters/` service — `ICounterService.NextAsync("customer")` / `NextAsync("contract")`). The original `K-0001` convention is dropped.
+- **Deletes:** soft-delete (`is_archived` flag). API exposes PATCH `/{id}/archive` + PATCH `/{id}/unarchive`; no hard DELETE on admin entities. Lists show active by default + a "Show archived" toggle. Pickers (S3+) hide archived rows. No cascade — archiving a referenced Customer/User leaves existing Contracts (and their FK) untouched.
 - **Routes:** admin pages nested under `/admin/*`. Edit UX = dedicated route per entity (`/admin/<entity>/$id` and `/admin/<entity>/new`). End-user pages stay at top level.
 - **Role gating:** `/admin/*` is Admin-only — UI redirect + server-side `[Authorize(Roles="Admin")]` both land in S6. S1–S5 admin endpoints are publicly callable in dev until S6 retroactively applies the attribute.
 - **UI language:** English by default; occasional Dutch terms (e.g. month names, "ancientiteit") to be confirmed with the PO.
@@ -56,7 +56,7 @@ Time Entry sits at the top. It needs a current user (auth), tasks (via Contracts
 
 ### S3 — Contracts + Tasks
 
-**Includes:** Contract entity linked to a Customer and a User (consultant); subject, start/end dates; **one Contract has many Tasks (1:N)**, each task with name + day rate. The Task (not the Contract) is what gets picked as a row in Time Entry later. Customer + Consultant pickers in the form pull from S1/S2.
+**Includes:** Contract entity with `Number` (6-digit, via Counters service with key `contract`), `CustomerId` (FK), `ConsultantId` (FK to User), subject, start/end dates, `IsArchived`. **One Contract has many Tasks (1:N)** — each task with name + day rate. The Task (not the Contract) is what gets picked as a row in Time Entry later. Tasks edited as a multi-row sub-form on the Contract edit page (first instance of the sub-form pattern S5 reuses for leave config). Customer + Consultant pickers = shadcn `Select`, archived rows hidden. No cascade on referenced-entity archive.
 
 **Why now:** last admin piece blocking Time Entry's "pick a task" UX. Reuses both prior slices.
 
@@ -131,7 +131,6 @@ No stage auto-chains into the next — the user inspects each artifact and decid
 
 ## Open items to resolve in-slice
 
-- **Contract-number generation strategy (S3):** decide in S3's plan. Customers use GUID + Counters service; contracts may follow the same shape or use something different per PO direction.
 - **OAuth role-assignment strategy (S6):** Entra app roles vs Users-table email lookup. Decide in S6's plan.
 - **OAuth dev-flow (S6):** real Entra login against the dev tenant vs localhost-only shim. Decide in S6's plan.
 - **Time-entry storage format (15-min integer minutes vs float hours vs other):** decide in S7's plan.
@@ -139,3 +138,4 @@ No stage auto-chains into the next — the user inspects each artifact and decid
 ## Resolved in earlier slices
 
 - **S1:** Edit UX = dedicated `/admin/<entity>/$id` route. `addressCountry` = shadcn Select (Belgium default + "Other" → free text). Customer-number = GUID PK + 6-digit `Number` via shared `Common/Counters/` service (starts at 100000, seeded rows consume numbers).
+- **S3:** Contract identifier = same Counters service as Customer, key `contract` (6-digit, starts at 100000). Customer + Consultant pickers = shadcn `Select`, archived rows hidden. No cascade on referenced-entity archive.

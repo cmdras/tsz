@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-17
+
+- feat(contracts): implement S3 contracts and tasks with shared counters
+
 ## 2026-05-14
 
 - chore(agents): add CRUD endpoint and service skills

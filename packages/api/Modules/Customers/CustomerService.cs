@@ -1,4 +1,5 @@
 using Api.Common;
+using Api.Common.Counters;
 using Api.Common.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace Api.Modules.Customers;
 public class CustomerService
 {
     private readonly AppDbContext _dbContext;
+    private readonly ICounterService _counterService;
 
-    public CustomerService(AppDbContext dbContext)
+    public CustomerService(AppDbContext dbContext, ICounterService counterService)
     {
         _dbContext = dbContext;
+        _counterService = counterService;
     }
 
     public async Task<PagedCustomers> GetAllAsync(
@@ -50,10 +53,7 @@ public class CustomerService
 
     public async Task<Customer> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
     {
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync(
-            System.Data.IsolationLevel.Serializable, cancellationToken);
-
-        var nextNumber = (await _dbContext.Customers.MaxAsync(customer => (int?)customer.Number, cancellationToken) ?? 99999) + 1;
+        var nextNumber = await _counterService.NextAsync(CounterKeys.Customer, cancellationToken);
 
         var customer = new Customer
         {
@@ -70,7 +70,6 @@ public class CustomerService
 
         await _dbContext.Customers.AddAsync(customer, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
         return customer;
     }
 

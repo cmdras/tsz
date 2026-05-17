@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Customers;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,11 @@ public class CustomerEndpointsTests : IClassFixture<WebApplicationFactory<Progra
             });
         });
         _client = _testFactory.CreateClient();
+
+        using var scope = _testFactory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Counters.Add(new Counter { Key = CounterKeys.Customer, Value = 99999 });
+        dbContext.SaveChanges();
     }
 
     private async Task<Customer> SeedCustomerViaApiAsync(

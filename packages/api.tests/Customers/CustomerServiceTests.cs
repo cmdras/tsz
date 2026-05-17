@@ -1,4 +1,5 @@
 using Api.Common;
+using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Customers;
 using Microsoft.EntityFrameworkCore;
@@ -8,14 +9,17 @@ namespace Api.Tests.Customers;
 
 public class CustomerServiceTests
 {
-    private static CustomerService CreateService(out AppDbContext context)
+    private static CustomerService CreateService(out AppDbContext context, int initialCounterValue = 99999)
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        return new CustomerService(context);
+        context.Counters.Add(new Counter { Key = CounterKeys.Customer, Value = initialCounterValue });
+        context.SaveChanges();
+        var counterService = new CounterService(context);
+        return new CustomerService(context, counterService);
     }
 
     private static async Task<Customer> AddCustomerAsync(
@@ -190,7 +194,7 @@ public class CustomerServiceTests
     [Fact]
     public async Task Create_AssignsSequentialNumbers()
     {
-        var service = CreateService(out var context);
+        var service = CreateService(out var context, initialCounterValue: 100042);
         await AddCustomerAsync(context, "Existing", number: 100042);
 
         var customer = await service.CreateAsync(BuildRequest("New", "New", "new@new.test"));

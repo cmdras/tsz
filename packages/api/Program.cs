@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Api.Common.Counters;
 using Api.Common.Database;
+using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +41,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("AppDb")
            ?? "Data Source=tsz.db");
 });
+builder.Services.AddScoped<ICounterService, CounterService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ContractService>();
 
 var app = builder.Build();
 
@@ -51,6 +55,8 @@ if (!app.Environment.IsEnvironment("Testing"))
     await appDb.Database.MigrateAsync();
     await CustomerSeeder.SeedAsync(appDb);
     await UserSeeder.SeedAsync(appDb);
+    await ContractSeeder.SeedAsync(appDb);
+    await CounterSeeder.SeedAsync(appDb);
 }
 
 // app.UseHttpsRedirection();
@@ -68,5 +74,6 @@ app.MapGet("/", () => new
 
 CustomerEndpoints.Map(app);
 UserEndpoints.Map(app);
+ContractEndpoints.Map(app);
 
 app.Run();
