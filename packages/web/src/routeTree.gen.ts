@@ -14,12 +14,14 @@ import { Route as TimesheetsIndexRouteImport } from './routes/timesheets/index'
 import { Route as TimeEntryIndexRouteImport } from './routes/time-entry/index'
 import { Route as LeaveOverviewIndexRouteImport } from './routes/leave-overview/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AdminLeaveTypesRouteImport } from './routes/admin/leave-types'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
+import { Route as AdminLeaveTypesIndexRouteImport } from './routes/admin/leave-types/index'
 import { Route as AdminCustomersIndexRouteImport } from './routes/admin/customers/index'
 import { Route as AdminContractsIndexRouteImport } from './routes/admin/contracts/index'
 import { Route as AdminUsersNewRouteImport } from './routes/admin/users/new'
 import { Route as AdminUsersIdRouteImport } from './routes/admin/users/$id'
+import { Route as AdminLeaveTypesNewRouteImport } from './routes/admin/leave-types/new'
+import { Route as AdminLeaveTypesIdRouteImport } from './routes/admin/leave-types/$id'
 import { Route as AdminCustomersNewRouteImport } from './routes/admin/customers/new'
 import { Route as AdminCustomersIdRouteImport } from './routes/admin/customers/$id'
 import { Route as AdminContractsNewRouteImport } from './routes/admin/contracts/new'
@@ -50,14 +52,14 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLeaveTypesRoute = AdminLeaveTypesRouteImport.update({
-  id: '/admin/leave-types',
-  path: '/admin/leave-types',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
   id: '/admin/users/',
   path: '/admin/users/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLeaveTypesIndexRoute = AdminLeaveTypesIndexRouteImport.update({
+  id: '/admin/leave-types/',
+  path: '/admin/leave-types/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCustomersIndexRoute = AdminCustomersIndexRouteImport.update({
@@ -78,6 +80,16 @@ const AdminUsersNewRoute = AdminUsersNewRouteImport.update({
 const AdminUsersIdRoute = AdminUsersIdRouteImport.update({
   id: '/admin/users/$id',
   path: '/admin/users/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLeaveTypesNewRoute = AdminLeaveTypesNewRouteImport.update({
+  id: '/admin/leave-types/new',
+  path: '/admin/leave-types/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLeaveTypesIdRoute = AdminLeaveTypesIdRouteImport.update({
+  id: '/admin/leave-types/$id',
+  path: '/admin/leave-types/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCustomersNewRoute = AdminCustomersNewRouteImport.update({
@@ -103,7 +115,6 @@ const AdminContractsIdRoute = AdminContractsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin/leave-types': typeof AdminLeaveTypesRoute
   '/admin/': typeof AdminIndexRoute
   '/leave-overview/': typeof LeaveOverviewIndexRoute
   '/time-entry/': typeof TimeEntryIndexRoute
@@ -112,15 +123,17 @@ export interface FileRoutesByFullPath {
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
+  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/leave-types/': typeof AdminLeaveTypesIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin/leave-types': typeof AdminLeaveTypesRoute
   '/admin': typeof AdminIndexRoute
   '/leave-overview': typeof LeaveOverviewIndexRoute
   '/time-entry': typeof TimeEntryIndexRoute
@@ -129,16 +142,18 @@ export interface FileRoutesByTo {
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
+  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/contracts': typeof AdminContractsIndexRoute
   '/admin/customers': typeof AdminCustomersIndexRoute
+  '/admin/leave-types': typeof AdminLeaveTypesIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin/leave-types': typeof AdminLeaveTypesRoute
   '/admin/': typeof AdminIndexRoute
   '/leave-overview/': typeof LeaveOverviewIndexRoute
   '/time-entry/': typeof TimeEntryIndexRoute
@@ -147,17 +162,19 @@ export interface FileRoutesById {
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/new': typeof AdminCustomersNewRoute
+  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
+  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/leave-types/': typeof AdminLeaveTypesIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin/leave-types'
     | '/admin/'
     | '/leave-overview/'
     | '/time-entry/'
@@ -166,15 +183,17 @@ export interface FileRouteTypes {
     | '/admin/contracts/new'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/leave-types/$id'
+    | '/admin/leave-types/new'
     | '/admin/users/$id'
     | '/admin/users/new'
     | '/admin/contracts/'
     | '/admin/customers/'
+    | '/admin/leave-types/'
     | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin/leave-types'
     | '/admin'
     | '/leave-overview'
     | '/time-entry'
@@ -183,15 +202,17 @@ export interface FileRouteTypes {
     | '/admin/contracts/new'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/leave-types/$id'
+    | '/admin/leave-types/new'
     | '/admin/users/$id'
     | '/admin/users/new'
     | '/admin/contracts'
     | '/admin/customers'
+    | '/admin/leave-types'
     | '/admin/users'
   id:
     | '__root__'
     | '/'
-    | '/admin/leave-types'
     | '/admin/'
     | '/leave-overview/'
     | '/time-entry/'
@@ -200,16 +221,18 @@ export interface FileRouteTypes {
     | '/admin/contracts/new'
     | '/admin/customers/$id'
     | '/admin/customers/new'
+    | '/admin/leave-types/$id'
+    | '/admin/leave-types/new'
     | '/admin/users/$id'
     | '/admin/users/new'
     | '/admin/contracts/'
     | '/admin/customers/'
+    | '/admin/leave-types/'
     | '/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminLeaveTypesRoute: typeof AdminLeaveTypesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   LeaveOverviewIndexRoute: typeof LeaveOverviewIndexRoute
   TimeEntryIndexRoute: typeof TimeEntryIndexRoute
@@ -218,10 +241,13 @@ export interface RootRouteChildren {
   AdminContractsNewRoute: typeof AdminContractsNewRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminCustomersNewRoute: typeof AdminCustomersNewRoute
+  AdminLeaveTypesIdRoute: typeof AdminLeaveTypesIdRoute
+  AdminLeaveTypesNewRoute: typeof AdminLeaveTypesNewRoute
   AdminUsersIdRoute: typeof AdminUsersIdRoute
   AdminUsersNewRoute: typeof AdminUsersNewRoute
   AdminContractsIndexRoute: typeof AdminContractsIndexRoute
   AdminCustomersIndexRoute: typeof AdminCustomersIndexRoute
+  AdminLeaveTypesIndexRoute: typeof AdminLeaveTypesIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
@@ -262,18 +288,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/leave-types': {
-      id: '/admin/leave-types'
-      path: '/admin/leave-types'
-      fullPath: '/admin/leave-types'
-      preLoaderRoute: typeof AdminLeaveTypesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/users/': {
       id: '/admin/users/'
       path: '/admin/users'
       fullPath: '/admin/users/'
       preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/leave-types/': {
+      id: '/admin/leave-types/'
+      path: '/admin/leave-types'
+      fullPath: '/admin/leave-types/'
+      preLoaderRoute: typeof AdminLeaveTypesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/customers/': {
@@ -302,6 +328,20 @@ declare module '@tanstack/react-router' {
       path: '/admin/users/$id'
       fullPath: '/admin/users/$id'
       preLoaderRoute: typeof AdminUsersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/leave-types/new': {
+      id: '/admin/leave-types/new'
+      path: '/admin/leave-types/new'
+      fullPath: '/admin/leave-types/new'
+      preLoaderRoute: typeof AdminLeaveTypesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/leave-types/$id': {
+      id: '/admin/leave-types/$id'
+      path: '/admin/leave-types/$id'
+      fullPath: '/admin/leave-types/$id'
+      preLoaderRoute: typeof AdminLeaveTypesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/customers/new': {
@@ -337,7 +377,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminLeaveTypesRoute: AdminLeaveTypesRoute,
   AdminIndexRoute: AdminIndexRoute,
   LeaveOverviewIndexRoute: LeaveOverviewIndexRoute,
   TimeEntryIndexRoute: TimeEntryIndexRoute,
@@ -346,10 +385,13 @@ const rootRouteChildren: RootRouteChildren = {
   AdminContractsNewRoute: AdminContractsNewRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminCustomersNewRoute: AdminCustomersNewRoute,
+  AdminLeaveTypesIdRoute: AdminLeaveTypesIdRoute,
+  AdminLeaveTypesNewRoute: AdminLeaveTypesNewRoute,
   AdminUsersIdRoute: AdminUsersIdRoute,
   AdminUsersNewRoute: AdminUsersNewRoute,
   AdminContractsIndexRoute: AdminContractsIndexRoute,
   AdminCustomersIndexRoute: AdminCustomersIndexRoute,
+  AdminLeaveTypesIndexRoute: AdminLeaveTypesIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 export const routeTree = rootRouteImport

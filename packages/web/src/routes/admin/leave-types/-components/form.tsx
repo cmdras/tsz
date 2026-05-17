@@ -1,0 +1,96 @@
+import { useForm } from '@tanstack/react-form';
+import { useRouter } from '@tanstack/react-router';
+import { toast } from 'sonner';
+import { leaveTypeSchema, type LeaveTypeInput } from '#/features/leave-types/leave-types.schemas';
+import { Button } from '#/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
+import { Input } from '#/components/ui/input';
+import { Label } from '#/components/ui/label';
+import { TextField } from '#/components/text-field';
+import { FieldError } from '#/components/field-error';
+
+interface LeaveTypeFormProps {
+  initial: Partial<LeaveTypeInput>;
+  onSubmit: (values: LeaveTypeInput) => Promise<unknown>;
+  title: string;
+}
+
+export function LeaveTypeForm({ initial, onSubmit, title }: LeaveTypeFormProps) {
+  const router = useRouter();
+
+  const form = useForm({
+    defaultValues: {
+      name: initial.name ?? '',
+      defaultDays: initial.defaultDays ?? 0,
+    } satisfies LeaveTypeInput,
+    validators: {
+      onChange: leaveTypeSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        await onSubmit(value);
+        toast.success('Leave type saved');
+        router.navigate({ to: '/admin/leave-types' });
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Failed to save leave type');
+      }
+    },
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form
+          onSubmit={(submitEvent) => {
+            submitEvent.preventDefault();
+            submitEvent.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="grid gap-4"
+        >
+          <form.Field name="name">{(field) => <TextField field={field} label="Name" autoFocus />}</form.Field>
+
+          <form.Field name="defaultDays">
+            {(field) => (
+              <div className="grid gap-2">
+                <Label htmlFor={field.name}>Default Days</Label>
+                <Input
+                  id={field.name}
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="365"
+                  value={String(field.state.value)}
+                  onChange={(changeEvent) => field.handleChange(parseFloat(changeEvent.target.value) || 0)}
+                  onBlur={field.handleBlur}
+                />
+                <FieldError field={field} />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting] as const}>
+            {([canSubmit, isSubmitting]) => (
+              <div className="flex gap-2">
+                <Button type="submit" disabled={!canSubmit}>
+                  {isSubmitting ? 'Saving…' : 'Save'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.navigate({ to: '/admin/leave-types' })}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </form.Subscribe>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

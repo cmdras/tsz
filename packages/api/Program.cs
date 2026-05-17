@@ -4,6 +4,7 @@ using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
+using Api.Modules.LeaveTypes;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
@@ -45,6 +46,7 @@ builder.Services.AddScoped<ICounterService, CounterService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ContractService>();
+builder.Services.AddScoped<LeaveTypeService>();
 
 var app = builder.Build();
 
@@ -56,6 +58,7 @@ if (!app.Environment.IsEnvironment("Testing"))
     await CustomerSeeder.SeedAsync(appDb);
     await UserSeeder.SeedAsync(appDb);
     await ContractSeeder.SeedAsync(appDb);
+    await LeaveTypeSeeder.SeedAsync(appDb);
     await CounterSeeder.SeedAsync(appDb);
 }
 
@@ -75,5 +78,6 @@ app.MapGet("/", () => new
 CustomerEndpoints.Map(app);
 UserEndpoints.Map(app);
 ContractEndpoints.Map(app);
+LeaveTypeEndpoints.Map(app);
 
 app.Run();
