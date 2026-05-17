@@ -2,6 +2,7 @@
 
 ## 2026-05-17
 
+- chore(skills): add piv-plan, piv-implement, piv-validate to project level
 - feat(contracts): implement S3 contracts and tasks with shared counters
 - chore(skills): sync git-commit skill from awesome-copilot
 
