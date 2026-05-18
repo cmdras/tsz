@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-18
+
+- feat(users): implement S5 user leave allowance configuration
+
 ## 2026-05-17
 
 - chore(skills): add piv-plan, piv-implement, piv-validate to project level

@@ -340,6 +340,15 @@ export interface paths {
             'application/json': components['schemas']['User'];
           };
         };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/problem+json': components['schemas']['ProblemDetails'];
+          };
+        };
         /** @description Not Found */
         404: {
           headers: {
@@ -883,6 +892,8 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** @enum {unknown} */
+    AllowanceMode: 'Unlimited' | 'Limited';
     AnonymousTypeOfstringAndstring: {
       name: null | string;
       version: null | string;
@@ -970,12 +981,14 @@ export interface components {
       name: string;
       /** Format: double */
       defaultDays: number;
+      defaultMode: components['schemas']['AllowanceMode'];
       isArchived: boolean;
     };
     LeaveTypeRequest: {
       name: string;
       /** Format: double */
       defaultDays: number;
+      defaultMode: components['schemas']['AllowanceMode'];
     };
     /** @enum {unknown} */
     LeaveTypeSort: 'Name' | 'DefaultDays' | null;
@@ -1017,10 +1030,45 @@ export interface components {
       role: components['schemas']['UserRole'];
       isArchived: boolean;
     };
+    UserLeaveAllowanceRequest: {
+      /** Format: uuid */
+      id?: null | string;
+      /** Format: uuid */
+      leaveTypeId: string;
+      mode: components['schemas']['AllowanceMode'];
+      /** Format: double */
+      totalDays: number;
+    };
+    UserLeaveAllowanceResponse: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      leaveTypeId: string;
+      name: string;
+      mode: components['schemas']['AllowanceMode'];
+      /** Format: int32 */
+      year: number;
+      /** Format: double */
+      totalDays: number;
+      /** Format: double */
+      taken: number;
+      /** Format: double */
+      balance: null | number;
+    };
     UserRequest: {
       name: string;
       email: string;
       role: components['schemas']['UserRole'];
+      leaves: components['schemas']['UserLeaveAllowanceRequest'][];
+    };
+    UserResponse: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      email: string;
+      role: components['schemas']['UserRole'];
+      isArchived: boolean;
+      leaves: components['schemas']['UserLeaveAllowanceResponse'][];
     };
     /** @enum {unknown} */
     UserRole: 'Admin' | 'User' | 'ClientManager';
@@ -1081,7 +1129,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['User'];
+          'application/json': components['schemas']['UserResponse'];
         };
       };
       /** @description Not Found */

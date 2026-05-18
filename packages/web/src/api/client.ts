@@ -2,14 +2,23 @@ import createClient, { type Middleware } from 'openapi-fetch';
 import { type paths } from './schema';
 
 export class ApiRequestError extends Error {
-  constructor(public status: number) {
+  constructor(
+    public status: number,
+    public body?: string,
+  ) {
     super(`HTTP ${status}`);
   }
 }
 
 export const errorMiddleware: Middleware = {
-  onResponse({ response }) {
-    if (!response.ok) throw new ApiRequestError(response.status);
+  async onResponse({ response }) {
+    if (!response.ok) {
+      const body = await response
+        .clone()
+        .text()
+        .catch(() => undefined);
+      throw new ApiRequestError(response.status, body);
+    }
   },
 };
 

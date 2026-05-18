@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using Api.Modules.UserLeaveAllowances;
 
 namespace Api.Modules.LeaveTypes;
 
@@ -19,6 +21,9 @@ public class LeaveTypeRequest
     [Range(0, 365)]
     [MaxOneDecimalPlace]
     public decimal DefaultDays { get; set; }
+
+    [JsonRequired]
+    public AllowanceMode DefaultMode { get; set; }
 }
 
 [AttributeUsage(AttributeTargets.Property)]

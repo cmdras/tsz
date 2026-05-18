@@ -1,6 +1,7 @@
 using Api.Common;
 using Api.Common.Database;
 using Api.Modules.LeaveTypes;
+using Api.Modules.UserLeaveAllowances;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -309,5 +310,69 @@ public class LeaveTypeServiceTests
         var result = await service.UnarchiveAsync(Guid.NewGuid());
 
         Assert.False(result);
+    }
+
+    [Fact]
+    public async Task Create_DefaultModeLimited_PersistsLimited()
+    {
+        var service = CreateService(out _);
+        var request = new LeaveTypeRequest
+        {
+            Name = "Holiday",
+            DefaultDays = 20m,
+            DefaultMode = AllowanceMode.Limited,
+        };
+
+        var leaveType = await service.CreateAsync(request);
+
+        Assert.Equal(AllowanceMode.Limited, leaveType.DefaultMode);
+    }
+
+    [Fact]
+    public async Task Update_DefaultMode_PersistsNewMode()
+    {
+        var service = CreateService(out var context);
+        var seeded = new LeaveType
+        {
+            Id = Guid.NewGuid(),
+            Name = "Holiday",
+            DefaultDays = 20m,
+            DefaultMode = AllowanceMode.Unlimited,
+        };
+        context.LeaveTypes.Add(seeded);
+        await context.SaveChangesAsync();
+        var request = new LeaveTypeRequest
+        {
+            Name = "Holiday",
+            DefaultDays = 20m,
+            DefaultMode = AllowanceMode.Limited,
+        };
+
+        var updated = await service.UpdateAsync(seeded.Id, request);
+
+        Assert.NotNull(updated);
+        Assert.Equal(AllowanceMode.Limited, updated.DefaultMode);
+    }
+
+    [Fact]
+    public async Task Seeder_SicknessIsUnlimited_OthersAreLimited()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+            .Options;
+        await using var context = new AppDbContext(options);
+
+        await LeaveTypeSeeder.SeedAsync(context);
+
+        var sickness = await context.LeaveTypes.SingleAsync(leaveType => leaveType.Name == "Sickness");
+        Assert.Equal(AllowanceMode.Unlimited, sickness.DefaultMode);
+
+        var otherNames = new[] { "Holiday", "ADV", "Ancienniteit", "Holiday replacement" };
+        foreach (var name in otherNames)
+        {
+            var leaveType = await context.LeaveTypes.SingleAsync(item => item.Name == name);
+            Assert.Equal(AllowanceMode.Limited, leaveType.DefaultMode);
+        }
     }
 }

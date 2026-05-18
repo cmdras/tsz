@@ -56,9 +56,9 @@ if (!app.Environment.IsEnvironment("Testing"))
     var appDb = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await appDb.Database.MigrateAsync();
     await CustomerSeeder.SeedAsync(appDb);
+    await LeaveTypeSeeder.SeedAsync(appDb);
     await UserSeeder.SeedAsync(appDb);
     await ContractSeeder.SeedAsync(appDb);
-    await LeaveTypeSeeder.SeedAsync(appDb);
     await CounterSeeder.SeedAsync(appDb);
 }
 

@@ -23,6 +23,10 @@ public class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
             .IsRequired()
             .HasColumnType("decimal(5,1)");
 
+        builder.Property(leaveType => leaveType.DefaultMode)
+            .IsRequired()
+            .HasConversion<string>();
+
         builder.Property(leaveType => leaveType.IsArchived)
             .IsRequired()
             .HasDefaultValue(false);

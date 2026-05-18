@@ -1,15 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { UserForm } from './-components/form';
-import { fetchUserById, updateUserFn } from '#/features/users/users.functions';
+import { fetchUserById, listLeaveTypesForPickerFn, updateUserFn } from '#/features/users/users.functions';
 import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
 
 export const Route = createFileRoute('/admin/users/$id')({
-  loader: ({ params }) => fetchUserById({ data: params.id }),
+  loader: async ({ params }) => {
+    const [user, leaveTypes] = await Promise.all([fetchUserById({ data: params.id }), listLeaveTypesForPickerFn()]);
+    return { user, leaveTypes };
+  },
   component: EditUser,
 });
 
 function EditUser() {
-  const user = Route.useLoaderData();
+  const { user, leaveTypes } = Route.useLoaderData();
   const { id } = Route.useParams();
 
   if (!user) {
@@ -28,7 +31,20 @@ function EditUser() {
         name: user.name,
         email: user.email,
         role: user.role,
+        leaves: user.leaves.map((leave) => ({
+          id: leave.id,
+          leaveTypeId: leave.leaveTypeId,
+          mode: leave.mode,
+          totalDays: leave.totalDays,
+        })),
       }}
+      leaveTypes={leaveTypes}
+      leaveSummaries={user.leaves.map((leave) => ({
+        leaveTypeId: leave.leaveTypeId,
+        name: leave.name,
+        taken: leave.taken,
+        balance: leave.balance,
+      }))}
       onSubmit={(values) => updateUserFn({ data: { id, data: values } })}
     />
   );

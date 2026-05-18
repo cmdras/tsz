@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Api.Modules.UserLeaveAllowances;
 
 namespace Api.Modules.Users;
 
@@ -17,6 +18,14 @@ public enum UserSort
 
 public record PagedUsers(IReadOnlyList<User> Items, int Total);
 
+public record UserResponse(
+    Guid Id,
+    string Name,
+    string Email,
+    UserRole Role,
+    bool IsArchived,
+    IReadOnlyList<UserLeaveAllowanceResponse> Leaves);
+
 public class UserRequest
 {
     [Required]
@@ -30,4 +39,7 @@ public class UserRequest
 
     [JsonRequired]
     public UserRole Role { get; set; }
+
+    [JsonRequired]
+    public List<UserLeaveAllowanceRequest> Leaves { get; set; } = [];
 }

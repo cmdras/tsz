@@ -63,6 +63,7 @@ public class LeaveTypeService(AppDbContext dbContext)
             Id = Guid.NewGuid(),
             Name = request.Name.Trim(),
             DefaultDays = request.DefaultDays,
+            DefaultMode = request.DefaultMode,
         };
 
         await _dbContext.LeaveTypes.AddAsync(leaveType, cancellationToken);
@@ -83,6 +84,7 @@ public class LeaveTypeService(AppDbContext dbContext)
 
         leaveType.Name = request.Name.Trim();
         leaveType.DefaultDays = request.DefaultDays;
+        leaveType.DefaultMode = request.DefaultMode;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return leaveType;

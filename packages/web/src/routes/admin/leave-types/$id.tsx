@@ -27,6 +27,7 @@ function EditLeaveType() {
       initial={{
         name: leaveType.name,
         defaultDays: leaveType.defaultDays,
+        defaultMode: leaveType.defaultMode,
       }}
       onSubmit={(values) => updateLeaveTypeFn({ data: { id, data: values } })}
     />

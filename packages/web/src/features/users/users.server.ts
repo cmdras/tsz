@@ -3,6 +3,9 @@ import { client } from '#/api/client';
 
 export type User = components['schemas']['User'];
 export type UserRequest = components['schemas']['UserRequest'];
+export type UserResponse = components['schemas']['UserResponse'];
+export type UserLeaveAllowanceResponse = components['schemas']['UserLeaveAllowanceResponse'];
+export type UserLeaveAllowanceRequest = components['schemas']['UserLeaveAllowanceRequest'];
 export type PagedUsers = components['schemas']['PagedUsers'];
 export type UserSort = NonNullable<components['schemas']['UserSort']>;
 export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
@@ -23,7 +26,7 @@ export const getUsers = async (params: ListUsersParams = {}): Promise<PagedUsers
   return response.data!;
 };
 
-export const getUserById = async (id: string): Promise<User> => {
+export const getUserById = async (id: string): Promise<UserResponse> => {
   const response = await client.GET('/api/users/{id}', { params: { path: { id } } });
   return response.data!;
 };

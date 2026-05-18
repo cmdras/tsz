@@ -1,13 +1,21 @@
 import { z } from 'zod';
 import type { LeaveTypeSort } from './leave-types.server';
 
+export const allowanceModes = ['Unlimited', 'Limited'] as const;
+export type AllowanceMode = (typeof allowanceModes)[number];
+
+export const allowanceModeSchema = z.enum(allowanceModes);
+
+export const daysWithOneDecimal = z
+  .number()
+  .min(0, 'Cannot be negative')
+  .max(365, 'Cannot exceed 365')
+  .refine((value) => /^\d+(\.\d)?$/.test(String(value)), 'Accepts at most one decimal place');
+
 export const leaveTypeSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
-  defaultDays: z
-    .number()
-    .min(0, 'DefaultDays cannot be negative')
-    .max(365, 'DefaultDays cannot exceed 365')
-    .refine((value) => /^\d+(\.\d)?$/.test(String(value)), 'DefaultDays accepts at most one decimal place'),
+  defaultDays: daysWithOneDecimal,
+  defaultMode: allowanceModeSchema,
 });
 
 export type LeaveTypeInput = z.infer<typeof leaveTypeSchema>;

@@ -1,6 +1,7 @@
 using Api.Common;
 using Api.Common.Extensions;
 using Api.Common.Filters;
+using Api.Modules.UserLeaveAllowances;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Modules.Users;
@@ -31,7 +32,7 @@ public static class UserEndpoints
                 cancellationToken));
         });
 
-        group.MapGet("/{id:guid}", async Task<Results<Ok<User>, NotFound>> (
+        group.MapGet("/{id:guid}", async Task<Results<Ok<UserResponse>, NotFound>> (
             Guid id,
             UserService service,
             CancellationToken cancellationToken) =>
@@ -77,8 +78,17 @@ public static class UserEndpoints
             {
                 return TypedResults.Problem("Email address is already in use.", statusCode: 409);
             }
+            catch (DuplicateUserLeaveAllowanceException exception)
+            {
+                return TypedResults.Problem(exception.Message, statusCode: 409);
+            }
+            catch (UnknownLeaveTypeException exception)
+            {
+                return TypedResults.Problem(exception.Message, statusCode: 400);
+            }
         })
             .AddEndpointFilter<ValidationFilter<UserRequest>>()
+            .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapPatch("/{id:guid}/archive", async Task<Results<NoContent, NotFound>> (
