@@ -1,10 +1,8 @@
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
 
 import appCss from '../styles.css?url';
-import { AppHeader } from '#/components/app-header';
-import { AppSidebar } from '#/components/app-sidebar';
+import { AppNavbar } from '#/components/app-navbar';
 import { ErrorBoundary } from '#/components/error-boundary';
-import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar';
 import { Toaster } from '#/components/ui/sonner';
 
 export const Route = createRootRoute({
@@ -46,15 +44,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function RootLayout() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <AppHeader />
-        <div className="p-6">
-          <Outlet />
-        </div>
-      </SidebarInset>
+    <div className="flex min-h-screen flex-col">
+      <AppNavbar />
+      <main className="flex-1 p-6">
+        <Outlet />
+      </main>
       <Toaster />
-    </SidebarProvider>
+    </div>
   );
 }

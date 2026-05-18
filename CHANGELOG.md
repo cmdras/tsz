@@ -2,6 +2,7 @@
 
 ## 2026-05-18
 
+- feat(shell): replace sidebar with Euricom top navbar
 - feat(users): implement S5 user leave allowance configuration
 - docs(s5): add VALIDATION.md for users leave config
 - fix(users): use step="any" on leave days input to allow decimals
