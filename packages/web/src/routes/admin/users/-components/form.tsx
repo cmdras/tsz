@@ -195,7 +195,7 @@ export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries 
                                       <Input
                                         id={field.name}
                                         type="number"
-                                        step="0.1"
+                                        step="any"
                                         min="0"
                                         max="365"
                                         disabled={leave.mode === 'Unlimited'}

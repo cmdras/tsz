@@ -4,6 +4,7 @@
 
 - feat(users): implement S5 user leave allowance configuration
 - docs(s5): add VALIDATION.md for users leave config
+- fix(users): use step="any" on leave days input to allow decimals
 
 ## 2026-05-17
 
