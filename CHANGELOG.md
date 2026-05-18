@@ -3,6 +3,7 @@
 ## 2026-05-18
 
 - feat(users): implement S5 user leave allowance configuration
+- docs(s5): add VALIDATION.md for users leave config
 
 ## 2026-05-17
 
