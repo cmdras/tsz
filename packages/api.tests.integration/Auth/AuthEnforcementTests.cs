@@ -1,51 +1,30 @@
-using System.Net;
-using Api.Tests.Integration.Common;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+using Api.Tests.Integration.Customers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.Auth;
 
-public class AuthEnforcementTests : IClassFixture<AuthEnforcedApiFactory>
+public class AuthMetadataTests : IClassFixture<CustomerApiFactory>
 {
-    private readonly HttpClient _client;
+    private readonly CustomerApiFactory _factory;
 
-    public AuthEnforcementTests(AuthEnforcedApiFactory factory)
+    public AuthMetadataTests(CustomerApiFactory factory)
     {
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false,
-        });
+        _factory = factory;
     }
 
-    [Theory]
-    [InlineData("/api/customers")]
-    [InlineData("/api/users")]
-    [InlineData("/api/contracts")]
-    [InlineData("/api/leave-types")]
-    public async Task Get_WithoutBearerToken_ReturnsUnauthorized(string path)
+    [Fact]
+    public void Every_api_endpoint_requires_authorization()
     {
-        var response = await _client.GetAsync(path);
+        var endpointDataSource = _factory.Services.GetRequiredService<EndpointDataSource>();
+        var unprotectedEndpoints = endpointDataSource.Endpoints
+            .OfType<RouteEndpoint>()
+            .Where(endpoint => endpoint.RoutePattern.RawText?.StartsWith("api/") == true)
+            .Where(endpoint => endpoint.Metadata.GetMetadata<IAuthorizeData>() is null)
+            .Select(endpoint => endpoint.RoutePattern.RawText)
+            .ToList();
 
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-    }
-}
-
-public class AuthEnforcedApiFactory : TestApiFactory
-{
-    public AuthEnforcedApiFactory() : base("AuthEnforcementTests") { }
-
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        base.ConfigureWebHost(builder);
-        builder.ConfigureAppConfiguration(config =>
-        {
-            config.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["Auth:TenantId"] = "test-tenant-id",
-                ["Auth:ClientId"] = "test-client-id",
-                ["Auth:Disabled"] = "false",
-            });
-        });
+        Assert.Empty(unprotectedEndpoints);
     }
 }
