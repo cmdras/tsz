@@ -10,11 +10,11 @@ namespace Api.Common.Database;
 public static class DatabaseModule
 {
     public const string ConnectionStringKey = "AppDb";
-    private const string FallbackConnectionString = "Data Source=tsz.db";
 
     public static IServiceCollection AddAppDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(ConnectionStringKey) ?? FallbackConnectionString;
+        var connectionString = configuration.GetConnectionString(ConnectionStringKey)
+            ?? throw new InvalidOperationException($"Connection string '{ConnectionStringKey}' is not configured.");
         services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
         return services;
     }

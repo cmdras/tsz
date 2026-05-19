@@ -5,6 +5,7 @@
 - feat(auth): implement S6 OAuth with Entra ID, fix v2 issuer and claim extraction
 - refactor(api): split Program.cs into per-module configuration extensions
 - test(auth): replace HTTP-based auth tests with endpoint metadata introspection
+- refactor(api): move AppDb connection string to appsettings.json
 
 ## 2026-05-18
 
