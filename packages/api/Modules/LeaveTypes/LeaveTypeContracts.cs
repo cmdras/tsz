@@ -10,7 +10,14 @@ public enum LeaveTypeSort
     DefaultDays,
 }
 
-public record PagedLeaveTypes(IReadOnlyList<LeaveType> Items, int Total);
+public record LeaveTypeResponse(
+    Guid Id,
+    string Name,
+    decimal DefaultDays,
+    AllowanceMode DefaultMode,
+    bool IsArchived);
+
+public record PagedLeaveTypes(IReadOnlyList<LeaveTypeResponse> Items, int Total);
 
 public class LeaveTypeRequest
 {

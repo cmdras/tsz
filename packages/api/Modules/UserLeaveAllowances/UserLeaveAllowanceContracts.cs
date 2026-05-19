@@ -1,20 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Api.Common.Exceptions;
 using Api.Modules.LeaveTypes;
 
 namespace Api.Modules.UserLeaveAllowances;
 
-public class DuplicateUserLeaveAllowanceException : Exception
-{
-    public DuplicateUserLeaveAllowanceException()
-        : base("A leave allowance for this user, leave type, and year already exists.") { }
-}
+public class DuplicateUserLeaveAllowanceException()
+    : DomainException("A leave allowance for this user, leave type, and year already exists.", 409);
 
-public class UnknownLeaveTypeException : Exception
-{
-    public UnknownLeaveTypeException(Guid leaveTypeId)
-        : base($"Leave type {leaveTypeId} does not exist.") { }
-}
+public class UnknownLeaveTypeException(Guid leaveTypeId)
+    : DomainException($"Leave type {leaveTypeId} does not exist.", 400);
 
 public record UserLeaveAllowanceResponse(
     Guid Id,

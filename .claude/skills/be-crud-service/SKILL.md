@@ -10,7 +10,7 @@ Paired with [[be-crud-endpoints]] — endpoints inject and call this service.
 
 - Constructor-inject `AppDbContext` only.
 - Every public method takes `CancellationToken cancellationToken = default` and forwards it to every EF call.
-- Return EF entities directly from `GetByIdAsync` / `CreateAsync` / `UpdateAsync` — endpoints serialize them.
+- Return `<Entity>Response` DTOs from all public methods — map via a private `static <Entity>Response ToResponse(<Entity> entity)` method defined at the bottom of the service class.
 - `GetAllAsync` returns `Paged<Entities>(Items, Total)` (record defined in `<Entity>Contracts.cs`).
 - `ArchiveAsync` / `UnarchiveAsync` return `bool` — `false` means "not found".
 
@@ -33,7 +33,7 @@ Order matters: **archived filter → search filter → sort → count → pagina
 
 ## Entity-specific invariants
 
-Place invariant checks at the top of `CreateAsync` / `UpdateAsync`. Throw a typed domain exception (e.g. `DuplicateEmailException`) and map it at the endpoint or via an exception filter.
+Place invariant checks at the top of `CreateAsync` / `UpdateAsync`. Throw a typed domain exception that extends `DomainException` (e.g. `DuplicateEmailException() : DomainException("...", 409)`). `GlobalExceptionHandler` catches it automatically — no try/catch in endpoints.
 
 - **Uniqueness**: `AnyAsync` before insert; on update exclude the current row (`other.Id != id`).
 - **Generated sequence numbers** (e.g. 6-digit `Number`): wrap Create in `BeginTransactionAsync(IsolationLevel.Serializable, ct)`, compute `MaxAsync(...) + 1`, commit at end. See `CustomerService.CreateAsync` for the working pattern.

@@ -72,11 +72,11 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         Tasks = [new ContractTaskRequest { Name = "Analysis", DayRate = 800m }],
     };
 
-    private async Task<Contract> SeedContractViaApiAsync(string subject = "Test Contract")
+    private async Task<ContractResponse> SeedContractViaApiAsync(string subject = "Test Contract")
     {
         var response = await _client.PostAsJsonAsync("/api/contracts", BuildRequest(subject));
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<Contract>(JsonOptions))!;
+        return (await response.Content.ReadFromJsonAsync<ContractResponse>(JsonOptions))!;
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         var response = await _client.GetAsync($"/api/contracts/{seeded.Id}");
 
         response.EnsureSuccessStatusCode();
-        var contract = await response.Content.ReadFromJsonAsync<Contract>(JsonOptions);
+        var contract = await response.Content.ReadFromJsonAsync<ContractResponse>(JsonOptions);
         Assert.NotNull(contract);
         Assert.Equal("Cloud Migration", contract.Subject);
     }
@@ -116,7 +116,7 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         var response = await _client.PostAsJsonAsync("/api/contracts", BuildRequest("New Contract"));
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var contract = await response.Content.ReadFromJsonAsync<Contract>(JsonOptions);
+        var contract = await response.Content.ReadFromJsonAsync<ContractResponse>(JsonOptions);
         Assert.NotNull(contract);
         Assert.Equal("New Contract", contract.Subject);
         Assert.True(contract.Number >= 100000);
@@ -164,7 +164,7 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         var response = await _client.PutAsJsonAsync($"/api/contracts/{seeded.Id}", updateRequest);
 
         response.EnsureSuccessStatusCode();
-        var contract = await response.Content.ReadFromJsonAsync<Contract>(JsonOptions);
+        var contract = await response.Content.ReadFromJsonAsync<ContractResponse>(JsonOptions);
         Assert.Equal("Updated", contract!.Subject);
     }
 

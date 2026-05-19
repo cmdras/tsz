@@ -61,49 +61,27 @@ public static class UserEndpoints
                 : TypedResults.NotFound();
         }).WithName("GetUserById");
 
-        group.MapPost("/", async Task<Results<CreatedAtRoute<User>, ProblemHttpResult>> (
+        group.MapPost("/", async Task<CreatedAtRoute<User>> (
             UserRequest request,
             UserService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var user = await service.CreateAsync(request, cancellationToken);
-                return TypedResults.CreatedAtRoute(user, "GetUserById", new { id = user.Id });
-            }
-            catch (DuplicateEmailException)
-            {
-                return TypedResults.Problem("Email address is already in use.", statusCode: 409);
-            }
+            var user = await service.CreateAsync(request, cancellationToken);
+            return TypedResults.CreatedAtRoute(user, "GetUserById", new { id = user.Id });
         })
             .AddEndpointFilter<ValidationFilter<UserRequest>>()
             .ProducesProblem(StatusCodes.Status409Conflict);
 
-        group.MapPut("/{id:guid}", async Task<Results<Ok<User>, NotFound, ProblemHttpResult>> (
+        group.MapPut("/{id:guid}", async Task<Results<Ok<User>, NotFound>> (
             Guid id,
             UserRequest request,
             UserService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var user = await service.UpdateAsync(id, request, cancellationToken);
-                return user is not null
-                    ? TypedResults.Ok(user)
-                    : TypedResults.NotFound();
-            }
-            catch (DuplicateEmailException)
-            {
-                return TypedResults.Problem("Email address is already in use.", statusCode: 409);
-            }
-            catch (DuplicateUserLeaveAllowanceException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: 409);
-            }
-            catch (UnknownLeaveTypeException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: 400);
-            }
+            var user = await service.UpdateAsync(id, request, cancellationToken);
+            return user is not null
+                ? TypedResults.Ok(user)
+                : TypedResults.NotFound();
         })
             .AddEndpointFilter<ValidationFilter<UserRequest>>()
             .ProducesProblem(StatusCodes.Status400BadRequest)

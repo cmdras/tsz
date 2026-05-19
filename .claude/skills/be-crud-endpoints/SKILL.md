@@ -12,7 +12,7 @@ Pairs with [[be-crud-service]] (DB work). Consumed by [[fe-data-access]] via the
 
 - `<Entity>.cs` — EF entity, PK `Guid Id`, soft-delete `bool IsArchived`
 - `<Entity>Configuration.cs` — `IEntityTypeConfiguration<>` for column constraints
-- `<Entity>Contracts.cs` — `<Entity>Sort` enum, `Paged<Entities>` record, `<Entity>Request` DTO with `[Required]`/`[StringLength]`/`[EmailAddress]` data annotations
+- `<Entity>Contracts.cs` — `<Entity>Sort` enum, `Paged<Entities>` record, `<Entity>Request` DTO with `[Required]`/`[StringLength]`/`[EmailAddress]` data annotations, `<Entity>Response` DTO (read shape returned by the API), and module-specific `DomainException` subclasses
 - `<Entity>Service.cs` — see [[be-crud-service]]
 - `<Entity>Endpoints.cs` — this skill
 - `<Entity>Seeder.cs` — dev/test seed data
@@ -23,10 +23,10 @@ Endpoints register via a static `Map(WebApplication app)` called from `Program.c
 
 | Verb  | Path                   | Returns                    |
 | ----- | ---------------------- | -------------------------- |
-| GET   | `/`                    | `Ok<Paged<Entity>>`        |
-| GET   | `/{id:guid}`           | `Ok<Entity>` \| `NotFound` |
-| POST  | `/`                    | `CreatedAtRoute<Entity>`   |
-| PUT   | `/{id:guid}`           | `Ok<Entity>` \| `NotFound` |
+| GET   | `/`                    | `Ok<Paged<EntityResponse>>`        |
+| GET   | `/{id:guid}`           | `Ok<EntityResponse>` \| `NotFound` |
+| POST  | `/`                    | `CreatedAtRoute<EntityResponse>`   |
+| PUT   | `/{id:guid}`           | `Ok<EntityResponse>` \| `NotFound` |
 | PATCH | `/{id:guid}/archive`   | `NoContent` \| `NotFound`  |
 | PATCH | `/{id:guid}/unarchive` | `NoContent` \| `NotFound`  |
 

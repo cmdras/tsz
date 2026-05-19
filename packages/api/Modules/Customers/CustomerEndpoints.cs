@@ -31,7 +31,7 @@ public static class CustomerEndpoints
                 cancellationToken));
         });
 
-        group.MapGet("/{id:guid}", async Task<Results<Ok<Customer>, NotFound>> (
+        group.MapGet("/{id:guid}", async Task<Results<Ok<CustomerResponse>, NotFound>> (
             Guid id,
             CustomerService service,
             CancellationToken cancellationToken) =>
@@ -42,7 +42,7 @@ public static class CustomerEndpoints
                 : TypedResults.NotFound();
         }).WithName("GetCustomerById");
 
-        group.MapPost("/", async Task<CreatedAtRoute<Customer>> (
+        group.MapPost("/", async Task<CreatedAtRoute<CustomerResponse>> (
             CustomerRequest request,
             CustomerService service,
             CancellationToken cancellationToken) =>
@@ -51,7 +51,7 @@ public static class CustomerEndpoints
             return TypedResults.CreatedAtRoute(customer, "GetCustomerById", new { id = customer.Id });
         }).AddEndpointFilter<ValidationFilter<CustomerRequest>>();
 
-        group.MapPut("/{id:guid}", async Task<Results<Ok<Customer>, NotFound>> (
+        group.MapPut("/{id:guid}", async Task<Results<Ok<CustomerResponse>, NotFound>> (
             Guid id,
             CustomerRequest request,
             CustomerService service,

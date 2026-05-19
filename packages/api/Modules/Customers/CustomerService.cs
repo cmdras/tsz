@@ -1,19 +1,14 @@
 using Api.Common;
-using Api.Common.Counters;
-using Api.Common.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.Customers;
 
 public class CustomerService
 {
-    private readonly AppDbContext _dbContext;
-    private readonly ICounterService _counterService;
+    private readonly ICustomerRepository _repository;
 
-    public CustomerService(AppDbContext dbContext, ICounterService counterService)
+    public CustomerService(ICustomerRepository repository)
     {
-        _dbContext = dbContext;
-        _counterService = counterService;
+        _repository = repository;
     }
 
     public async Task<PagedCustomers> GetAllAsync(
@@ -24,89 +19,35 @@ public class CustomerService
         int pageSize,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Customers.Where(customer => !customer.IsArchived);
-
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var term = search.Trim().ToLower();
-            query = query.Where(customer =>
-                customer.Name.ToLower().Contains(term) ||
-                customer.ContactName.ToLower().Contains(term));
-        }
-
-        var isDescending = sortDirection == SortDirection.Desc;
-        query = sort switch
-        {
-            CustomerSort.Name => isDescending ? query.OrderByDescending(customer => customer.Name) : query.OrderBy(customer => customer.Name),
-            CustomerSort.ContactName => isDescending ? query.OrderByDescending(customer => customer.ContactName) : query.OrderBy(customer => customer.ContactName),
-            CustomerSort.City => isDescending ? query.OrderByDescending(customer => customer.City) : query.OrderBy(customer => customer.City),
-            _ => isDescending ? query.OrderByDescending(customer => customer.Number) : query.OrderBy(customer => customer.Number),
-        };
-
-        var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return new PagedCustomers(items, total);
+        var (items, total) = await _repository.GetAllAsync(search, sort, sortDirection, page, pageSize, cancellationToken);
+        return new PagedCustomers(items.Select(CustomerResponse.FromEntity).ToList(), total);
     }
 
-    public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        _dbContext.Customers.FindAsync([id], cancellationToken).AsTask();
-
-    public async Task<Customer> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var nextNumber = await _counterService.NextAsync(CounterKeys.Customer, cancellationToken);
-
-        var customer = new Customer
-        {
-            Id = Guid.NewGuid(),
-            Number = nextNumber,
-            Name = request.Name,
-            Street = request.Street,
-            Zip = request.Zip,
-            City = request.City,
-            Country = request.Country,
-            ContactName = request.ContactName,
-            ContactEmail = request.ContactEmail,
-        };
-
-        await _dbContext.Customers.AddAsync(customer, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return customer;
+        var customer = await _repository.GetByIdAsync(id, cancellationToken);
+        return customer is null ? null : CustomerResponse.FromEntity(customer);
     }
 
-    public async Task<Customer?> UpdateAsync(Guid id, CustomerRequest request, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponse> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
     {
-        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
-        if (customer is null) return null;
+        var customer = await _repository.CreateAsync(request, cancellationToken);
+        return CustomerResponse.FromEntity(customer);
+    }
 
-        customer.Name = request.Name;
-        customer.Street = request.Street;
-        customer.Zip = request.Zip;
-        customer.City = request.City;
-        customer.Country = request.Country;
-        customer.ContactName = request.ContactName;
-        customer.ContactEmail = request.ContactEmail;
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return customer;
+    public async Task<CustomerResponse?> UpdateAsync(Guid id, CustomerRequest request, CancellationToken cancellationToken = default)
+    {
+        var customer = await _repository.UpdateAsync(id, request, cancellationToken);
+        return customer is null ? null : CustomerResponse.FromEntity(customer);
     }
 
     public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
-        if (customer is null) return false;
-
-        customer.IsArchived = true;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return await _repository.ArchiveAsync(id, cancellationToken);
     }
 
     public async Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
-        if (customer is null) return false;
-
-        customer.IsArchived = false;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return await _repository.UnarchiveAsync(id, cancellationToken);
     }
 }

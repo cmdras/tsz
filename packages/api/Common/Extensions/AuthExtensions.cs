@@ -1,48 +1,31 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
 
 namespace Api.Common.Extensions;
 
 public static class AuthExtensions
 {
-    public const string DisabledKey = "Auth:Disabled";
-
-    public static WebApplicationBuilder AddEntraJwtAuth(this WebApplicationBuilder builder)
+    public static IServiceCollection AddTszAuthentication(
+    this IServiceCollection services,
+    IConfiguration configuration,
+    IHostEnvironment environment)
     {
-        if (builder.Configuration.GetValue<bool>(DisabledKey)) return builder;
+        services.AddAuthentication()
+            .AddMicrosoftIdentityWebApi(configuration.GetSection("AzureAd"));
 
-        var tenantId = builder.Configuration["Auth:TenantId"];
-        if (string.IsNullOrWhiteSpace(tenantId))
-            throw new InvalidOperationException("Auth:TenantId is missing");
-        var clientId = builder.Configuration["Auth:ClientId"];
-        if (string.IsNullOrWhiteSpace(clientId))
-            throw new InvalidOperationException("Auth:ClientId is missing");
-
-        builder.Services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
-                options.MapInboundClaims = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidAudiences = new[] { $"api://{clientId}" },
-                    ValidIssuers   = new[] { $"https://login.microsoftonline.com/{tenantId}/v2.0" },
-                };
-            });
-        builder.Services.AddAuthorization();
-        return builder;
-    }
-
-    public static WebApplication UseEntraJwtAuth(this WebApplication app)
-    {
-        if (app.Configuration.GetValue<bool>(DisabledKey))
+        services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
         {
-            app.Logger.LogWarning("Auth:Disabled=true — API is unauthenticated. Do not run this in any shared env.");
-            return app;
-        }
-        app.UseAuthentication();
-        app.UseAuthorization();
-        return app;
+            options.MapInboundClaims = false;
+        });
+
+        services.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
+
+        return services;
     }
 }

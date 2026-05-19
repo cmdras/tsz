@@ -131,13 +131,13 @@ function ContractList() {
                   {String(contract.number).padStart(6, '0')}
                 </Link>
               </TableCell>
-              <TableCell>{contract.customer.name}</TableCell>
+              <TableCell>{contract.customerName}</TableCell>
               <TableCell>
                 <Link to="/admin/contracts/$id" params={{ id: contract.id }} className="hover:underline">
                   {contract.subject}
                 </Link>
               </TableCell>
-              <TableCell>{contract.consultant.name}</TableCell>
+              <TableCell>{contract.consultantName}</TableCell>
               <TableCell>{contract.startDate}</TableCell>
               <TableCell>{contract.endDate ?? '—'}</TableCell>
               <TableCell className="text-right">

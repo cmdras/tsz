@@ -26,6 +26,7 @@ const fetchAccessToken = createIsomorphicFn()
 const authMiddleware: Middleware = {
   async onRequest({ request }) {
     const token = await fetchAccessToken();
+    console.log('&&&&', token);
     if (token) request.headers.set('Authorization', `Bearer ${token}`);
     return request;
   },

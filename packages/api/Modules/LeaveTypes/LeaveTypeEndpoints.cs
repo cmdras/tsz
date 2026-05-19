@@ -33,7 +33,7 @@ public static class LeaveTypeEndpoints
                 cancellationToken));
         });
 
-        group.MapGet("/{id:guid}", async Task<Results<Ok<LeaveType>, NotFound>> (
+        group.MapGet("/{id:guid}", async Task<Results<Ok<LeaveTypeResponse>, NotFound>> (
             Guid id,
             LeaveTypeService service,
             CancellationToken cancellationToken) =>
@@ -44,41 +44,27 @@ public static class LeaveTypeEndpoints
                 : TypedResults.NotFound();
         }).WithName("GetLeaveTypeById");
 
-        group.MapPost("/", async Task<Results<CreatedAtRoute<LeaveType>, ProblemHttpResult>> (
+        group.MapPost("/", async Task<CreatedAtRoute<LeaveTypeResponse>> (
             LeaveTypeRequest request,
             LeaveTypeService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var leaveType = await service.CreateAsync(request, cancellationToken);
-                return TypedResults.CreatedAtRoute(leaveType, "GetLeaveTypeById", new { id = leaveType.Id });
-            }
-            catch (DuplicateLeaveTypeNameException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: StatusCodes.Status409Conflict);
-            }
+            var leaveType = await service.CreateAsync(request, cancellationToken);
+            return TypedResults.CreatedAtRoute(leaveType, "GetLeaveTypeById", new { id = leaveType.Id });
         })
             .AddEndpointFilter<ValidationFilter<LeaveTypeRequest>>()
             .ProducesProblem(StatusCodes.Status409Conflict);
 
-        group.MapPut("/{id:guid}", async Task<Results<Ok<LeaveType>, NotFound, ProblemHttpResult>> (
+        group.MapPut("/{id:guid}", async Task<Results<Ok<LeaveTypeResponse>, NotFound>> (
             Guid id,
             LeaveTypeRequest request,
             LeaveTypeService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var leaveType = await service.UpdateAsync(id, request, cancellationToken);
-                return leaveType is not null
-                    ? TypedResults.Ok(leaveType)
-                    : TypedResults.NotFound();
-            }
-            catch (DuplicateLeaveTypeNameException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: StatusCodes.Status409Conflict);
-            }
+            var leaveType = await service.UpdateAsync(id, request, cancellationToken);
+            return leaveType is not null
+                ? TypedResults.Ok(leaveType)
+                : TypedResults.NotFound();
         })
             .AddEndpointFilter<ValidationFilter<LeaveTypeRequest>>()
             .ProducesProblem(StatusCodes.Status409Conflict);

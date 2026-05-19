@@ -1,11 +1,11 @@
 import { type components } from '#/api/schema';
 import { client } from '#/api/client';
 
-export type Contract = components['schemas']['Contract'];
+export type Contract = components['schemas']['ContractResponse'];
 export type ContractRequest = components['schemas']['ContractRequest'];
 export type PagedContracts = components['schemas']['PagedContracts'];
 export type ContractSort = NonNullable<components['schemas']['ContractSort']>;
-export type ContractTask = components['schemas']['ContractTask'];
+export type ContractTask = components['schemas']['ContractTaskResponse'];
 export type ContractTaskRequest = components['schemas']['ContractTaskRequest'];
 export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 

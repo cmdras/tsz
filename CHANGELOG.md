@@ -2,6 +2,12 @@
 
 ## 2026-05-19
 
+- chore(auth): log access token in API client middleware
+- refactor(auth): replace manual JWT setup with Microsoft.Identity.Web
+- refactor(customers): extract data access into CustomerRepository
+- fix(navbar): replace non-compliant green brand text with theme foreground color
+- chore(.claude): update skills for response DTOs and fix PostToolUse hook exit code
+- refactor(api): introduce response DTOs and centralize domain exception handling
 - chore(lint): fix oxlint config and suppress false-positive warnings
 - feat(admin): add dashboard with active entity count stats
 - refactor: relocate oxlint config to packages/web and chain error causes

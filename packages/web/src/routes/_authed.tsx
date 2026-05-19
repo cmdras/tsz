@@ -27,7 +27,7 @@ export const Route = createFileRoute('/_authed')({
     }
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      throw redirect({ to: '/login' });
+      throw redirect({ to: '/login', search: { error: 'api_unauthorized' } });
     }
     return { session, currentUser };
   },
