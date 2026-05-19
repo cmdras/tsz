@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- chore(.claude): piv-validate deletes feature/IMPL/VALIDATION docs after verdict
 - refactor(contracts): drop default value from BuildTask contractId parameter
 - refactor(counters): drop Counters table, inline MAX+1 per module
 - chore(auth): remove debug access token log from API client middleware
