@@ -1,0 +1,61 @@
+packages/api/Modules/Customers/CustomerService.cs
+  s_3689425cdb49d9::t_557cf1dcf922b5 7,9,11,22-23,28-29,34-35,40-41,46,51
+packages/api/Modules/Customers/CustomersModule.cs
+  s_3689425cdb49d9::t_3ca5583f9d823f 9
+packages/api/Modules/Customers/ICustomerRepository.cs
+  s_3689425cdb49d9::t_f6fca493aac565 1-24
+packages/api/Modules/Customers/CustomerRepository.cs
+  s_3689425cdb49d9::t_64702e4d12487c 74
+  s_3689425cdb49d9::t_187ca0bd3c7bd9 3,11
+  s_3689425cdb49d9::t_847eb1c29e4c6f 96-97,99-100,102,107
+  s_3689425cdb49d9::t_cf95c777f5d358 1,5-9,18-23,111
+  s_3689425cdb49d9::t_abf78304cebd9c 2,4,10,12-17,24-73,75-95,98,101,103-106,108-110
+packages/api.tests/Customers/CustomerServiceTests.cs
+  s_3689425cdb49d9::t_d1e291fdae201b 21
+packages/api.tests/Customers/CustomerRepositoryTests.cs
+  s_3689425cdb49d9::t_4c50ceb0653bfe 1-333
+packages/api/Common/Extensions/AuthExtensions.cs
+  s_3a90515656ae90::t_c005c0cd5c7e40 29-30
+packages/api/Modules/Customers/CustomerContracts.cs
+  s_3689425cdb49d9::t_faf4e25db81886 25-35
+  s_3689425cdb49d9::t_b1dda0abad86fd 23-24,36
+CHANGELOG.md
+  s_9198afa6388279::t_ff4683147692e0 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "fccf53ce43cf6e02f259138270cfaf0fd9f5058e",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_3689425cdb49d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "744bff69-d373-41b5-a6a5-c9bf5d5a6803",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_3a90515656ae90": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bb94ca8a-165a-4fc6-977d-77f22ce1d15d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_9198afa6388279": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ccfac497-1287-411c-a6d8-889ed29f6766",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
