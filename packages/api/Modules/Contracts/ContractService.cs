@@ -1,5 +1,5 @@
+using System.Data;
 using Api.Common;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Common.Exceptions;
 using Api.Modules.Users;
@@ -12,12 +12,10 @@ public class InvalidContractRequestException(string message) : DomainException(m
 public class ContractService
 {
     private readonly AppDbContext _dbContext;
-    private readonly ICounterService _counterService;
 
-    public ContractService(AppDbContext dbContext, ICounterService counterService)
+    public ContractService(AppDbContext dbContext)
     {
         _dbContext = dbContext;
-        _counterService = counterService;
     }
 
     public async Task<PagedContracts> GetAllAsync(
@@ -82,25 +80,26 @@ public class ContractService
     {
         await ValidateRequestAsync(request, cancellationToken);
 
-        var number = await _counterService.NextAsync(CounterKeys.Contract, cancellationToken);
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
 
+        var nextNumber = (await _dbContext.Contracts.MaxAsync(contract => (int?)contract.Number, cancellationToken) ?? 0) + 1;
+
+        var contractId = Guid.NewGuid();
         var contract = new Contract
         {
-            Id = Guid.NewGuid(),
-            Number = number,
+            Id = contractId,
+            Number = nextNumber,
             CustomerId = request.CustomerId,
             ConsultantId = request.ConsultantId,
             Subject = request.Subject.Trim(),
             StartDate = request.StartDate,
             EndDate = request.EndDate,
+            Tasks = request.Tasks.Select((taskRequest, index) => BuildTask(taskRequest, index, contractId)).ToList(),
         };
 
-        var order = 0;
-        foreach (var taskRequest in request.Tasks)
-            contract.Tasks.Add(BuildTask(taskRequest, order++));
-
-        await _dbContext.Contracts.AddAsync(contract, cancellationToken);
+        _dbContext.Contracts.Add(contract);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
         await LoadReferencesAsync(contract, cancellationToken);
 

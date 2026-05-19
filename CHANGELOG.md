@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- refactor(counters): drop Counters table, inline MAX+1 per module
 - chore(auth): remove debug access token log from API client middleware
 - chore(auth): log access token in API client middleware
 - refactor(auth): replace manual JWT setup with Microsoft.Identity.Web

@@ -25,7 +25,7 @@ public static class ContractSeeder
         dbContext.Contracts.AddRange(
             new Contract
             {
-                Id = Guid.NewGuid(), Number = 100000,
+                Id = Guid.NewGuid(), Number = 1,
                 CustomerId = customers[0].Id, ConsultantId = consultants[0].Id,
                 Subject = "Digital Transformation",
                 StartDate = today, EndDate = today.AddMonths(6),
@@ -37,7 +37,7 @@ public static class ContractSeeder
             },
             new Contract
             {
-                Id = Guid.NewGuid(), Number = 100001,
+                Id = Guid.NewGuid(), Number = 2,
                 CustomerId = customers[1].Id, ConsultantId = consultants[1].Id,
                 Subject = "Cloud Migration",
                 StartDate = today.AddMonths(-1), EndDate = today.AddMonths(5),
@@ -49,7 +49,7 @@ public static class ContractSeeder
             },
             new Contract
             {
-                Id = Guid.NewGuid(), Number = 100002,
+                Id = Guid.NewGuid(), Number = 3,
                 CustomerId = customers[2].Id, ConsultantId = consultants[2].Id,
                 Subject = "ERP Integration",
                 StartDate = today.AddMonths(-3),
@@ -61,7 +61,7 @@ public static class ContractSeeder
             },
             new Contract
             {
-                Id = Guid.NewGuid(), Number = 100003,
+                Id = Guid.NewGuid(), Number = 4,
                 CustomerId = customers[3].Id, ConsultantId = consultants[0].Id,
                 Subject = "Data Warehouse",
                 StartDate = today.AddMonths(-2), EndDate = today.AddMonths(4),
@@ -73,7 +73,7 @@ public static class ContractSeeder
             },
             new Contract
             {
-                Id = Guid.NewGuid(), Number = 100004,
+                Id = Guid.NewGuid(), Number = 5,
                 CustomerId = customers[4].Id, ConsultantId = consultants[1].Id,
                 Subject = "Security Audit",
                 StartDate = today, EndDate = today.AddMonths(2),

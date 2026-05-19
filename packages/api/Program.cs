@@ -1,5 +1,4 @@
 using System.Reflection;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Common.Exceptions;
 using Api.Common.Extensions;
@@ -31,8 +30,6 @@ builder.Services.AddTszJson();
 builder.Services.AddTszOpenApi();
 
 builder.Services.AddAppDatabase(builder.Configuration);
-builder.Services.AddCounters();
-
 builder.Services.AddCustomersModule();
 builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
