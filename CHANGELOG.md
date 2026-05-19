@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- chore(auth): remove debug access token log from API client middleware
 - chore(auth): log access token in API client middleware
 - refactor(auth): replace manual JWT setup with Microsoft.Identity.Web
 - refactor(customers): extract data access into CustomerRepository
