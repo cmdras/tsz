@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- refactor(api): consolidate update logic from services into repositories
 - refactor(api): roll out repository pattern across contracts, users, and leave types
 - chore(docs): remove feature/IMPL/VALIDATION docs from all feature slots
 - chore(.claude): piv-validate deletes feature/IMPL/VALIDATION docs after verdict

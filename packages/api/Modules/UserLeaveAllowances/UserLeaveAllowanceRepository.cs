@@ -29,24 +29,20 @@ public class UserLeaveAllowanceRepository : IUserLeaveAllowanceRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task RemoveAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task UpdateRangeAsync(IReadOnlyList<UserLeaveAllowance> entities, CancellationToken cancellationToken = default)
     {
-        var allowance = await _dbContext.UserLeaveAllowances.FindAsync([id], cancellationToken);
-        if (allowance is null) return;
-
-        _dbContext.UserLeaveAllowances.Remove(allowance);
+        if (entities.Count == 0) return;
+        _dbContext.UserLeaveAllowances.UpdateRange(entities);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task RemoveRangeAsync(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
     {
-        if (ids.Count > 0)
-        {
-            var allowances = await _dbContext.UserLeaveAllowances
-                .Where(allowance => ids.Contains(allowance.Id))
-                .ToListAsync(cancellationToken);
-            _dbContext.UserLeaveAllowances.RemoveRange(allowances);
-        }
+        if (ids.Count == 0) return;
+        var allowances = await _dbContext.UserLeaveAllowances
+            .Where(allowance => ids.Contains(allowance.Id))
+            .ToListAsync(cancellationToken);
+        _dbContext.UserLeaveAllowances.RemoveRange(allowances);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

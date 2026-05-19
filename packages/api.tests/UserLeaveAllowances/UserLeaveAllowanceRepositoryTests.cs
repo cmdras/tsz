@@ -145,16 +145,34 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task RemoveAsync_RemovesById()
+    public async Task UpdateRangeAsync_PersistsChanges()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
-        var allowance = await AddAllowanceDirectlyAsync(context, user.Id);
+        var allowance = await AddAllowanceDirectlyAsync(context, user.Id, totalDays: 20m);
 
-        await repository.RemoveAsync(allowance.Id);
+        allowance.TotalDays = 25m;
+        await repository.UpdateRangeAsync([allowance]);
 
-        var stillExists = await context.UserLeaveAllowances.AnyAsync(item => item.Id == allowance.Id);
-        Assert.False(stillExists);
+        var refreshed = await context.UserLeaveAllowances
+            .AsNoTracking()
+            .FirstAsync(item => item.Id == allowance.Id);
+        Assert.Equal(25m, refreshed.TotalDays);
+    }
+
+    [Fact]
+    public async Task UpdateRangeAsync_EmptyList_NoOp()
+    {
+        var repository = CreateRepository(out var context);
+        var user = await AddUserAsync(context);
+        var allowance = await AddAllowanceDirectlyAsync(context, user.Id, totalDays: 20m);
+
+        await repository.UpdateRangeAsync([]);
+
+        var refreshed = await context.UserLeaveAllowances
+            .AsNoTracking()
+            .FirstAsync(item => item.Id == allowance.Id);
+        Assert.Equal(20m, refreshed.TotalDays);
     }
 
     [Fact]

@@ -46,65 +46,9 @@ public class ContractService(IContractRepository contractRepository, ICustomerRe
     {
         await ValidateRequestAsync(request, cancellationToken);
 
-        var contract = await _contractRepository.LoadWithTasksAsync(id, cancellationToken);
-        if (contract is null) return null;
-
-        contract.CustomerId = request.CustomerId;
-        contract.ConsultantId = request.ConsultantId;
-        contract.Subject = request.Subject.Trim();
-        contract.StartDate = request.StartDate;
-        contract.EndDate = request.EndDate;
-
-        var requestedIds = request.Tasks
-            .Where(taskRequest => taskRequest.Id.HasValue)
-            .Select(taskRequest => taskRequest.Id!.Value)
-            .ToHashSet();
-
-        var existingTaskIds = contract.Tasks.Select(task => task.Id).ToHashSet();
-        if (requestedIds.Except(existingTaskIds).Any())
-            throw new InvalidContractRequestException("One or more task IDs do not belong to this contract.");
-
-        foreach (var existingTask in contract.Tasks.Where(task => !task.IsArchived))
-        {
-            if (!requestedIds.Contains(existingTask.Id))
-                existingTask.IsArchived = true;
-        }
-
-        var nextOrder = contract.Tasks.Count > 0 ? contract.Tasks.Max(task => task.Order) + 1 : 0;
-
-        foreach (var taskRequest in request.Tasks)
-        {
-            if (taskRequest.Id.HasValue)
-            {
-                var existingTask = contract.Tasks.FirstOrDefault(task => task.Id == taskRequest.Id.Value);
-                if (existingTask is not null)
-                {
-                    existingTask.Name = taskRequest.Name.Trim();
-                    existingTask.DayRate = taskRequest.DayRate;
-                    existingTask.IsArchived = false;
-                }
-            }
-            else
-            {
-                _contractRepository.AddTask(BuildTask(taskRequest, nextOrder++, id));
-            }
-        }
-
-        await _contractRepository.SaveAsync(cancellationToken);
-
-        var updated = await _contractRepository.GetByIdAsync(id, cancellationToken);
-        return updated is null ? null : ToResponse(updated);
+        var contract = await _contractRepository.UpdateAsync(id, request, cancellationToken);
+        return contract is null ? null : ToResponse(contract);
     }
-
-    private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId) =>
-        new()
-        {
-            Id = Guid.NewGuid(),
-            ContractId = contractId,
-            Name = taskRequest.Name.Trim(),
-            DayRate = taskRequest.DayRate,
-            Order = order,
-        };
 
     private static ContractResponse ToResponse(Contract contract) => new(
         contract.Id,

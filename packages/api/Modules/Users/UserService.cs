@@ -93,6 +93,7 @@ public class UserService(IUserRepository userRepository, IUserLeaveAllowanceRepo
         var keptIds = new HashSet<Guid>();
         var occupiedLeaveTypeIds = new HashSet<Guid>();
         var newAllowances = new List<UserLeaveAllowance>();
+        var updatedAllowances = new List<UserLeaveAllowance>();
         foreach (var leaf in request.Leaves)
         {
             if (leaf.Id.HasValue && existingById.TryGetValue(leaf.Id.Value, out var match))
@@ -100,8 +101,12 @@ public class UserService(IUserRepository userRepository, IUserLeaveAllowanceRepo
                 keptIds.Add(match.Id);
                 if (!occupiedLeaveTypeIds.Add(match.LeaveTypeId))
                     throw new DuplicateUserLeaveAllowanceException();
-                match.Mode = leaf.Mode;
-                match.TotalDays = leaf.TotalDays;
+                if (match.Mode != leaf.Mode || match.TotalDays != leaf.TotalDays)
+                {
+                    match.Mode = leaf.Mode;
+                    match.TotalDays = leaf.TotalDays;
+                    updatedAllowances.Add(match);
+                }
             }
             else if (!leaf.Id.HasValue)
             {
@@ -118,6 +123,7 @@ public class UserService(IUserRepository userRepository, IUserLeaveAllowanceRepo
                 });
             }
         }
+        await _userLeaveAllowanceRepository.UpdateRangeAsync(updatedAllowances, cancellationToken);
         await _userLeaveAllowanceRepository.AddRangeAsync(newAllowances, cancellationToken);
 
         var idsToRemove = existingAllowances

@@ -234,6 +234,38 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
+    public async Task Update_KeptLeafOnly_NoAddsOrRemoves_PersistsTotalDaysChange()
+    {
+        var service = CreateService(out var context);
+        var holiday = await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m, defaultMode: AllowanceMode.Limited);
+        var created = await service.CreateAsync(BuildRequest());
+        var existing = await context.UserLeaveAllowances.FirstAsync(allowance => allowance.UserId == created.Id);
+        Assert.Equal(20m, existing.TotalDays);
+
+        var updateRequest = BuildRequest(
+            name: created.Name,
+            email: created.Email,
+            role: created.Role,
+            leaves: [
+                new UserLeaveAllowanceRequest
+                {
+                    Id = existing.Id,
+                    LeaveTypeId = holiday.Id,
+                    Mode = AllowanceMode.Limited,
+                    TotalDays = 25m,
+                },
+            ]);
+
+        await service.UpdateAsync(created.Id, updateRequest);
+
+        var refreshed = await context.UserLeaveAllowances
+            .AsNoTracking()
+            .FirstAsync(allowance => allowance.Id == existing.Id);
+        Assert.Equal(25m, refreshed.TotalDays);
+        Assert.Equal(AllowanceMode.Limited, refreshed.Mode);
+    }
+
+    [Fact]
     public async Task Update_DuplicateLeaveTypeForSameYear_ThrowsDuplicateUserLeaveAllowanceException()
     {
         var service = CreateService(out var context);

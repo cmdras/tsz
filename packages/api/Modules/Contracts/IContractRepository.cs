@@ -17,11 +17,7 @@ public interface IContractRepository
 
     Task<Contract> CreateAsync(ContractRequest request, CancellationToken cancellationToken = default);
 
-    Task<Contract?> LoadWithTasksAsync(Guid id, CancellationToken cancellationToken = default);
-
-    void AddTask(ContractTask task);
-
-    Task SaveAsync(CancellationToken cancellationToken = default);
+    Task<Contract?> UpdateAsync(Guid id, ContractRequest request, CancellationToken cancellationToken = default);
 
     Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default);
 

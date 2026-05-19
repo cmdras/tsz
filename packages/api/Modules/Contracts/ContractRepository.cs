@@ -96,20 +96,62 @@ public class ContractRepository : IContractRepository
         return contract;
     }
 
-    public async Task<Contract?> LoadWithTasksAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Contract?> UpdateAsync(Guid id, ContractRequest request, CancellationToken cancellationToken = default)
     {
+        var contract = await _dbContext.Contracts
+            .Include(entity => entity.Tasks)
+            .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+        if (contract is null) return null;
+
+        contract.CustomerId = request.CustomerId;
+        contract.ConsultantId = request.ConsultantId;
+        contract.Subject = request.Subject.Trim();
+        contract.StartDate = request.StartDate;
+        contract.EndDate = request.EndDate;
+
+        var requestedIds = request.Tasks
+            .Where(taskRequest => taskRequest.Id.HasValue)
+            .Select(taskRequest => taskRequest.Id!.Value)
+            .ToHashSet();
+
+        var existingTaskIds = contract.Tasks.Select(task => task.Id).ToHashSet();
+        if (requestedIds.Except(existingTaskIds).Any())
+            throw new InvalidContractRequestException("One or more task IDs do not belong to this contract.");
+
+        foreach (var existingTask in contract.Tasks.Where(task => !task.IsArchived))
+        {
+            if (!requestedIds.Contains(existingTask.Id))
+                existingTask.IsArchived = true;
+        }
+
+        var nextOrder = contract.Tasks.Count > 0 ? contract.Tasks.Max(task => task.Order) + 1 : 0;
+
+        foreach (var taskRequest in request.Tasks)
+        {
+            if (taskRequest.Id.HasValue)
+            {
+                var existingTask = contract.Tasks.FirstOrDefault(task => task.Id == taskRequest.Id.Value);
+                if (existingTask is not null)
+                {
+                    existingTask.Name = taskRequest.Name.Trim();
+                    existingTask.DayRate = taskRequest.DayRate;
+                    existingTask.IsArchived = false;
+                }
+            }
+            else
+            {
+                _dbContext.ContractTasks.Add(BuildTask(taskRequest, nextOrder++, id));
+            }
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
         return await _dbContext.Contracts
-            .Include(contract => contract.Tasks)
-            .FirstOrDefaultAsync(contract => contract.Id == id, cancellationToken);
+            .Include(entity => entity.Customer)
+            .Include(entity => entity.Consultant)
+            .Include(entity => entity.Tasks)
+            .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
     }
-
-    public void AddTask(ContractTask task)
-    {
-        _dbContext.ContractTasks.Add(task);
-    }
-
-    public Task SaveAsync(CancellationToken cancellationToken = default)
-        => _dbContext.SaveChangesAsync(cancellationToken);
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
         => SetArchivedAsync(id, true, cancellationToken);
