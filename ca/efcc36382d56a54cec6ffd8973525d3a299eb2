@@ -1,0 +1,32 @@
+CHANGELOG.md
+  s_c572ce7a779b93::t_df100bd29cff81 5
+.claude/skills/be-crud-service/SKILL.md
+  s_c572ce7a779b93::t_d7c322d85aa245 36
+  s_c572ce7a779b93::t_b06ca6e39db000 13
+.claude/skills/be-crud-endpoints/SKILL.md
+  s_c572ce7a779b93::t_9a05d3b6713b56 15
+  s_c572ce7a779b93::t_56a88fd2b5a074 26-29
+.claude/settings.json
+  s_c572ce7a779b93::t_b064d8c21185bc 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "caefcc36382d56a54cec6ffd8973525d3a299eb2",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_c572ce7a779b93": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "668c66e7-89fc-4105-b78a-f02bf1824493",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
