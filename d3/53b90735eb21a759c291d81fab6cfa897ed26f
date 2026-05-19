@@ -1,0 +1,26 @@
+packages/web/src/components/app-navbar.tsx
+  s_7ec00fa78c14e5::t_653d28134cbf04 120
+CHANGELOG.md
+  s_7ec00fa78c14e5::t_ff6e1dfeea7b3b 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "d353b90735eb21a759c291d81fab6cfa897ed26f",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_7ec00fa78c14e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "209554ab-3a6a-4d73-bef7-6359a7ce0545",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
