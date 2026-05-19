@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- chore(docs): remove feature/IMPL/VALIDATION docs from all feature slots
 - chore(.claude): piv-validate deletes feature/IMPL/VALIDATION docs after verdict
 - refactor(contracts): drop default value from BuildTask contractId parameter
 - refactor(counters): drop Counters table, inline MAX+1 per module
