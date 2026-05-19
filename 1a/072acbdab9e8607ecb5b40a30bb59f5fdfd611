@@ -1,0 +1,43 @@
+packages/api.tests/UserLeaveAllowances/UserLeaveAllowanceRepositoryTests.cs
+  s_2f64687a870f5d::t_a47734554b2399 148,152,154-155,157-175
+packages/api/Modules/UserLeaveAllowances/IUserLeaveAllowanceRepository.cs
+  s_2f64687a870f5d::t_34df4172b57664 12
+packages/api/Modules/Contracts/IContractRepository.cs
+  s_2f64687a870f5d::t_a02e9cbba9d667 20
+packages/api/Modules/UserLeaveAllowances/UserLeaveAllowanceRepository.cs
+  s_2f64687a870f5d::t_9123d084e7f733 32,34-35,41-45
+packages/api/Modules/Users/UserService.cs
+  s_2f64687a870f5d::t_0c668869bbe8ad 96,104-109,126
+packages/api.tests/Users/UserLeaveAllowanceServiceTests.cs
+  s_2f64687a870f5d::t_91895d39a73334 237-267
+packages/api/Modules/Contracts/ContractRepository.cs
+  s_2f64687a870f5d::t_efff5d7ecc4372 99,101-125,127,129-154
+CHANGELOG.md
+  s_652e24607b22ad::t_c1b7a2f8bda64f 5
+packages/api/Modules/Contracts/ContractService.cs
+  s_2f64687a870f5d::t_edb58a7454e8dd 49-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "1a072acbdab9e8607ecb5b40a30bb59f5fdfd611",
+  "prompts": {},
+  "sessions": {
+    "s_2f64687a870f5d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2835babf-88e2-4825-a13f-f04b0b13d10b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_652e24607b22ad": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "abefcdd2-3c67-49db-b0cc-6b45bfa21fcd",
+        "model": "claude-haiku-4-5-20251001"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
