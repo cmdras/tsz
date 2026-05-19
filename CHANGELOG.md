@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- feat(admin): add dashboard with active entity count stats
 - refactor: relocate oxlint config to packages/web and chain error causes
 - feat(auth): implement S6 OAuth with Entra ID, fix v2 issuer and claim extraction
 - refactor(api): split Program.cs into per-module configuration extensions
