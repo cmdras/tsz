@@ -13,7 +13,6 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "no-underscore-dangle": "off",
     "no-unsanitized/method": "error",
     "no-unsanitized/property": "error",
     "no-secrets/no-secrets": ["error", { "tolerance": 4.2 }],

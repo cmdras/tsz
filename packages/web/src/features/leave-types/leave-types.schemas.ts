@@ -28,6 +28,7 @@ export const sortSlugs = {
 export type SortSlug = keyof typeof sortSlugs;
 
 const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
+// oxlint-disable-next-line security/detect-non-literal-regexp
 const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
 export const searchSchema = z.object({
