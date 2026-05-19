@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- test(users): merge duplicate leave allowance update test and add Mode assertion
 - fix(api): correct update-before-exist check, case-insensitive email, and test FK seeds
 - refactor(api): consolidate update logic from services into repositories
 - refactor(api): roll out repository pattern across contracts, users, and leave types
