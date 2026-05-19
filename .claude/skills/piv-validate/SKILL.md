@@ -50,4 +50,16 @@ Overwrite any prior file at `./VALIDATION.md`. Structure:
 
 Verdict: **pass** if every check exited 0 (skipped tools don't count as failures). **fail** otherwise.
 
-Print the verdict line and the path to VALIDATION.md. Stop. Do not chain.
+Print the verdict line. Continue to Phase 3.
+
+## Phase 3 — Clean up slot docs
+
+Delete the slot's PIV docs — they're not useful after validation and clutter the repo:
+
+- `./feature.md`
+- `./IMPL.md`
+- `./VALIDATION.md`
+
+Keep `./PLAN.md` (it stays as the surviving record). Missing files are fine — skip silently.
+
+Print `Cleaned: feature.md, IMPL.md, VALIDATION.md`. Stop. Do not chain.

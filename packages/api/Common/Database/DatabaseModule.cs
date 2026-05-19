@@ -1,4 +1,3 @@
-using Api.Common.Counters;
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
@@ -29,6 +28,5 @@ public static class DatabaseModule
         await LeaveTypesModule.SeedAsync(dbContext);
         await UsersModule.SeedAsync(dbContext);
         await ContractsModule.SeedAsync(dbContext);
-        await CountersModule.SeedAsync(dbContext);
     }
 }

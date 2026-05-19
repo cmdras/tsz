@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Customers;
 using Api.Tests.Integration.Common;
@@ -32,8 +31,6 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         context.Customers.RemoveRange(context.Customers);
-        context.Counters.RemoveRange(context.Counters);
-        context.Counters.Add(new Counter { Key = CounterKeys.Customer, Value = 99999 });
         await context.SaveChangesAsync();
     }
 
@@ -111,7 +108,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         var customer = await response.Content.ReadFromJsonAsync<CustomerResponse>(JsonOptions);
         Assert.NotNull(customer);
         Assert.Equal("Carol Co", customer.Name);
-        Assert.True(customer.Number >= 100000);
+        Assert.True(customer.Number >= 1);
     }
 
     [Fact]

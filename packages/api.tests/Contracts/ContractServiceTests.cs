@@ -1,5 +1,4 @@
 using Api.Common;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Contracts;
 using Api.Modules.Users;
@@ -17,10 +16,7 @@ public class ContractServiceTests
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        context.Counters.Add(new Counter { Key = CounterKeys.Contract, Value = 99999 });
-        context.SaveChanges();
-        var counterService = new CounterService(context);
-        return new ContractService(context, counterService);
+        return new ContractService(context);
     }
 
     private static async Task<Guid> AddConsultantAsync(AppDbContext context, UserRole role = UserRole.User, bool isArchived = false)
@@ -137,7 +133,7 @@ public class ContractServiceTests
     }
 
     [Fact]
-    public async Task Create_ValidRequest_AssignsNumberFromCounter()
+    public async Task Create_ValidRequest_AssignsNumberOne()
     {
         var service = CreateService(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -145,7 +141,7 @@ public class ContractServiceTests
 
         var contract = await service.CreateAsync(BuildRequest(customerId, consultantId));
 
-        Assert.Equal(100000, contract.Number);
+        Assert.Equal(1, contract.Number);
     }
 
     [Fact]

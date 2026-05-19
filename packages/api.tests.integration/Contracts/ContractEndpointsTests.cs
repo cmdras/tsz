@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Contracts;
 using Api.Modules.Users;
@@ -39,9 +38,6 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         context.Contracts.RemoveRange(context.Contracts);
         context.Users.RemoveRange(context.Users);
         context.Customers.RemoveRange(context.Customers);
-        context.Counters.RemoveRange(context.Counters);
-
-        context.Counters.Add(new Counter { Key = CounterKeys.Contract, Value = 99999 });
 
         var customer = new Api.Modules.Customers.Customer
         {
@@ -119,7 +115,7 @@ public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncL
         var contract = await response.Content.ReadFromJsonAsync<ContractResponse>(JsonOptions);
         Assert.NotNull(contract);
         Assert.Equal("New Contract", contract.Subject);
-        Assert.True(contract.Number >= 100000);
+        Assert.True(contract.Number >= 1);
     }
 
     [Fact]

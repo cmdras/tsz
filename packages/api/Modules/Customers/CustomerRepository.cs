@@ -1,5 +1,5 @@
+using System.Data;
 using Api.Common;
-using Api.Common.Counters;
 using Api.Common.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,15 +53,14 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<Customer> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
     {
-        var counter = await _dbContext.Counters.FindAsync([CounterKeys.Customer], cancellationToken)
-            ?? throw new InvalidOperationException($"Counter '{CounterKeys.Customer}' not found.");
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
 
-        counter.Value++;
+        var nextNumber = (await _dbContext.Customers.MaxAsync(customer => (int?)customer.Number, cancellationToken) ?? 0) + 1;
 
         var customer = new Customer
         {
             Id = Guid.NewGuid(),
-            Number = counter.Value,
+            Number = nextNumber,
             Name = request.Name,
             Street = request.Street,
             Zip = request.Zip,
@@ -73,6 +72,8 @@ public class CustomerRepository : ICustomerRepository
 
         _dbContext.Customers.Add(customer);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
         return customer;
     }
 
