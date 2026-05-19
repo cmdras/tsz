@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_2e8c7a4f0d4109::t_5b1c44de0794f8 5
+packages/api.tests/Users/UserLeaveAllowanceServiceTests.cs
+  s_2e8c7a4f0d4109::t_dfe22ab8424882 169
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "b189908065cad37b539079ab12fd379807ddc546",
+  "prompts": {},
+  "sessions": {
+    "s_2e8c7a4f0d4109": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0590eb01-9f0d-49b6-ac4c-67c8b5ec1a7e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
