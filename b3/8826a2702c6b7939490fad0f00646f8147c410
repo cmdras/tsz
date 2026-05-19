@@ -1,0 +1,118 @@
+packages/api/Modules/Contracts/ContractContracts.cs
+  s_350cf3e36e8a20::t_06e660436460c0 15-35
+packages/web/src/routes/login.tsx
+  s_350cf3e36e8a20::t_37884a2a4f45d6 2,8-11,13-15
+CHANGELOG.md
+  s_071f962633bc8c::t_fb5ff195a9c0fa 5
+packages/web/src/routes/_authed/admin/contracts/index.tsx
+  s_350cf3e36e8a20::t_04378dec3bd1d9 140
+  s_350cf3e36e8a20::t_634ae810ac37ce 134
+packages/api/Modules/Contracts/ContractEndpoints.cs
+  s_350cf3e36e8a20::t_f59da170712da0 36,47,52-53,58,64-67
+packages/api/Modules/Users/UserEndpoints.cs
+  s_350cf3e36e8a20::t_6940591e495266 64,69-70,75,81-84
+packages/api/Common/Exceptions/DomainException.cs
+  s_350cf3e36e8a20::t_aa8dfe1783bd5d 1-6
+packages/api/Program.cs
+  s_350cf3e36e8a20::t_a696473e338bf2 40
+  s_350cf3e36e8a20::t_b03209ab7f9ffa 4
+  s_350cf3e36e8a20::t_595c68e45690a9 18-20
+packages/api/Modules/Users/UserContracts.cs
+  s_350cf3e36e8a20::t_67f9ce4426885a 3,8
+packages/web/src/features/contracts/contracts.server.ts
+  s_350cf3e36e8a20::t_1bfa9065db39e6 4,8
+packages/api.tests.integration/Contracts/ContractEndpointsTests.cs
+  s_350cf3e36e8a20::t_193162e082372a 119
+  s_350cf3e36e8a20::t_24d0e64977c9c0 167
+  s_350cf3e36e8a20::t_b5c6f11511e448 75,79
+  s_350cf3e36e8a20::t_859e7d9627323e 100
+packages/api/Modules/Contracts/ContractService.cs
+  s_350cf3e36e8a20::t_077eb0a82477d5 4
+  s_350cf3e36e8a20::t_6ec9a38166d7e9 107
+  s_350cf3e36e8a20::t_671d610f6c409c 165
+  s_350cf3e36e8a20::t_34094a10e15f72 81
+  s_350cf3e36e8a20::t_e9ec249c7ffb11 10
+  s_350cf3e36e8a20::t_5e6fccc43a1827 182,185-199
+  s_350cf3e36e8a20::t_2c89d3d21fa5f4 71-79
+  s_350cf3e36e8a20::t_a0e8f435d4a844 110
+  s_350cf3e36e8a20::t_80b84a558117c0 67-68
+packages/api/Modules/LeaveTypes/LeaveTypeContracts.cs
+  s_350cf3e36e8a20::t_c75ad459ce7357 13-20
+packages/api/Modules/UserLeaveAllowances/UserLeaveAllowanceContracts.cs
+  s_350cf3e36e8a20::t_a0255466d18a9c 3,8-9,11-12
+packages/api/Modules/Customers/CustomerEndpoints.cs
+  s_350cf3e36e8a20::t_7d1ead7688765f 34,45,54
+packages/api/Modules/LeaveTypes/LeaveTypeEndpoints.cs
+  s_350cf3e36e8a20::t_13fae09809d62a 36,47,52-53,58,64-67
+packages/api/Modules/LeaveTypes/LeaveTypeService.cs
+  s_350cf3e36e8a20::t_fce495121175ef 9
+  s_350cf3e36e8a20::t_b95cf20f15e013 3
+  s_350cf3e36e8a20::t_cc0d4a01d9cdc4 51-55
+  s_350cf3e36e8a20::t_2fa40efde43b15 47-48
+  s_350cf3e36e8a20::t_e88a3d83d2cc75 57,75,78,94,97-102
+packages/api/Modules/Customers/CustomerService.cs
+  s_350cf3e36e8a20::t_e8cbbd3f6a8964 47-48,51-55,57,76,79,93,115-126
+packages/api/Common/Exceptions/GlobalExceptionHandler.cs
+  s_350cf3e36e8a20::t_d1ccd87cb6e223 1-29
+packages/api.tests.integration/Customers/CustomerEndpointsTests.cs
+  s_350cf3e36e8a20::t_2d732e081d04b5 42
+  s_350cf3e36e8a20::t_6ff62a7ffae223 154
+  s_350cf3e36e8a20::t_b7a693df755ea1 60
+  s_350cf3e36e8a20::t_efd4fc1ed8e79c 111
+  s_350cf3e36e8a20::t_a4187a0e20aa79 81
+packages/web/src/api/schema.ts
+  s_350cf3e36e8a20::t_e701a09d4616ba 95,135,550,599,765,814,926-960,965-974,981,991,993-997,1000,1003,1008-1010,1021,1024-1026,1028-1031,1040-1044,1052,1056,1062-1064,1069,1074,1079,1084,1181,1239,1268
+packages/api/Modules/Customers/CustomerContracts.cs
+  s_350cf3e36e8a20::t_a7768be52f691a 13-25
+packages/web/src/features/customers/customers.server.ts
+  s_350cf3e36e8a20::t_b7cbafe32f00d4 4
+.claude/settings.json
+  s_9acca90eaa05e2::t_eacfa3f25fb9fb 21-34
+packages/api.tests.integration/LeaveTypes/LeaveTypeEndpointsTests.cs
+  s_350cf3e36e8a20::t_f24ea23e982cb7 44
+  s_350cf3e36e8a20::t_3f3dea54c09b97 39
+  s_350cf3e36e8a20::t_18d5c41a984b9e 141
+  s_350cf3e36e8a20::t_a2128049440b32 65
+  s_350cf3e36e8a20::t_21b43c1373c7af 86
+packages/web/src/features/leave-types/leave-types.server.ts
+  s_350cf3e36e8a20::t_5aede17b6e3441 4
+packages/web/src/routes/_authed.tsx
+  s_350cf3e36e8a20::t_6a54ac95155f23 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "b38826a2702c6b7939490fad0f00646f8147c410",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_071f962633bc8c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "51f64e2c-1d3e-4651-8d21-c55d93887e41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_350cf3e36e8a20": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ae2a17e-4458-4225-9983-705e6e6d18d6",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_9acca90eaa05e2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9a9a4e88-c288-410a-8e00-6288bd642e47",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
