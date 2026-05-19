@@ -4,18 +4,14 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Api.Common.Database;
 using Api.Modules.LeaveTypes;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Api.Tests.Integration.Common;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.LeaveTypes;
 
-public class LeaveTypeEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class LeaveTypeEndpointsTests : IClassFixture<LeaveTypeApiFactory>, IAsyncLifetime
 {
-    private readonly WebApplicationFactory<Program> _testFactory;
+    private readonly LeaveTypeApiFactory _factory;
     private readonly HttpClient _client;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -24,30 +20,21 @@ public class LeaveTypeEndpointsTests : IClassFixture<WebApplicationFactory<Progr
         Converters = { new JsonStringEnumConverter() },
     };
 
-    public LeaveTypeEndpointsTests(WebApplicationFactory<Program> factory)
+    public LeaveTypeEndpointsTests(LeaveTypeApiFactory factory)
     {
-        var guid = Guid.NewGuid();
-        _testFactory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Testing");
-            builder.ConfigureServices(services =>
-            {
-                var toRemove = services
-                    .Where(descriptor =>
-                        descriptor.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(AppDbContext))
-                    .ToList();
-                foreach (var descriptor in toRemove)
-                    services.Remove(descriptor);
-
-                services.AddDbContext<AppDbContext>(options => options
-                    .UseInMemoryDatabase("LeaveTypeIntegrationTests_" + guid)
-                    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
-            });
-        });
-        _client = _testFactory.CreateClient();
+        _factory = factory;
+        _client = factory.CreateClient();
     }
+
+    public async Task InitializeAsync()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.LeaveTypes.RemoveRange(context.LeaveTypes);
+        await context.SaveChangesAsync();
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private async Task<LeaveType> SeedLeaveTypeViaApiAsync(string name = "Holiday", decimal defaultDays = 20m)
     {
@@ -240,4 +227,9 @@ public class LeaveTypeEndpointsTests : IClassFixture<WebApplicationFactory<Progr
 
         Assert.Equal(1, result!.Total);
     }
+}
+
+public class LeaveTypeApiFactory : TestApiFactory
+{
+    public LeaveTypeApiFactory() : base("LeaveTypeIntegrationTests") { }
 }

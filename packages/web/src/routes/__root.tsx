@@ -1,7 +1,6 @@
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
 
 import appCss from '../styles.css?url';
-import { AppNavbar } from '#/components/app-navbar';
 import { ErrorBoundary } from '#/components/error-boundary';
 import { Toaster } from '#/components/ui/sonner';
 
@@ -44,12 +43,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function RootLayout() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <AppNavbar />
-      <main className="flex-1 p-6">
-        <Outlet />
-      </main>
+    <>
+      <Outlet />
       <Toaster />
-    </div>
+    </>
   );
 }

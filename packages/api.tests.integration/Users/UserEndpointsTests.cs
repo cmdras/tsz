@@ -4,17 +4,14 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Api.Common.Database;
 using Api.Modules.Users;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Api.Tests.Integration.Common;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.Users;
 
-public class UserEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class UserEndpointsTests : IClassFixture<UserApiFactory>, IAsyncLifetime
 {
-    private readonly WebApplicationFactory<Program> _testFactory;
+    private readonly UserApiFactory _factory;
     private readonly HttpClient _client;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -23,29 +20,21 @@ public class UserEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
         Converters = { new JsonStringEnumConverter() },
     };
 
-    public UserEndpointsTests(WebApplicationFactory<Program> factory)
+    public UserEndpointsTests(UserApiFactory factory)
     {
-        var guid = Guid.NewGuid();
-        _testFactory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Testing");
-            builder.ConfigureServices(services =>
-            {
-                var toRemove = services
-                    .Where(descriptor =>
-                        descriptor.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(AppDbContext))
-                    .ToList();
-                foreach (var descriptor in toRemove)
-                    services.Remove(descriptor);
-
-                services.AddDbContext<AppDbContext>(options =>
-                    options.UseInMemoryDatabase("UserIntegrationTests_" + guid));
-            });
-        });
-        _client = _testFactory.CreateClient();
+        _factory = factory;
+        _client = factory.CreateClient();
     }
+
+    public async Task InitializeAsync()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Users.RemoveRange(context.Users);
+        await context.SaveChangesAsync();
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private async Task<User> SeedUserViaApiAsync(string name = "Alice", string email = "alice@test.com", UserRole role = UserRole.User)
     {
@@ -185,4 +174,9 @@ public class UserEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
 
         Assert.Equal(0, result!.Total);
     }
+}
+
+public class UserApiFactory : TestApiFactory
+{
+    public UserApiFactory() : base("UserIntegrationTests") { }
 }

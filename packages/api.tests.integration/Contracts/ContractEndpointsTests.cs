@@ -6,18 +6,14 @@ using Api.Common.Counters;
 using Api.Common.Database;
 using Api.Modules.Contracts;
 using Api.Modules.Users;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Api.Tests.Integration.Common;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.Contracts;
 
-public class ContractEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class ContractEndpointsTests : IClassFixture<ContractApiFactory>, IAsyncLifetime
 {
-    private readonly WebApplicationFactory<Program> _testFactory;
+    private readonly ContractApiFactory _factory;
     private readonly HttpClient _client;
     private Guid _customerId;
     private Guid _consultantId;
@@ -28,51 +24,43 @@ public class ContractEndpointsTests : IClassFixture<WebApplicationFactory<Progra
         Converters = { new JsonStringEnumConverter() },
     };
 
-    public ContractEndpointsTests(WebApplicationFactory<Program> factory)
+    public ContractEndpointsTests(ContractApiFactory factory)
     {
-        var guid = Guid.NewGuid();
-        _testFactory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Testing");
-            builder.ConfigureServices(services =>
-            {
-                var toRemove = services
-                    .Where(descriptor =>
-                        descriptor.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(AppDbContext))
-                    .ToList();
-                foreach (var descriptor in toRemove)
-                    services.Remove(descriptor);
+        _factory = factory;
+        _client = factory.CreateClient();
+    }
 
-                services.AddDbContext<AppDbContext>(options => options
-                    .UseInMemoryDatabase("ContractIntegrationTests_" + guid)
-                    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
-            });
-        });
-        _client = _testFactory.CreateClient();
+    public async Task InitializeAsync()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        using var scope = _testFactory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.ContractTasks.RemoveRange(context.ContractTasks);
+        context.Contracts.RemoveRange(context.Contracts);
+        context.Users.RemoveRange(context.Users);
+        context.Customers.RemoveRange(context.Customers);
+        context.Counters.RemoveRange(context.Counters);
 
-        dbContext.Counters.Add(new Counter { Key = CounterKeys.Contract, Value = 99999 });
+        context.Counters.Add(new Counter { Key = CounterKeys.Contract, Value = 99999 });
 
         var customer = new Api.Modules.Customers.Customer
         {
             Id = Guid.NewGuid(), Number = 100000, Name = "Test Customer", Country = "Belgium",
         };
-        dbContext.Customers.Add(customer);
+        context.Customers.Add(customer);
         _customerId = customer.Id;
 
         var consultant = new User
         {
             Id = Guid.NewGuid(), Name = "Test Consultant", Email = "consultant@test.com", Role = UserRole.User,
         };
-        dbContext.Users.Add(consultant);
+        context.Users.Add(consultant);
         _consultantId = consultant.Id;
 
-        dbContext.SaveChanges();
+        await context.SaveChangesAsync();
     }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private ContractRequest BuildRequest(string subject = "Test Contract") => new()
     {
@@ -240,4 +228,9 @@ public class ContractEndpointsTests : IClassFixture<WebApplicationFactory<Progra
 
         Assert.Contains(result!.Items, contract => contract.Subject == "Archived Contract");
     }
+}
+
+public class ContractApiFactory : TestApiFactory
+{
+    public ContractApiFactory() : base("ContractIntegrationTests") { }
 }

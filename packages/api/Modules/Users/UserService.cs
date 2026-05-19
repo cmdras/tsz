@@ -105,25 +105,9 @@ public class UserService
             Role = request.Role,
         };
 
-        await _dbContext.Users.AddAsync(user, cancellationToken);
+        _dbContext.Users.Add(user);
 
-        var currentYear = DateTime.UtcNow.Year;
-        var activeLeaveTypes = await _dbContext.LeaveTypes
-            .Where(leaveType => !leaveType.IsArchived)
-            .ToListAsync(cancellationToken);
-
-        foreach (var leaveType in activeLeaveTypes)
-        {
-            _dbContext.UserLeaveAllowances.Add(new UserLeaveAllowance
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                LeaveTypeId = leaveType.Id,
-                Year = currentYear,
-                Mode = leaveType.DefaultMode,
-                TotalDays = leaveType.DefaultDays,
-            });
-        }
+        await SeedLeaveAllowancesAsync(user, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return user;
@@ -216,5 +200,48 @@ public class UserService
         user.IsArchived = false;
         await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
+    }
+
+    public async Task<User> GetOrProvisionAsync(string name, string email, CancellationToken cancellationToken = default)
+    {
+        var existing = await _dbContext.Users
+            .FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
+        if (existing is not null) return existing;
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            Email = email,
+            Role = UserRole.User,
+        };
+
+        _dbContext.Users.Add(user);
+
+        await SeedLeaveAllowancesAsync(user, cancellationToken);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return user;
+    }
+
+    private async Task SeedLeaveAllowancesAsync(User user, CancellationToken cancellationToken)
+    {
+        var currentYear = DateTime.UtcNow.Year;
+        var activeLeaveTypes = await _dbContext.LeaveTypes
+            .Where(leaveType => !leaveType.IsArchived)
+            .ToListAsync(cancellationToken);
+
+        foreach (var leaveType in activeLeaveTypes)
+        {
+            _dbContext.UserLeaveAllowances.Add(new UserLeaveAllowance
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                LeaveTypeId = leaveType.Id,
+                Year = currentYear,
+                Mode = leaveType.DefaultMode,
+                TotalDays = leaveType.DefaultDays,
+            });
+        }
     }
 }

@@ -9,172 +9,212 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as TimesheetsIndexRouteImport } from './routes/timesheets/index'
-import { Route as TimeEntryIndexRouteImport } from './routes/time-entry/index'
-import { Route as LeaveOverviewIndexRouteImport } from './routes/leave-overview/index'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
-import { Route as AdminLeaveTypesIndexRouteImport } from './routes/admin/leave-types/index'
-import { Route as AdminCustomersIndexRouteImport } from './routes/admin/customers/index'
-import { Route as AdminContractsIndexRouteImport } from './routes/admin/contracts/index'
-import { Route as AdminUsersNewRouteImport } from './routes/admin/users/new'
-import { Route as AdminUsersIdRouteImport } from './routes/admin/users/$id'
-import { Route as AdminLeaveTypesNewRouteImport } from './routes/admin/leave-types/new'
-import { Route as AdminLeaveTypesIdRouteImport } from './routes/admin/leave-types/$id'
-import { Route as AdminCustomersNewRouteImport } from './routes/admin/customers/new'
-import { Route as AdminCustomersIdRouteImport } from './routes/admin/customers/$id'
-import { Route as AdminContractsNewRouteImport } from './routes/admin/contracts/new'
-import { Route as AdminContractsIdRouteImport } from './routes/admin/contracts/$id'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
+import { Route as AuthedAdminRouteImport } from './routes/_authed/admin'
+import { Route as AuthedTimesheetsIndexRouteImport } from './routes/_authed/timesheets/index'
+import { Route as AuthedTimeEntryIndexRouteImport } from './routes/_authed/time-entry/index'
+import { Route as AuthedLeaveOverviewIndexRouteImport } from './routes/_authed/leave-overview/index'
+import { Route as AuthedAdminIndexRouteImport } from './routes/_authed/admin/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthedAdminUsersIndexRouteImport } from './routes/_authed/admin/users/index'
+import { Route as AuthedAdminLeaveTypesIndexRouteImport } from './routes/_authed/admin/leave-types/index'
+import { Route as AuthedAdminCustomersIndexRouteImport } from './routes/_authed/admin/customers/index'
+import { Route as AuthedAdminContractsIndexRouteImport } from './routes/_authed/admin/contracts/index'
+import { Route as AuthedAdminUsersNewRouteImport } from './routes/_authed/admin/users/new'
+import { Route as AuthedAdminUsersIdRouteImport } from './routes/_authed/admin/users/$id'
+import { Route as AuthedAdminLeaveTypesNewRouteImport } from './routes/_authed/admin/leave-types/new'
+import { Route as AuthedAdminLeaveTypesIdRouteImport } from './routes/_authed/admin/leave-types/$id'
+import { Route as AuthedAdminCustomersNewRouteImport } from './routes/_authed/admin/customers/new'
+import { Route as AuthedAdminCustomersIdRouteImport } from './routes/_authed/admin/customers/$id'
+import { Route as AuthedAdminContractsNewRouteImport } from './routes/_authed/admin/contracts/new'
+import { Route as AuthedAdminContractsIdRouteImport } from './routes/_authed/admin/contracts/$id'
 
-const IndexRoute = IndexRouteImport.update({
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthedRoute,
 } as any)
-const TimesheetsIndexRoute = TimesheetsIndexRouteImport.update({
+const AuthedAdminRoute = AuthedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedTimesheetsIndexRoute = AuthedTimesheetsIndexRouteImport.update({
   id: '/timesheets/',
   path: '/timesheets/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthedRoute,
 } as any)
-const TimeEntryIndexRoute = TimeEntryIndexRouteImport.update({
+const AuthedTimeEntryIndexRoute = AuthedTimeEntryIndexRouteImport.update({
   id: '/time-entry/',
   path: '/time-entry/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedLeaveOverviewIndexRoute =
+  AuthedLeaveOverviewIndexRouteImport.update({
+    id: '/leave-overview/',
+    path: '/leave-overview/',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedAdminIndexRoute = AuthedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedAdminRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LeaveOverviewIndexRoute = LeaveOverviewIndexRouteImport.update({
-  id: '/leave-overview/',
-  path: '/leave-overview/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminUsersIndexRoute = AuthedAdminUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminLeaveTypesIndexRoute =
+  AuthedAdminLeaveTypesIndexRouteImport.update({
+    id: '/leave-types/',
+    path: '/leave-types/',
+    getParentRoute: () => AuthedAdminRoute,
+  } as any)
+const AuthedAdminCustomersIndexRoute =
+  AuthedAdminCustomersIndexRouteImport.update({
+    id: '/customers/',
+    path: '/customers/',
+    getParentRoute: () => AuthedAdminRoute,
+  } as any)
+const AuthedAdminContractsIndexRoute =
+  AuthedAdminContractsIndexRouteImport.update({
+    id: '/contracts/',
+    path: '/contracts/',
+    getParentRoute: () => AuthedAdminRoute,
+  } as any)
+const AuthedAdminUsersNewRoute = AuthedAdminUsersNewRouteImport.update({
+  id: '/users/new',
+  path: '/users/new',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
-  id: '/admin/users/',
-  path: '/admin/users/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminUsersIdRoute = AuthedAdminUsersIdRouteImport.update({
+  id: '/users/$id',
+  path: '/users/$id',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminLeaveTypesIndexRoute = AdminLeaveTypesIndexRouteImport.update({
-  id: '/admin/leave-types/',
-  path: '/admin/leave-types/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminLeaveTypesNewRoute =
+  AuthedAdminLeaveTypesNewRouteImport.update({
+    id: '/leave-types/new',
+    path: '/leave-types/new',
+    getParentRoute: () => AuthedAdminRoute,
+  } as any)
+const AuthedAdminLeaveTypesIdRoute = AuthedAdminLeaveTypesIdRouteImport.update({
+  id: '/leave-types/$id',
+  path: '/leave-types/$id',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminCustomersIndexRoute = AdminCustomersIndexRouteImport.update({
-  id: '/admin/customers/',
-  path: '/admin/customers/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminCustomersNewRoute = AuthedAdminCustomersNewRouteImport.update({
+  id: '/customers/new',
+  path: '/customers/new',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminContractsIndexRoute = AdminContractsIndexRouteImport.update({
-  id: '/admin/contracts/',
-  path: '/admin/contracts/',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminCustomersIdRoute = AuthedAdminCustomersIdRouteImport.update({
+  id: '/customers/$id',
+  path: '/customers/$id',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminUsersNewRoute = AdminUsersNewRouteImport.update({
-  id: '/admin/users/new',
-  path: '/admin/users/new',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminContractsNewRoute = AuthedAdminContractsNewRouteImport.update({
+  id: '/contracts/new',
+  path: '/contracts/new',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
-const AdminUsersIdRoute = AdminUsersIdRouteImport.update({
-  id: '/admin/users/$id',
-  path: '/admin/users/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLeaveTypesNewRoute = AdminLeaveTypesNewRouteImport.update({
-  id: '/admin/leave-types/new',
-  path: '/admin/leave-types/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLeaveTypesIdRoute = AdminLeaveTypesIdRouteImport.update({
-  id: '/admin/leave-types/$id',
-  path: '/admin/leave-types/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminCustomersNewRoute = AdminCustomersNewRouteImport.update({
-  id: '/admin/customers/new',
-  path: '/admin/customers/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminCustomersIdRoute = AdminCustomersIdRouteImport.update({
-  id: '/admin/customers/$id',
-  path: '/admin/customers/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminContractsNewRoute = AdminContractsNewRouteImport.update({
-  id: '/admin/contracts/new',
-  path: '/admin/contracts/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminContractsIdRoute = AdminContractsIdRouteImport.update({
-  id: '/admin/contracts/$id',
-  path: '/admin/contracts/$id',
-  getParentRoute: () => rootRouteImport,
+const AuthedAdminContractsIdRoute = AuthedAdminContractsIdRouteImport.update({
+  id: '/contracts/$id',
+  path: '/contracts/$id',
+  getParentRoute: () => AuthedAdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/admin/': typeof AdminIndexRoute
-  '/leave-overview/': typeof LeaveOverviewIndexRoute
-  '/time-entry/': typeof TimeEntryIndexRoute
-  '/timesheets/': typeof TimesheetsIndexRoute
-  '/admin/contracts/$id': typeof AdminContractsIdRoute
-  '/admin/contracts/new': typeof AdminContractsNewRoute
-  '/admin/customers/$id': typeof AdminCustomersIdRoute
-  '/admin/customers/new': typeof AdminCustomersNewRoute
-  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
-  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
-  '/admin/users/$id': typeof AdminUsersIdRoute
-  '/admin/users/new': typeof AdminUsersNewRoute
-  '/admin/contracts/': typeof AdminContractsIndexRoute
-  '/admin/customers/': typeof AdminCustomersIndexRoute
-  '/admin/leave-types/': typeof AdminLeaveTypesIndexRoute
-  '/admin/users/': typeof AdminUsersIndexRoute
+  '/': typeof AuthedIndexRoute
+  '/login': typeof LoginRoute
+  '/admin': typeof AuthedAdminRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/admin/': typeof AuthedAdminIndexRoute
+  '/leave-overview/': typeof AuthedLeaveOverviewIndexRoute
+  '/time-entry/': typeof AuthedTimeEntryIndexRoute
+  '/timesheets/': typeof AuthedTimesheetsIndexRoute
+  '/admin/contracts/$id': typeof AuthedAdminContractsIdRoute
+  '/admin/contracts/new': typeof AuthedAdminContractsNewRoute
+  '/admin/customers/$id': typeof AuthedAdminCustomersIdRoute
+  '/admin/customers/new': typeof AuthedAdminCustomersNewRoute
+  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
+  '/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
+  '/admin/users/$id': typeof AuthedAdminUsersIdRoute
+  '/admin/users/new': typeof AuthedAdminUsersNewRoute
+  '/admin/contracts/': typeof AuthedAdminContractsIndexRoute
+  '/admin/customers/': typeof AuthedAdminCustomersIndexRoute
+  '/admin/leave-types/': typeof AuthedAdminLeaveTypesIndexRoute
+  '/admin/users/': typeof AuthedAdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminIndexRoute
-  '/leave-overview': typeof LeaveOverviewIndexRoute
-  '/time-entry': typeof TimeEntryIndexRoute
-  '/timesheets': typeof TimesheetsIndexRoute
-  '/admin/contracts/$id': typeof AdminContractsIdRoute
-  '/admin/contracts/new': typeof AdminContractsNewRoute
-  '/admin/customers/$id': typeof AdminCustomersIdRoute
-  '/admin/customers/new': typeof AdminCustomersNewRoute
-  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
-  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
-  '/admin/users/$id': typeof AdminUsersIdRoute
-  '/admin/users/new': typeof AdminUsersNewRoute
-  '/admin/contracts': typeof AdminContractsIndexRoute
-  '/admin/customers': typeof AdminCustomersIndexRoute
-  '/admin/leave-types': typeof AdminLeaveTypesIndexRoute
-  '/admin/users': typeof AdminUsersIndexRoute
+  '/login': typeof LoginRoute
+  '/': typeof AuthedIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/admin': typeof AuthedAdminIndexRoute
+  '/leave-overview': typeof AuthedLeaveOverviewIndexRoute
+  '/time-entry': typeof AuthedTimeEntryIndexRoute
+  '/timesheets': typeof AuthedTimesheetsIndexRoute
+  '/admin/contracts/$id': typeof AuthedAdminContractsIdRoute
+  '/admin/contracts/new': typeof AuthedAdminContractsNewRoute
+  '/admin/customers/$id': typeof AuthedAdminCustomersIdRoute
+  '/admin/customers/new': typeof AuthedAdminCustomersNewRoute
+  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
+  '/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
+  '/admin/users/$id': typeof AuthedAdminUsersIdRoute
+  '/admin/users/new': typeof AuthedAdminUsersNewRoute
+  '/admin/contracts': typeof AuthedAdminContractsIndexRoute
+  '/admin/customers': typeof AuthedAdminCustomersIndexRoute
+  '/admin/leave-types': typeof AuthedAdminLeaveTypesIndexRoute
+  '/admin/users': typeof AuthedAdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/admin/': typeof AdminIndexRoute
-  '/leave-overview/': typeof LeaveOverviewIndexRoute
-  '/time-entry/': typeof TimeEntryIndexRoute
-  '/timesheets/': typeof TimesheetsIndexRoute
-  '/admin/contracts/$id': typeof AdminContractsIdRoute
-  '/admin/contracts/new': typeof AdminContractsNewRoute
-  '/admin/customers/$id': typeof AdminCustomersIdRoute
-  '/admin/customers/new': typeof AdminCustomersNewRoute
-  '/admin/leave-types/$id': typeof AdminLeaveTypesIdRoute
-  '/admin/leave-types/new': typeof AdminLeaveTypesNewRoute
-  '/admin/users/$id': typeof AdminUsersIdRoute
-  '/admin/users/new': typeof AdminUsersNewRoute
-  '/admin/contracts/': typeof AdminContractsIndexRoute
-  '/admin/customers/': typeof AdminCustomersIndexRoute
-  '/admin/leave-types/': typeof AdminLeaveTypesIndexRoute
-  '/admin/users/': typeof AdminUsersIndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authed/admin': typeof AuthedAdminRouteWithChildren
+  '/_authed/': typeof AuthedIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_authed/admin/': typeof AuthedAdminIndexRoute
+  '/_authed/leave-overview/': typeof AuthedLeaveOverviewIndexRoute
+  '/_authed/time-entry/': typeof AuthedTimeEntryIndexRoute
+  '/_authed/timesheets/': typeof AuthedTimesheetsIndexRoute
+  '/_authed/admin/contracts/$id': typeof AuthedAdminContractsIdRoute
+  '/_authed/admin/contracts/new': typeof AuthedAdminContractsNewRoute
+  '/_authed/admin/customers/$id': typeof AuthedAdminCustomersIdRoute
+  '/_authed/admin/customers/new': typeof AuthedAdminCustomersNewRoute
+  '/_authed/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
+  '/_authed/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
+  '/_authed/admin/users/$id': typeof AuthedAdminUsersIdRoute
+  '/_authed/admin/users/new': typeof AuthedAdminUsersNewRoute
+  '/_authed/admin/contracts/': typeof AuthedAdminContractsIndexRoute
+  '/_authed/admin/customers/': typeof AuthedAdminCustomersIndexRoute
+  '/_authed/admin/leave-types/': typeof AuthedAdminLeaveTypesIndexRoute
+  '/_authed/admin/users/': typeof AuthedAdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/admin'
+    | '/api/auth/$'
     | '/admin/'
     | '/leave-overview/'
     | '/time-entry/'
@@ -193,7 +233,9 @@ export interface FileRouteTypes {
     | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/login'
     | '/'
+    | '/api/auth/$'
     | '/admin'
     | '/leave-overview'
     | '/time-entry'
@@ -212,187 +254,246 @@ export interface FileRouteTypes {
     | '/admin/users'
   id:
     | '__root__'
-    | '/'
-    | '/admin/'
-    | '/leave-overview/'
-    | '/time-entry/'
-    | '/timesheets/'
-    | '/admin/contracts/$id'
-    | '/admin/contracts/new'
-    | '/admin/customers/$id'
-    | '/admin/customers/new'
-    | '/admin/leave-types/$id'
-    | '/admin/leave-types/new'
-    | '/admin/users/$id'
-    | '/admin/users/new'
-    | '/admin/contracts/'
-    | '/admin/customers/'
-    | '/admin/leave-types/'
-    | '/admin/users/'
+    | '/_authed'
+    | '/login'
+    | '/_authed/admin'
+    | '/_authed/'
+    | '/api/auth/$'
+    | '/_authed/admin/'
+    | '/_authed/leave-overview/'
+    | '/_authed/time-entry/'
+    | '/_authed/timesheets/'
+    | '/_authed/admin/contracts/$id'
+    | '/_authed/admin/contracts/new'
+    | '/_authed/admin/customers/$id'
+    | '/_authed/admin/customers/new'
+    | '/_authed/admin/leave-types/$id'
+    | '/_authed/admin/leave-types/new'
+    | '/_authed/admin/users/$id'
+    | '/_authed/admin/users/new'
+    | '/_authed/admin/contracts/'
+    | '/_authed/admin/customers/'
+    | '/_authed/admin/leave-types/'
+    | '/_authed/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  LeaveOverviewIndexRoute: typeof LeaveOverviewIndexRoute
-  TimeEntryIndexRoute: typeof TimeEntryIndexRoute
-  TimesheetsIndexRoute: typeof TimesheetsIndexRoute
-  AdminContractsIdRoute: typeof AdminContractsIdRoute
-  AdminContractsNewRoute: typeof AdminContractsNewRoute
-  AdminCustomersIdRoute: typeof AdminCustomersIdRoute
-  AdminCustomersNewRoute: typeof AdminCustomersNewRoute
-  AdminLeaveTypesIdRoute: typeof AdminLeaveTypesIdRoute
-  AdminLeaveTypesNewRoute: typeof AdminLeaveTypesNewRoute
-  AdminUsersIdRoute: typeof AdminUsersIdRoute
-  AdminUsersNewRoute: typeof AdminUsersNewRoute
-  AdminContractsIndexRoute: typeof AdminContractsIndexRoute
-  AdminCustomersIndexRoute: typeof AdminCustomersIndexRoute
-  AdminLeaveTypesIndexRoute: typeof AdminLeaveTypesIndexRoute
-  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/': {
+      id: '/_authed/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/timesheets/': {
-      id: '/timesheets/'
+    '/_authed/admin': {
+      id: '/_authed/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthedAdminRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/timesheets/': {
+      id: '/_authed/timesheets/'
       path: '/timesheets'
       fullPath: '/timesheets/'
-      preLoaderRoute: typeof TimesheetsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedTimesheetsIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/time-entry/': {
-      id: '/time-entry/'
+    '/_authed/time-entry/': {
+      id: '/_authed/time-entry/'
       path: '/time-entry'
       fullPath: '/time-entry/'
-      preLoaderRoute: typeof TimeEntryIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedTimeEntryIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/leave-overview/': {
-      id: '/leave-overview/'
+    '/_authed/leave-overview/': {
+      id: '/_authed/leave-overview/'
       path: '/leave-overview'
       fullPath: '/leave-overview/'
-      preLoaderRoute: typeof LeaveOverviewIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedLeaveOverviewIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
+    '/_authed/admin/': {
+      id: '/_authed/admin/'
+      path: '/'
       fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
+      preLoaderRoute: typeof AuthedAdminIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/users/': {
-      id: '/admin/users/'
-      path: '/admin/users'
+    '/_authed/admin/users/': {
+      id: '/_authed/admin/users/'
+      path: '/users'
       fullPath: '/admin/users/'
-      preLoaderRoute: typeof AdminUsersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminUsersIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/leave-types/': {
-      id: '/admin/leave-types/'
-      path: '/admin/leave-types'
+    '/_authed/admin/leave-types/': {
+      id: '/_authed/admin/leave-types/'
+      path: '/leave-types'
       fullPath: '/admin/leave-types/'
-      preLoaderRoute: typeof AdminLeaveTypesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminLeaveTypesIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/customers/': {
-      id: '/admin/customers/'
-      path: '/admin/customers'
+    '/_authed/admin/customers/': {
+      id: '/_authed/admin/customers/'
+      path: '/customers'
       fullPath: '/admin/customers/'
-      preLoaderRoute: typeof AdminCustomersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminCustomersIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/contracts/': {
-      id: '/admin/contracts/'
-      path: '/admin/contracts'
+    '/_authed/admin/contracts/': {
+      id: '/_authed/admin/contracts/'
+      path: '/contracts'
       fullPath: '/admin/contracts/'
-      preLoaderRoute: typeof AdminContractsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminContractsIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/users/new': {
-      id: '/admin/users/new'
-      path: '/admin/users/new'
+    '/_authed/admin/users/new': {
+      id: '/_authed/admin/users/new'
+      path: '/users/new'
       fullPath: '/admin/users/new'
-      preLoaderRoute: typeof AdminUsersNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminUsersNewRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/users/$id': {
-      id: '/admin/users/$id'
-      path: '/admin/users/$id'
+    '/_authed/admin/users/$id': {
+      id: '/_authed/admin/users/$id'
+      path: '/users/$id'
       fullPath: '/admin/users/$id'
-      preLoaderRoute: typeof AdminUsersIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminUsersIdRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/leave-types/new': {
-      id: '/admin/leave-types/new'
-      path: '/admin/leave-types/new'
+    '/_authed/admin/leave-types/new': {
+      id: '/_authed/admin/leave-types/new'
+      path: '/leave-types/new'
       fullPath: '/admin/leave-types/new'
-      preLoaderRoute: typeof AdminLeaveTypesNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminLeaveTypesNewRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/leave-types/$id': {
-      id: '/admin/leave-types/$id'
-      path: '/admin/leave-types/$id'
+    '/_authed/admin/leave-types/$id': {
+      id: '/_authed/admin/leave-types/$id'
+      path: '/leave-types/$id'
       fullPath: '/admin/leave-types/$id'
-      preLoaderRoute: typeof AdminLeaveTypesIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminLeaveTypesIdRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/customers/new': {
-      id: '/admin/customers/new'
-      path: '/admin/customers/new'
+    '/_authed/admin/customers/new': {
+      id: '/_authed/admin/customers/new'
+      path: '/customers/new'
       fullPath: '/admin/customers/new'
-      preLoaderRoute: typeof AdminCustomersNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminCustomersNewRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/customers/$id': {
-      id: '/admin/customers/$id'
-      path: '/admin/customers/$id'
+    '/_authed/admin/customers/$id': {
+      id: '/_authed/admin/customers/$id'
+      path: '/customers/$id'
       fullPath: '/admin/customers/$id'
-      preLoaderRoute: typeof AdminCustomersIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminCustomersIdRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/contracts/new': {
-      id: '/admin/contracts/new'
-      path: '/admin/contracts/new'
+    '/_authed/admin/contracts/new': {
+      id: '/_authed/admin/contracts/new'
+      path: '/contracts/new'
       fullPath: '/admin/contracts/new'
-      preLoaderRoute: typeof AdminContractsNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminContractsNewRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
-    '/admin/contracts/$id': {
-      id: '/admin/contracts/$id'
-      path: '/admin/contracts/$id'
+    '/_authed/admin/contracts/$id': {
+      id: '/_authed/admin/contracts/$id'
+      path: '/contracts/$id'
       fullPath: '/admin/contracts/$id'
-      preLoaderRoute: typeof AdminContractsIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedAdminContractsIdRouteImport
+      parentRoute: typeof AuthedAdminRoute
     }
   }
 }
 
+interface AuthedAdminRouteChildren {
+  AuthedAdminIndexRoute: typeof AuthedAdminIndexRoute
+  AuthedAdminContractsIdRoute: typeof AuthedAdminContractsIdRoute
+  AuthedAdminContractsNewRoute: typeof AuthedAdminContractsNewRoute
+  AuthedAdminCustomersIdRoute: typeof AuthedAdminCustomersIdRoute
+  AuthedAdminCustomersNewRoute: typeof AuthedAdminCustomersNewRoute
+  AuthedAdminLeaveTypesIdRoute: typeof AuthedAdminLeaveTypesIdRoute
+  AuthedAdminLeaveTypesNewRoute: typeof AuthedAdminLeaveTypesNewRoute
+  AuthedAdminUsersIdRoute: typeof AuthedAdminUsersIdRoute
+  AuthedAdminUsersNewRoute: typeof AuthedAdminUsersNewRoute
+  AuthedAdminContractsIndexRoute: typeof AuthedAdminContractsIndexRoute
+  AuthedAdminCustomersIndexRoute: typeof AuthedAdminCustomersIndexRoute
+  AuthedAdminLeaveTypesIndexRoute: typeof AuthedAdminLeaveTypesIndexRoute
+  AuthedAdminUsersIndexRoute: typeof AuthedAdminUsersIndexRoute
+}
+
+const AuthedAdminRouteChildren: AuthedAdminRouteChildren = {
+  AuthedAdminIndexRoute: AuthedAdminIndexRoute,
+  AuthedAdminContractsIdRoute: AuthedAdminContractsIdRoute,
+  AuthedAdminContractsNewRoute: AuthedAdminContractsNewRoute,
+  AuthedAdminCustomersIdRoute: AuthedAdminCustomersIdRoute,
+  AuthedAdminCustomersNewRoute: AuthedAdminCustomersNewRoute,
+  AuthedAdminLeaveTypesIdRoute: AuthedAdminLeaveTypesIdRoute,
+  AuthedAdminLeaveTypesNewRoute: AuthedAdminLeaveTypesNewRoute,
+  AuthedAdminUsersIdRoute: AuthedAdminUsersIdRoute,
+  AuthedAdminUsersNewRoute: AuthedAdminUsersNewRoute,
+  AuthedAdminContractsIndexRoute: AuthedAdminContractsIndexRoute,
+  AuthedAdminCustomersIndexRoute: AuthedAdminCustomersIndexRoute,
+  AuthedAdminLeaveTypesIndexRoute: AuthedAdminLeaveTypesIndexRoute,
+  AuthedAdminUsersIndexRoute: AuthedAdminUsersIndexRoute,
+}
+
+const AuthedAdminRouteWithChildren = AuthedAdminRoute._addFileChildren(
+  AuthedAdminRouteChildren,
+)
+
+interface AuthedRouteChildren {
+  AuthedAdminRoute: typeof AuthedAdminRouteWithChildren
+  AuthedIndexRoute: typeof AuthedIndexRoute
+  AuthedLeaveOverviewIndexRoute: typeof AuthedLeaveOverviewIndexRoute
+  AuthedTimeEntryIndexRoute: typeof AuthedTimeEntryIndexRoute
+  AuthedTimesheetsIndexRoute: typeof AuthedTimesheetsIndexRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAdminRoute: AuthedAdminRouteWithChildren,
+  AuthedIndexRoute: AuthedIndexRoute,
+  AuthedLeaveOverviewIndexRoute: AuthedLeaveOverviewIndexRoute,
+  AuthedTimeEntryIndexRoute: AuthedTimeEntryIndexRoute,
+  AuthedTimesheetsIndexRoute: AuthedTimesheetsIndexRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  LeaveOverviewIndexRoute: LeaveOverviewIndexRoute,
-  TimeEntryIndexRoute: TimeEntryIndexRoute,
-  TimesheetsIndexRoute: TimesheetsIndexRoute,
-  AdminContractsIdRoute: AdminContractsIdRoute,
-  AdminContractsNewRoute: AdminContractsNewRoute,
-  AdminCustomersIdRoute: AdminCustomersIdRoute,
-  AdminCustomersNewRoute: AdminCustomersNewRoute,
-  AdminLeaveTypesIdRoute: AdminLeaveTypesIdRoute,
-  AdminLeaveTypesNewRoute: AdminLeaveTypesNewRoute,
-  AdminUsersIdRoute: AdminUsersIdRoute,
-  AdminUsersNewRoute: AdminUsersNewRoute,
-  AdminContractsIndexRoute: AdminContractsIndexRoute,
-  AdminCustomersIndexRoute: AdminCustomersIndexRoute,
-  AdminLeaveTypesIndexRoute: AdminLeaveTypesIndexRoute,
-  AdminUsersIndexRoute: AdminUsersIndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
+  LoginRoute: LoginRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

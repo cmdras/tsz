@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using Api.Common.Counters;
 using Api.Common.Database;
+using Api.Common.Extensions;
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
@@ -11,6 +12,8 @@ using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddEntraJwtAuth();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -61,6 +64,8 @@ if (!app.Environment.IsEnvironment("Testing"))
     await ContractSeeder.SeedAsync(appDb);
     await CounterSeeder.SeedAsync(appDb);
 }
+
+app.UseEntraJwtAuth();
 
 // app.UseHttpsRedirection();
 app.MapOpenApi("/openapi/{documentName}.json");

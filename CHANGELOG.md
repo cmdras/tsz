@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-19
+
+- feat(auth): implement S6 OAuth with Entra ID, fix v2 issuer and claim extraction
+
 ## 2026-05-18
 
 - feat(shell): replace sidebar with Euricom top navbar

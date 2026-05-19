@@ -6,20 +6,17 @@ using Api.Common.Database;
 using Api.Modules.LeaveTypes;
 using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Api.Tests.Integration.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.Users;
 
-public class UserLeaveAllowanceEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class UserLeaveAllowanceEndpointsTests : IClassFixture<UserLeaveAllowanceApiFactory>, IAsyncLifetime
 {
-    private readonly WebApplicationFactory<Program> _testFactory;
+    private readonly UserLeaveAllowanceApiFactory _factory;
     private readonly HttpClient _client;
-    private readonly string _databaseName;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -27,35 +24,28 @@ public class UserLeaveAllowanceEndpointsTests : IClassFixture<WebApplicationFact
         Converters = { new JsonStringEnumConverter() },
     };
 
-    public UserLeaveAllowanceEndpointsTests(WebApplicationFactory<Program> factory)
+    public UserLeaveAllowanceEndpointsTests(UserLeaveAllowanceApiFactory factory)
     {
-        _databaseName = "UserLeaveAllowanceIntegrationTests_" + Guid.NewGuid();
-        _testFactory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Testing");
-            builder.ConfigureServices(services =>
-            {
-                var toRemove = services
-                    .Where(descriptor =>
-                        descriptor.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>) ||
-                        descriptor.ServiceType == typeof(AppDbContext))
-                    .ToList();
-                foreach (var descriptor in toRemove)
-                    services.Remove(descriptor);
-
-                services.AddDbContext<AppDbContext>(options => options
-                    .UseInMemoryDatabase(_databaseName)
-                    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
-            });
-        });
-        _client = _testFactory.CreateClient();
+        _factory = factory;
+        _client = factory.CreateClient();
     }
+
+    public async Task InitializeAsync()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.UserLeaveAllowances.RemoveRange(context.UserLeaveAllowances);
+        context.Users.RemoveRange(context.Users);
+        context.LeaveTypes.RemoveRange(context.LeaveTypes);
+        await context.SaveChangesAsync();
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private AppDbContext OpenContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(_databaseName)
+            .UseInMemoryDatabase(_factory.DatabaseName)
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         return new AppDbContext(options);
@@ -255,4 +245,9 @@ public class UserLeaveAllowanceEndpointsTests : IClassFixture<WebApplicationFact
         Assert.True(json.TryGetProperty("defaultMode", out var defaultMode), "Response did not include 'defaultMode' property.");
         Assert.Equal("Limited", defaultMode.GetString());
     }
+}
+
+public class UserLeaveAllowanceApiFactory : TestApiFactory
+{
+    public UserLeaveAllowanceApiFactory() : base("UserLeaveAllowanceIntegrationTests") { }
 }

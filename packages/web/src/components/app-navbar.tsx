@@ -1,4 +1,4 @@
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link, useLocation, useRouteContext } from '@tanstack/react-router';
 import {
   Building2,
   CalendarClock,
@@ -6,6 +6,7 @@ import {
   ChevronDown,
   Clock,
   FileText,
+  LogOut,
   Moon,
   Settings2,
   Sun,
@@ -17,9 +18,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu';
 import { useTheme } from '#/hooks/use-theme';
+import { signOut } from '#/lib/auth-client';
 import { cn } from '#/lib/utils';
 
 type NavItem = {
@@ -85,10 +88,22 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
   );
 }
 
+function getInitials(name: string | null | undefined): string {
+  if (!name) return '?';
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+}
+
 export function AppNavbar() {
   const { isDark, toggle } = useTheme();
   const pathname = useLocation({ select: (state) => state.pathname });
   const isActive = (to: string) => pathname === to || pathname.startsWith(to + '/');
+  const { currentUser } = useRouteContext({ from: '/_authed' });
+  const isAdmin = currentUser?.role === 'Admin';
 
   return (
     <nav
@@ -115,50 +130,54 @@ export function AppNavbar() {
       </ul>
 
       {/* Admin: dropdown on smaller screens, individual links on wide screens */}
-      <div className="h-5 w-px bg-border" />
+      {isAdmin && (
+        <>
+          <div className="h-5 w-px bg-border" />
 
-      {/* Wide: individual links */}
-      <ul className="hidden h-full items-center gap-1 list-none m-0 p-0 2xl:flex">
-        {adminNavItems.map((item) => (
-          <NavLink key={item.to} item={item} isActive={isActive(item.to)} />
-        ))}
-      </ul>
+          {/* Wide: individual links */}
+          <ul className="hidden h-full items-center gap-1 list-none m-0 p-0 2xl:flex">
+            {adminNavItems.map((item) => (
+              <NavLink key={item.to} item={item} isActive={isActive(item.to)} />
+            ))}
+          </ul>
 
-      {/* Narrow: dropdown */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className={cn(
-              '2xl:hidden',
-              'flex h-full items-center gap-2 px-3.5 text-sm font-medium tracking-[0.01em] whitespace-nowrap transition-colors duration-150 outline-none',
-              adminNavItems.some((item) => isActive(item.to))
-                ? 'font-bold text-[#014046] dark:text-[#00FF00]'
-                : 'text-muted-foreground hover:text-foreground',
-            )}
-          >
-            <Settings2 className="h-4 w-4 opacity-85 shrink-0" />
-            Admin
-            <ChevronDown className="h-3.5 w-3.5 opacity-60" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-44">
-          {adminNavItems.map((item) => (
-            <DropdownMenuItem key={item.to} asChild>
-              <Link
-                to={item.to}
+          {/* Narrow: dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
                 className={cn(
-                  'flex items-center gap-2.5 cursor-pointer',
-                  isActive(item.to) && 'font-semibold text-[#014046] dark:text-[#00FF00]',
+                  '2xl:hidden',
+                  'flex h-full items-center gap-2 px-3.5 text-sm font-medium tracking-[0.01em] whitespace-nowrap transition-colors duration-150 outline-none',
+                  adminNavItems.some((item) => isActive(item.to))
+                    ? 'font-bold text-[#014046] dark:text-[#00FF00]'
+                    : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                <item.icon className="h-4 w-4 shrink-0 opacity-70" />
-                {item.label}
-              </Link>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+                <Settings2 className="h-4 w-4 opacity-85 shrink-0" />
+                Admin
+                <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-44">
+              {adminNavItems.map((item) => (
+                <DropdownMenuItem key={item.to} asChild>
+                  <Link
+                    to={item.to}
+                    className={cn(
+                      'flex items-center gap-2.5 cursor-pointer',
+                      isActive(item.to) && 'font-semibold text-[#014046] dark:text-[#00FF00]',
+                    )}
+                  >
+                    <item.icon className="h-4 w-4 shrink-0 opacity-70" />
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      )}
 
       <div className="flex-1" />
 
@@ -174,22 +193,40 @@ export function AppNavbar() {
           {isDark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
         </Button>
 
-        <button
-          type="button"
-          className="flex items-center gap-2.5 rounded-full border border-border/40 bg-transparent px-3 py-1.5 transition-colors duration-150 hover:border-border hover:bg-accent cursor-pointer"
-          aria-label="Account menu"
-        >
-          <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#00FF00] to-[#00C246] text-[11px] font-bold text-[#1D252D] leading-none"
-            aria-hidden="true"
-          >
-            CR
-          </span>
-          <span className="hidden text-sm font-semibold text-foreground lg:block whitespace-nowrap">
-            Christopher Ras
-          </span>
-          <ChevronDown className="h-3 w-3 text-muted-foreground" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="flex items-center gap-2.5 rounded-full border border-border/40 bg-transparent px-3 py-1.5 transition-colors duration-150 hover:border-border hover:bg-accent cursor-pointer outline-none"
+              aria-label="Account menu"
+            >
+              <span
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#00FF00] to-[#00C246] text-[11px] font-bold text-[#1D252D] leading-none"
+                aria-hidden="true"
+              >
+                {getInitials(currentUser?.name)}
+              </span>
+              <span className="hidden text-sm font-semibold text-foreground lg:block whitespace-nowrap">
+                {currentUser?.name ?? ''}
+              </span>
+              <ChevronDown className="h-3 w-3 text-muted-foreground" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <div className="px-2 py-1.5">
+              <p className="text-sm font-semibold">{currentUser?.name ?? ''}</p>
+              <p className="text-xs text-muted-foreground">{currentUser?.email ?? ''}</p>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="cursor-pointer text-destructive focus:text-destructive"
+              onSelect={() => void signOut('/login')}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

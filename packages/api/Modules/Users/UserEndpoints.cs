@@ -12,6 +12,24 @@ public static class UserEndpoints
     {
         var group = app.MapApiGroup("users");
 
+        group.MapGet("/me", async Task<Results<Ok<User>, ProblemHttpResult>> (
+            HttpContext httpContext,
+            UserService service,
+            CancellationToken cancellationToken) =>
+        {
+            var name = httpContext.User.FindFirst("name")?.Value ?? "";
+            var email = httpContext.User.FindFirst("preferred_username")?.Value
+                ?? httpContext.User.FindFirst("upn")?.Value
+                ?? httpContext.User.FindFirst("email")?.Value
+                ?? "";
+
+            if (string.IsNullOrEmpty(email))
+                return TypedResults.Problem("No UPN claim in token.", statusCode: 400);
+
+            var user = await service.GetOrProvisionAsync(name, email, cancellationToken);
+            return TypedResults.Ok(user);
+        });
+
         group.MapGet("/", async (
             string? search,
             UserSort? sort,
