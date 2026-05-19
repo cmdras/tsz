@@ -1,7 +1,7 @@
 import { type components } from '#/api/schema';
 import { client } from '#/api/client';
 
-export type LeaveType = components['schemas']['LeaveType'];
+export type LeaveType = components['schemas']['LeaveTypeResponse'];
 export type LeaveTypeRequest = components['schemas']['LeaveTypeRequest'];
 export type PagedLeaveTypes = components['schemas']['PagedLeaveTypes'];
 export type LeaveTypeSort = NonNullable<components['schemas']['LeaveTypeSort']>;

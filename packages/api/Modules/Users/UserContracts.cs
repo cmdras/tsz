@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Api.Common.Exceptions;
 using Api.Modules.UserLeaveAllowances;
 
 namespace Api.Modules.Users;
 
-public class DuplicateEmailException : Exception
-{
-    public DuplicateEmailException() : base("Email address is already in use.") { }
-}
+public class DuplicateEmailException() : DomainException("Email address is already in use.", 409);
 
 public enum UserSort
 {

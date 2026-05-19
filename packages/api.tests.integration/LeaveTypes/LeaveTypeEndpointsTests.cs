@@ -36,12 +36,12 @@ public class LeaveTypeEndpointsTests : IClassFixture<LeaveTypeApiFactory>, IAsyn
 
     public Task DisposeAsync() => Task.CompletedTask;
 
-    private async Task<LeaveType> SeedLeaveTypeViaApiAsync(string name = "Holiday", decimal defaultDays = 20m)
+    private async Task<LeaveTypeResponse> SeedLeaveTypeViaApiAsync(string name = "Holiday", decimal defaultDays = 20m)
     {
         var request = new LeaveTypeRequest { Name = name, DefaultDays = defaultDays };
         var response = await _client.PostAsJsonAsync("/api/leave-types", request);
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<LeaveType>(JsonOptions))!;
+        return (await response.Content.ReadFromJsonAsync<LeaveTypeResponse>(JsonOptions))!;
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class LeaveTypeEndpointsTests : IClassFixture<LeaveTypeApiFactory>, IAsyn
         var response = await _client.GetAsync($"/api/leave-types/{seeded.Id}");
 
         response.EnsureSuccessStatusCode();
-        var leaveType = await response.Content.ReadFromJsonAsync<LeaveType>(JsonOptions);
+        var leaveType = await response.Content.ReadFromJsonAsync<LeaveTypeResponse>(JsonOptions);
         Assert.NotNull(leaveType);
         Assert.Equal("ADV", leaveType.Name);
     }
@@ -83,7 +83,7 @@ public class LeaveTypeEndpointsTests : IClassFixture<LeaveTypeApiFactory>, IAsyn
         var response = await _client.PostAsJsonAsync("/api/leave-types", request);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var leaveType = await response.Content.ReadFromJsonAsync<LeaveType>(JsonOptions);
+        var leaveType = await response.Content.ReadFromJsonAsync<LeaveTypeResponse>(JsonOptions);
         Assert.NotNull(leaveType);
         Assert.Equal("Ancienniteit", leaveType.Name);
         Assert.Equal(0m, leaveType.DefaultDays);
@@ -138,7 +138,7 @@ public class LeaveTypeEndpointsTests : IClassFixture<LeaveTypeApiFactory>, IAsyn
         var response = await _client.PutAsJsonAsync($"/api/leave-types/{seeded.Id}", request);
 
         response.EnsureSuccessStatusCode();
-        var leaveType = await response.Content.ReadFromJsonAsync<LeaveType>(JsonOptions);
+        var leaveType = await response.Content.ReadFromJsonAsync<LeaveTypeResponse>(JsonOptions);
         Assert.NotNull(leaveType);
         Assert.Equal(2.5m, leaveType.DefaultDays);
     }

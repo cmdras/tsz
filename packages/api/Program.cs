@@ -1,6 +1,7 @@
 using System.Reflection;
 using Api.Common.Counters;
 using Api.Common.Database;
+using Api.Common.Exceptions;
 using Api.Common.Extensions;
 using Api.Common.OpenApi;
 using Api.Modules.Contracts;
@@ -13,6 +14,9 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddEntraJwtAuth();
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddTszJson();
 builder.Services.AddTszOpenApi();
@@ -33,6 +37,7 @@ if (!app.Environment.IsEnvironment("Testing"))
     await app.InitializeDatabaseAsync();
 }
 
+app.UseExceptionHandler();
 app.UseEntraJwtAuth();
 
 app.MapOpenApi("/openapi/{documentName}.json");

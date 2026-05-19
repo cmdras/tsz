@@ -39,7 +39,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
 
     public Task DisposeAsync() => Task.CompletedTask;
 
-    private async Task<Customer> SeedCustomerViaApiAsync(
+    private async Task<CustomerResponse> SeedCustomerViaApiAsync(
         string name = "Acme",
         string contactName = "Alice",
         string contactEmail = "alice@acme.test",
@@ -57,7 +57,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         };
         var response = await _client.PostAsJsonAsync("/api/customers", request);
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<Customer>(JsonOptions))!;
+        return (await response.Content.ReadFromJsonAsync<CustomerResponse>(JsonOptions))!;
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         var response = await _client.GetAsync($"/api/customers/{seeded.Id}");
 
         response.EnsureSuccessStatusCode();
-        var customer = await response.Content.ReadFromJsonAsync<Customer>(JsonOptions);
+        var customer = await response.Content.ReadFromJsonAsync<CustomerResponse>(JsonOptions);
         Assert.NotNull(customer);
         Assert.Equal("Beta Corp", customer.Name);
     }
@@ -108,7 +108,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         var response = await _client.PostAsJsonAsync("/api/customers", request);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var customer = await response.Content.ReadFromJsonAsync<Customer>(JsonOptions);
+        var customer = await response.Content.ReadFromJsonAsync<CustomerResponse>(JsonOptions);
         Assert.NotNull(customer);
         Assert.Equal("Carol Co", customer.Name);
         Assert.True(customer.Number >= 100000);
@@ -151,7 +151,7 @@ public class CustomerEndpointsTests : IClassFixture<CustomerApiFactory>, IAsyncL
         var response = await _client.PutAsJsonAsync($"/api/customers/{seeded.Id}", request);
 
         response.EnsureSuccessStatusCode();
-        var customer = await response.Content.ReadFromJsonAsync<Customer>(JsonOptions);
+        var customer = await response.Content.ReadFromJsonAsync<CustomerResponse>(JsonOptions);
         Assert.Equal("Eve Updated", customer!.Name);
         Assert.Equal("Antwerp", customer.City);
     }

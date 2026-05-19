@@ -12,7 +12,27 @@ public enum ContractSort
     EndDate,
 }
 
-public record PagedContracts(IReadOnlyList<Contract> Items, int Total);
+public record ContractTaskResponse(
+    Guid Id,
+    string Name,
+    decimal DayRate,
+    int Order,
+    bool IsArchived);
+
+public record ContractResponse(
+    Guid Id,
+    int Number,
+    Guid CustomerId,
+    string CustomerName,
+    Guid ConsultantId,
+    string ConsultantName,
+    string Subject,
+    DateOnly StartDate,
+    DateOnly? EndDate,
+    bool IsArchived,
+    IReadOnlyList<ContractTaskResponse> Tasks);
+
+public record PagedContracts(IReadOnlyList<ContractResponse> Items, int Total);
 
 public class ContractTaskRequest
 {

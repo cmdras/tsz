@@ -1,7 +1,7 @@
 import { type components } from '#/api/schema';
 import { client } from '#/api/client';
 
-export type Customer = components['schemas']['Customer'];
+export type Customer = components['schemas']['CustomerResponse'];
 export type CustomerRequest = components['schemas']['CustomerRequest'];
 export type PagedCustomers = components['schemas']['PagedCustomers'];
 export type CustomerSort = NonNullable<components['schemas']['CustomerSort']>;

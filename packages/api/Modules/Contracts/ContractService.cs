@@ -1,15 +1,13 @@
 using Api.Common;
 using Api.Common.Counters;
 using Api.Common.Database;
+using Api.Common.Exceptions;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.Contracts;
 
-public class InvalidContractRequestException : Exception
-{
-    public InvalidContractRequestException(string message) : base(message) { }
-}
+public class InvalidContractRequestException(string message) : DomainException(message, 422);
 
 public class ContractService
 {
@@ -66,18 +64,21 @@ public class ContractService
         };
 
         var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return new PagedContracts(items, total);
+        var entities = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        return new PagedContracts(entities.Select(ToResponse).ToList(), total);
     }
 
-    public Task<Contract?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        _dbContext.Contracts
-            .Include(contract => contract.Customer)
-            .Include(contract => contract.Consultant)
-            .Include(contract => contract.Tasks)
-            .FirstOrDefaultAsync(contract => contract.Id == id, cancellationToken);
+    public async Task<ContractResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var contract = await _dbContext.Contracts
+            .Include(loaded => loaded.Customer)
+            .Include(loaded => loaded.Consultant)
+            .Include(loaded => loaded.Tasks)
+            .FirstOrDefaultAsync(loaded => loaded.Id == id, cancellationToken);
+        return contract is null ? null : ToResponse(contract);
+    }
 
-    public async Task<Contract> CreateAsync(ContractRequest request, CancellationToken cancellationToken = default)
+    public async Task<ContractResponse> CreateAsync(ContractRequest request, CancellationToken cancellationToken = default)
     {
         await ValidateRequestAsync(request, cancellationToken);
 
@@ -103,10 +104,10 @@ public class ContractService
 
         await LoadReferencesAsync(contract, cancellationToken);
 
-        return contract;
+        return ToResponse(contract);
     }
 
-    public async Task<Contract?> UpdateAsync(Guid id, ContractRequest request, CancellationToken cancellationToken = default)
+    public async Task<ContractResponse?> UpdateAsync(Guid id, ContractRequest request, CancellationToken cancellationToken = default)
     {
         await ValidateRequestAsync(request, cancellationToken);
 
@@ -161,7 +162,7 @@ public class ContractService
 
         await LoadReferencesAsync(contract, cancellationToken);
 
-        return contract;
+        return ToResponse(contract);
     }
 
     private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId = default) =>
@@ -178,7 +179,24 @@ public class ContractService
     {
         await _dbContext.Entry(contract).Reference(loaded => loaded.Customer).LoadAsync(cancellationToken);
         await _dbContext.Entry(contract).Reference(loaded => loaded.Consultant).LoadAsync(cancellationToken);
+        await _dbContext.Entry(contract).Collection(loaded => loaded.Tasks).LoadAsync(cancellationToken);
     }
+
+    private static ContractResponse ToResponse(Contract contract) => new(
+        contract.Id,
+        contract.Number,
+        contract.CustomerId,
+        contract.Customer.Name,
+        contract.ConsultantId,
+        contract.Consultant.Name,
+        contract.Subject,
+        contract.StartDate,
+        contract.EndDate,
+        contract.IsArchived,
+        contract.Tasks
+            .OrderBy(task => task.Order)
+            .Select(task => new ContractTaskResponse(task.Id, task.Name, task.DayRate, task.Order, task.IsArchived))
+            .ToList());
 
     public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {

@@ -44,14 +44,17 @@ public class CustomerService
         };
 
         var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return new PagedCustomers(items, total);
+        var entities = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        return new PagedCustomers(entities.Select(ToResponse).ToList(), total);
     }
 
-    public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        _dbContext.Customers.FindAsync([id], cancellationToken).AsTask();
+    public async Task<CustomerResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
+        return customer is null ? null : ToResponse(customer);
+    }
 
-    public async Task<Customer> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponse> CreateAsync(CustomerRequest request, CancellationToken cancellationToken = default)
     {
         var nextNumber = await _counterService.NextAsync(CounterKeys.Customer, cancellationToken);
 
@@ -70,10 +73,10 @@ public class CustomerService
 
         await _dbContext.Customers.AddAsync(customer, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return customer;
+        return ToResponse(customer);
     }
 
-    public async Task<Customer?> UpdateAsync(Guid id, CustomerRequest request, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponse?> UpdateAsync(Guid id, CustomerRequest request, CancellationToken cancellationToken = default)
     {
         var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
         if (customer is null) return null;
@@ -87,7 +90,7 @@ public class CustomerService
         customer.ContactEmail = request.ContactEmail;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return customer;
+        return ToResponse(customer);
     }
 
     public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
@@ -109,4 +112,16 @@ public class CustomerService
         await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    private static CustomerResponse ToResponse(Customer customer) => new(
+        customer.Id,
+        customer.Number,
+        customer.Name,
+        customer.Street,
+        customer.Zip,
+        customer.City,
+        customer.Country,
+        customer.ContactName,
+        customer.ContactEmail,
+        customer.IsArchived);
 }

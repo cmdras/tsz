@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- refactor(api): introduce response DTOs and centralize domain exception handling
 - chore(lint): fix oxlint config and suppress false-positive warnings
 - feat(admin): add dashboard with active entity count stats
 - refactor: relocate oxlint config to packages/web and chain error causes

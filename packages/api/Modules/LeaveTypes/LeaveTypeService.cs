@@ -1,11 +1,12 @@
 using Api.Common;
 using Api.Common.Database;
+using Api.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.LeaveTypes;
 
 public class DuplicateLeaveTypeNameException(string name)
-    : Exception($"A leave type named '{name}' already exists.");
+    : DomainException($"A leave type named '{name}' already exists.", 409);
 
 public class LeaveTypeService(AppDbContext dbContext)
 {
@@ -43,14 +44,17 @@ public class LeaveTypeService(AppDbContext dbContext)
         };
 
         var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return new PagedLeaveTypes(items, total);
+        var entities = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        return new PagedLeaveTypes(entities.Select(ToResponse).ToList(), total);
     }
 
-    public Task<LeaveType?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        _dbContext.LeaveTypes.FindAsync([id], cancellationToken).AsTask();
+    public async Task<LeaveTypeResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var leaveType = await _dbContext.LeaveTypes.FindAsync([id], cancellationToken);
+        return leaveType is null ? null : ToResponse(leaveType);
+    }
 
-    public async Task<LeaveType> CreateAsync(LeaveTypeRequest request, CancellationToken cancellationToken = default)
+    public async Task<LeaveTypeResponse> CreateAsync(LeaveTypeRequest request, CancellationToken cancellationToken = default)
     {
         var normalizedName = request.Name.Trim().ToLower();
         var isDuplicate = await _dbContext.LeaveTypes
@@ -68,10 +72,10 @@ public class LeaveTypeService(AppDbContext dbContext)
 
         await _dbContext.LeaveTypes.AddAsync(leaveType, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return leaveType;
+        return ToResponse(leaveType);
     }
 
-    public async Task<LeaveType?> UpdateAsync(Guid id, LeaveTypeRequest request, CancellationToken cancellationToken = default)
+    public async Task<LeaveTypeResponse?> UpdateAsync(Guid id, LeaveTypeRequest request, CancellationToken cancellationToken = default)
     {
         var leaveType = await _dbContext.LeaveTypes.FindAsync([id], cancellationToken);
         if (leaveType is null) return null;
@@ -87,8 +91,15 @@ public class LeaveTypeService(AppDbContext dbContext)
         leaveType.DefaultMode = request.DefaultMode;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return leaveType;
+        return ToResponse(leaveType);
     }
+
+    private static LeaveTypeResponse ToResponse(LeaveType leaveType) => new(
+        leaveType.Id,
+        leaveType.Name,
+        leaveType.DefaultDays,
+        leaveType.DefaultMode,
+        leaveType.IsArchived);
 
     public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
     {

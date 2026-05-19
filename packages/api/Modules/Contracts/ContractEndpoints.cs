@@ -33,7 +33,7 @@ public static class ContractEndpoints
                 cancellationToken));
         });
 
-        group.MapGet("/{id:guid}", async Task<Results<Ok<Contract>, NotFound>> (
+        group.MapGet("/{id:guid}", async Task<Results<Ok<ContractResponse>, NotFound>> (
             Guid id,
             ContractService service,
             CancellationToken cancellationToken) =>
@@ -44,41 +44,27 @@ public static class ContractEndpoints
                 : TypedResults.NotFound();
         }).WithName("GetContractById");
 
-        group.MapPost("/", async Task<Results<CreatedAtRoute<Contract>, ProblemHttpResult>> (
+        group.MapPost("/", async Task<CreatedAtRoute<ContractResponse>> (
             ContractRequest request,
             ContractService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var contract = await service.CreateAsync(request, cancellationToken);
-                return TypedResults.CreatedAtRoute(contract, "GetContractById", new { id = contract.Id });
-            }
-            catch (InvalidContractRequestException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: 422);
-            }
+            var contract = await service.CreateAsync(request, cancellationToken);
+            return TypedResults.CreatedAtRoute(contract, "GetContractById", new { id = contract.Id });
         })
             .AddEndpointFilter<ValidationFilter<ContractRequest>>()
             .ProducesProblem(StatusCodes.Status422UnprocessableEntity);
 
-        group.MapPut("/{id:guid}", async Task<Results<Ok<Contract>, NotFound, ProblemHttpResult>> (
+        group.MapPut("/{id:guid}", async Task<Results<Ok<ContractResponse>, NotFound>> (
             Guid id,
             ContractRequest request,
             ContractService service,
             CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var contract = await service.UpdateAsync(id, request, cancellationToken);
-                return contract is not null
-                    ? TypedResults.Ok(contract)
-                    : TypedResults.NotFound();
-            }
-            catch (InvalidContractRequestException exception)
-            {
-                return TypedResults.Problem(exception.Message, statusCode: 422);
-            }
+            var contract = await service.UpdateAsync(id, request, cancellationToken);
+            return contract is not null
+                ? TypedResults.Ok(contract)
+                : TypedResults.NotFound();
         })
             .AddEndpointFilter<ValidationFilter<ContractRequest>>()
             .ProducesProblem(StatusCodes.Status422UnprocessableEntity);

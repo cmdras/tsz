@@ -10,7 +10,19 @@ public enum CustomerSort
     City,
 }
 
-public record PagedCustomers(IReadOnlyList<Customer> Items, int Total);
+public record CustomerResponse(
+    Guid Id,
+    int Number,
+    string Name,
+    string Street,
+    string Zip,
+    string City,
+    string Country,
+    string ContactName,
+    string ContactEmail,
+    bool IsArchived);
+
+public record PagedCustomers(IReadOnlyList<CustomerResponse> Items, int Total);
 
 public class CustomerRequest
 {
