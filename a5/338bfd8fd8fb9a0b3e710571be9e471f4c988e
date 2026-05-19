@@ -1,0 +1,21 @@
+.claude/skills/piv-validate/SKILL.md
+  s_2eaebe076c8e40::t_daadb39a880054 53-65
+CHANGELOG.md
+  s_2eaebe076c8e40::t_ce0123f84c50a8 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "a5338bfd8fd8fb9a0b3e710571be9e471f4c988e",
+  "prompts": {},
+  "sessions": {
+    "s_2eaebe076c8e40": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "851a911f-5c6a-4271-b18e-5afbdb5d3327",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
