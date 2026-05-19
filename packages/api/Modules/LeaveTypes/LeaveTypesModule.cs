@@ -6,6 +6,7 @@ public static class LeaveTypesModule
 {
     public static IServiceCollection AddLeaveTypesModule(this IServiceCollection services)
     {
+        services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
         services.AddScoped<LeaveTypeService>();
         return services;
     }

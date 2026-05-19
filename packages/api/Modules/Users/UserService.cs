@@ -1,30 +1,15 @@
-using System.Linq.Expressions;
+using System.Data;
 using Api.Common;
-using Api.Common.Database;
 using Api.Modules.LeaveTypes;
 using Api.Modules.UserLeaveAllowances;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.Users;
 
-public class UserService
+public class UserService(IUserRepository userRepository, IUserLeaveAllowanceRepository userLeaveAllowanceRepository, ILeaveTypeRepository leaveTypeRepository)
 {
-    private static readonly IReadOnlyDictionary<UserRole, string> SearchableRoleLabels = new Dictionary<UserRole, string>
-    {
-        [UserRole.Admin] = "admin",
-        [UserRole.User] = "user",
-        [UserRole.ClientManager] = "client manager",
-    };
-
-    private static readonly Expression<Func<User, int>> RoleSortKey =
-        user => user.Role == UserRole.Admin ? 0 : user.Role == UserRole.ClientManager ? 1 : 2;
-
-    private readonly AppDbContext _dbContext;
-
-    public UserService(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IUserLeaveAllowanceRepository _userLeaveAllowanceRepository = userLeaveAllowanceRepository;
+    private readonly ILeaveTypeRepository _leaveTypeRepository = leaveTypeRepository;
 
     public async Task<PagedUsers> GetAllAsync(
         string? search,
@@ -34,103 +19,63 @@ public class UserService
         int pageSize,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Users.Where(user => !user.IsArchived);
-
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var term = search.Trim().ToLower();
-            var matchingRoles = SearchableRoleLabels
-                .Where(pair => pair.Value.Contains(term))
-                .Select(pair => pair.Key)
-                .ToList();
-            query = query.Where(user =>
-                user.Name.ToLower().Contains(term) ||
-                user.Email.ToLower().Contains(term) ||
-                matchingRoles.Contains(user.Role));
-        }
-
-        var isDescending = sortDirection == SortDirection.Desc;
-        query = (sort, isDescending) switch
-        {
-            (UserSort.Email, true) => query.OrderByDescending(user => user.Email),
-            (UserSort.Email, false) => query.OrderBy(user => user.Email),
-            (UserSort.Role, true) => query.OrderByDescending(RoleSortKey),
-            (UserSort.Role, false) => query.OrderBy(RoleSortKey),
-            (_, true) => query.OrderByDescending(user => user.Name),
-            (_, false) => query.OrderBy(user => user.Name),
-        };
-
-        var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        var (items, total) = await _userRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, cancellationToken);
         return new PagedUsers(items, total);
     }
 
     public async Task<UserResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var user = await _dbContext.Users.FindAsync([id], cancellationToken);
+        var user = await _userRepository.GetByIdAsync(id, cancellationToken);
         if (user is null) return null;
 
         var currentYear = DateTime.UtcNow.Year;
-        var leaves = await _dbContext.UserLeaveAllowances
-            .Where(allowance => allowance.UserId == id && allowance.Year == currentYear)
-            .Join(_dbContext.LeaveTypes,
-                allowance => allowance.LeaveTypeId,
-                leaveType => leaveType.Id,
-                (allowance, leaveType) => new UserLeaveAllowanceResponse(
-                    allowance.Id,
-                    allowance.LeaveTypeId,
-                    leaveType.Name,
-                    allowance.Mode,
-                    allowance.Year,
-                    allowance.TotalDays,
-                    0m,
-                    allowance.Mode == AllowanceMode.Limited ? allowance.TotalDays : (decimal?)null))
-            .ToListAsync(cancellationToken);
+        var allowances = await _userLeaveAllowanceRepository.GetForUserAndYearAsync(id, currentYear, cancellationToken);
+        var leaveTypeIds = allowances.Select(allowance => allowance.LeaveTypeId).ToList();
+        var leaveTypesById = (await _leaveTypeRepository.GetByIdsAsync(leaveTypeIds, cancellationToken))
+            .ToDictionary(leaveType => leaveType.Id);
+
+        var leaves = allowances.Select(allowance => new UserLeaveAllowanceResponse(
+            allowance.Id,
+            allowance.LeaveTypeId,
+            leaveTypesById.TryGetValue(allowance.LeaveTypeId, out var leaveType) ? leaveType.Name : string.Empty,
+            allowance.Mode,
+            allowance.Year,
+            allowance.TotalDays,
+            0m,
+            allowance.Mode == AllowanceMode.Limited ? allowance.TotalDays : (decimal?)null)).ToList();
 
         return new UserResponse(user.Id, user.Name, user.Email, user.Role, user.IsArchived, leaves);
     }
 
     public async Task<User> CreateAsync(UserRequest request, CancellationToken cancellationToken = default)
     {
-        var emailExists = await _dbContext.Users
-            .AnyAsync(user => user.Email == request.Email, cancellationToken);
-        if (emailExists)
+        await using var transaction = await _userRepository.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+
+        if (await _userRepository.ExistsByEmailAsync(request.Email, cancellationToken: cancellationToken))
             throw new DuplicateEmailException();
 
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Email = request.Email,
-            Role = request.Role,
-        };
-
-        _dbContext.Users.Add(user);
-
+        var user = await _userRepository.CreateAsync(request, cancellationToken);
         await SeedLeaveAllowancesAsync(user, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
         return user;
     }
 
     public async Task<User?> UpdateAsync(Guid id, UserRequest request, CancellationToken cancellationToken = default)
     {
-        var user = await _dbContext.Users.FindAsync([id], cancellationToken);
+        await using var transaction = await _userRepository.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+
+        var user = await _userRepository.GetByIdAsync(id, cancellationToken);
         if (user is null) return null;
 
-        var emailExists = await _dbContext.Users
-            .AnyAsync(otherUser => otherUser.Email == request.Email && otherUser.Id != id, cancellationToken);
-        if (emailExists)
+        if (await _userRepository.ExistsByEmailAsync(request.Email, excludeId: id, cancellationToken: cancellationToken))
             throw new DuplicateEmailException();
 
-        user.Name = request.Name;
-        user.Email = request.Email;
-        user.Role = request.Role;
+        var updatedUser = await _userRepository.UpdateAsync(id, request, cancellationToken);
 
         var currentYear = DateTime.UtcNow.Year;
-        var existingById = await _dbContext.UserLeaveAllowances
-            .Where(allowance => allowance.UserId == id && allowance.Year == currentYear)
-            .ToDictionaryAsync(allowance => allowance.Id, cancellationToken);
+        var existingAllowances = await _userLeaveAllowanceRepository.GetForUserAndYearAsync(id, currentYear, cancellationToken);
+        var existingById = existingAllowances.ToDictionary(allowance => allowance.Id);
 
         var incomingLeaveTypeIds = request.Leaves
             .Where(leaf => !leaf.Id.HasValue)
@@ -138,10 +83,8 @@ public class UserService
             .ToHashSet();
         if (incomingLeaveTypeIds.Count > 0)
         {
-            var knownLeaveTypeIds = await _dbContext.LeaveTypes
-                .Where(leaveType => incomingLeaveTypeIds.Contains(leaveType.Id))
-                .Select(leaveType => leaveType.Id)
-                .ToHashSetAsync(cancellationToken);
+            var knownLeaveTypes = await _leaveTypeRepository.GetByIdsAsync(incomingLeaveTypeIds, cancellationToken);
+            var knownLeaveTypeIds = knownLeaveTypes.Select(leaveType => leaveType.Id).ToHashSet();
             var unknownLeaveTypeId = incomingLeaveTypeIds.FirstOrDefault(leaveTypeId => !knownLeaveTypeIds.Contains(leaveTypeId));
             if (unknownLeaveTypeId != Guid.Empty)
                 throw new UnknownLeaveTypeException(unknownLeaveTypeId);
@@ -149,6 +92,7 @@ public class UserService
 
         var keptIds = new HashSet<Guid>();
         var occupiedLeaveTypeIds = new HashSet<Guid>();
+        var newAllowances = new List<UserLeaveAllowance>();
         foreach (var leaf in request.Leaves)
         {
             if (leaf.Id.HasValue && existingById.TryGetValue(leaf.Id.Value, out var match))
@@ -163,7 +107,7 @@ public class UserService
             {
                 if (!occupiedLeaveTypeIds.Add(leaf.LeaveTypeId))
                     throw new DuplicateUserLeaveAllowanceException();
-                _dbContext.UserLeaveAllowances.Add(new UserLeaveAllowance
+                newAllowances.Add(new UserLeaveAllowance
                 {
                     Id = Guid.NewGuid(),
                     UserId = id,
@@ -174,74 +118,58 @@ public class UserService
                 });
             }
         }
+        await _userLeaveAllowanceRepository.AddRangeAsync(newAllowances, cancellationToken);
 
-        _dbContext.UserLeaveAllowances.RemoveRange(
-            existingById.Values.Where(allowance => !keptIds.Contains(allowance.Id)));
+        var idsToRemove = existingAllowances
+            .Where(allowance => !keptIds.Contains(allowance.Id))
+            .Select(allowance => allowance.Id)
+            .ToList();
+        await _userLeaveAllowanceRepository.RemoveRangeAsync(idsToRemove, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return user;
+        await transaction.CommitAsync(cancellationToken);
+        return updatedUser;
     }
 
-    public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var user = await _dbContext.Users.FindAsync([id], cancellationToken);
-        if (user is null) return false;
+    public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
+        => _userRepository.ArchiveAsync(id, cancellationToken);
 
-        user.IsArchived = true;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
-
-    public async Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var user = await _dbContext.Users.FindAsync([id], cancellationToken);
-        if (user is null) return false;
-
-        user.IsArchived = false;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+    public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
+        => _userRepository.UnarchiveAsync(id, cancellationToken);
 
     public async Task<User> GetOrProvisionAsync(string name, string email, CancellationToken cancellationToken = default)
     {
-        var existing = await _dbContext.Users
-            .FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
-        if (existing is not null) return existing;
+        await using var transaction = await _userRepository.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
 
-        var user = new User
+        var existing = await _userRepository.FindByEmailAsync(email, cancellationToken);
+        if (existing is not null)
         {
-            Id = Guid.NewGuid(),
-            Name = name,
-            Email = email,
-            Role = UserRole.User,
-        };
+            await transaction.CommitAsync(cancellationToken);
+            return existing;
+        }
 
-        _dbContext.Users.Add(user);
-
+        var request = new UserRequest { Name = name, Email = email, Role = UserRole.User, Leaves = [] };
+        var user = await _userRepository.CreateAsync(request, cancellationToken);
         await SeedLeaveAllowancesAsync(user, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
         return user;
     }
 
     private async Task SeedLeaveAllowancesAsync(User user, CancellationToken cancellationToken)
     {
         var currentYear = DateTime.UtcNow.Year;
-        var activeLeaveTypes = await _dbContext.LeaveTypes
-            .Where(leaveType => !leaveType.IsArchived)
-            .ToListAsync(cancellationToken);
+        var activeLeaveTypes = await _leaveTypeRepository.GetActiveAsync(cancellationToken);
 
-        foreach (var leaveType in activeLeaveTypes)
+        var allowances = activeLeaveTypes.Select(leaveType => new UserLeaveAllowance
         {
-            _dbContext.UserLeaveAllowances.Add(new UserLeaveAllowance
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                LeaveTypeId = leaveType.Id,
-                Year = currentYear,
-                Mode = leaveType.DefaultMode,
-                TotalDays = leaveType.DefaultDays,
-            });
-        }
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            LeaveTypeId = leaveType.Id,
+            Year = currentYear,
+            Mode = leaveType.DefaultMode,
+            TotalDays = leaveType.DefaultDays,
+        }).ToList();
+
+        await _userLeaveAllowanceRepository.AddRangeAsync(allowances, cancellationToken);
     }
 }

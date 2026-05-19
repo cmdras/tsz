@@ -7,6 +7,7 @@ using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
 using Api.Modules.Stats;
+using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 using Microsoft.AspNetCore.HttpLogging;
 using Scalar.AspNetCore;
@@ -31,6 +32,7 @@ builder.Services.AddTszOpenApi();
 
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddCustomersModule();
+builder.Services.AddUserLeaveAllowancesModule();
 builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
 builder.Services.AddLeaveTypesModule();

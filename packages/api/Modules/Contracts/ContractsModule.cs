@@ -6,6 +6,7 @@ public static class ContractsModule
 {
     public static IServiceCollection AddContractsModule(this IServiceCollection services)
     {
+        services.AddScoped<IContractRepository, ContractRepository>();
         services.AddScoped<ContractService>();
         return services;
     }

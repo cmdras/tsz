@@ -1,22 +1,17 @@
-using System.Data;
 using Api.Common;
-using Api.Common.Database;
 using Api.Common.Exceptions;
+using Api.Modules.Customers;
 using Api.Modules.Users;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.Contracts;
 
 public class InvalidContractRequestException(string message) : DomainException(message, 422);
 
-public class ContractService
+public class ContractService(IContractRepository contractRepository, ICustomerRepository customerRepository, IUserRepository userRepository)
 {
-    private readonly AppDbContext _dbContext;
-
-    public ContractService(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly IContractRepository _contractRepository = contractRepository;
+    private readonly ICustomerRepository _customerRepository = customerRepository;
+    private readonly IUserRepository _userRepository = userRepository;
 
     public async Task<PagedContracts> GetAllAsync(
         string? search,
@@ -27,52 +22,13 @@ public class ContractService
         bool includeArchived,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Contract> query = _dbContext.Contracts
-            .Include(contract => contract.Customer)
-            .Include(contract => contract.Consultant);
-
-        if (!includeArchived)
-            query = query.Where(contract => !contract.IsArchived);
-
-
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var term = search.Trim().ToLower();
-            query = query.Where(contract =>
-                contract.Subject.ToLower().Contains(term) ||
-                contract.Customer.Name.ToLower().Contains(term) ||
-                contract.Consultant.Name.ToLower().Contains(term));
-        }
-
-        var isDescending = sortDirection == SortDirection.Desc;
-        query = (sort, isDescending) switch
-        {
-            (ContractSort.Customer, true) => query.OrderByDescending(contract => contract.Customer.Name),
-            (ContractSort.Customer, false) => query.OrderBy(contract => contract.Customer.Name),
-            (ContractSort.Subject, true) => query.OrderByDescending(contract => contract.Subject),
-            (ContractSort.Subject, false) => query.OrderBy(contract => contract.Subject),
-            (ContractSort.Consultant, true) => query.OrderByDescending(contract => contract.Consultant.Name),
-            (ContractSort.Consultant, false) => query.OrderBy(contract => contract.Consultant.Name),
-            (ContractSort.StartDate, true) => query.OrderByDescending(contract => contract.StartDate),
-            (ContractSort.StartDate, false) => query.OrderBy(contract => contract.StartDate),
-            (ContractSort.EndDate, true) => query.OrderByDescending(contract => contract.EndDate),
-            (ContractSort.EndDate, false) => query.OrderBy(contract => contract.EndDate),
-            (_, true) => query.OrderByDescending(contract => contract.Number),
-            (_, false) => query.OrderBy(contract => contract.Number),
-        };
-
-        var total = await query.CountAsync(cancellationToken);
-        var entities = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        var (entities, total) = await _contractRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, includeArchived, cancellationToken);
         return new PagedContracts(entities.Select(ToResponse).ToList(), total);
     }
 
     public async Task<ContractResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var contract = await _dbContext.Contracts
-            .Include(loaded => loaded.Customer)
-            .Include(loaded => loaded.Consultant)
-            .Include(loaded => loaded.Tasks)
-            .FirstOrDefaultAsync(loaded => loaded.Id == id, cancellationToken);
+        var contract = await _contractRepository.GetByIdAsync(id, cancellationToken);
         return contract is null ? null : ToResponse(contract);
     }
 
@@ -80,40 +36,17 @@ public class ContractService
     {
         await ValidateRequestAsync(request, cancellationToken);
 
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        var contract = await _contractRepository.CreateAsync(request, cancellationToken);
 
-        var nextNumber = (await _dbContext.Contracts.MaxAsync(contract => (int?)contract.Number, cancellationToken) ?? 0) + 1;
-
-        var contractId = Guid.NewGuid();
-        var contract = new Contract
-        {
-            Id = contractId,
-            Number = nextNumber,
-            CustomerId = request.CustomerId,
-            ConsultantId = request.ConsultantId,
-            Subject = request.Subject.Trim(),
-            StartDate = request.StartDate,
-            EndDate = request.EndDate,
-            Tasks = request.Tasks.Select((taskRequest, index) => BuildTask(taskRequest, index, contractId)).ToList(),
-        };
-
-        _dbContext.Contracts.Add(contract);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-
-        await LoadReferencesAsync(contract, cancellationToken);
-
-        return ToResponse(contract);
+        var loaded = await _contractRepository.GetByIdAsync(contract.Id, cancellationToken);
+        return ToResponse(loaded!);
     }
 
     public async Task<ContractResponse?> UpdateAsync(Guid id, ContractRequest request, CancellationToken cancellationToken = default)
     {
         await ValidateRequestAsync(request, cancellationToken);
 
-        var contract = await _dbContext.Contracts
-            .Include(loaded => loaded.Tasks)
-            .FirstOrDefaultAsync(loaded => loaded.Id == id, cancellationToken);
-
+        var contract = await _contractRepository.LoadWithTasksAsync(id, cancellationToken);
         if (contract is null) return null;
 
         contract.CustomerId = request.CustomerId;
@@ -153,15 +86,14 @@ public class ContractService
             }
             else
             {
-                _dbContext.ContractTasks.Add(BuildTask(taskRequest, nextOrder++, id));
+                _contractRepository.AddTask(BuildTask(taskRequest, nextOrder++, id));
             }
         }
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _contractRepository.SaveAsync(cancellationToken);
 
-        await LoadReferencesAsync(contract, cancellationToken);
-
-        return ToResponse(contract);
+        var updated = await _contractRepository.GetByIdAsync(id, cancellationToken);
+        return updated is null ? null : ToResponse(updated);
     }
 
     private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId) =>
@@ -173,13 +105,6 @@ public class ContractService
             DayRate = taskRequest.DayRate,
             Order = order,
         };
-
-    private async Task LoadReferencesAsync(Contract contract, CancellationToken cancellationToken)
-    {
-        await _dbContext.Entry(contract).Reference(loaded => loaded.Customer).LoadAsync(cancellationToken);
-        await _dbContext.Entry(contract).Reference(loaded => loaded.Consultant).LoadAsync(cancellationToken);
-        await _dbContext.Entry(contract).Collection(loaded => loaded.Tasks).LoadAsync(cancellationToken);
-    }
 
     private static ContractResponse ToResponse(Contract contract) => new(
         contract.Id,
@@ -197,25 +122,11 @@ public class ContractService
             .Select(task => new ContractTaskResponse(task.Id, task.Name, task.DayRate, task.Order, task.IsArchived))
             .ToList());
 
-    public async Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var contract = await _dbContext.Contracts.FindAsync([id], cancellationToken);
-        if (contract is null) return false;
+    public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
+        => _contractRepository.ArchiveAsync(id, cancellationToken);
 
-        contract.IsArchived = true;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
-
-    public async Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var contract = await _dbContext.Contracts.FindAsync([id], cancellationToken);
-        if (contract is null) return false;
-
-        contract.IsArchived = false;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+    public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
+        => _contractRepository.UnarchiveAsync(id, cancellationToken);
 
     private async Task ValidateRequestAsync(ContractRequest request, CancellationToken cancellationToken)
     {
@@ -225,11 +136,11 @@ public class ContractService
         if (request.Tasks.Count == 0)
             throw new InvalidContractRequestException("At least one task is required.");
 
-        var customer = await _dbContext.Customers.FindAsync([request.CustomerId], cancellationToken);
+        var customer = await _customerRepository.GetByIdAsync(request.CustomerId, cancellationToken);
         if (customer is null || customer.IsArchived)
             throw new InvalidContractRequestException("Customer must be a non-archived customer.");
 
-        var consultant = await _dbContext.Users.FindAsync([request.ConsultantId], cancellationToken);
+        var consultant = await _userRepository.GetByIdAsync(request.ConsultantId, cancellationToken);
         if (consultant is null || consultant.IsArchived || consultant.Role == UserRole.ClientManager)
             throw new InvalidContractRequestException("Consultant must be a non-archived user with a role other than ClientManager.");
     }

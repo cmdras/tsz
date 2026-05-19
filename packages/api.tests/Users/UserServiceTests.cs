@@ -1,7 +1,10 @@
 using Api.Common;
 using Api.Common.Database;
+using Api.Modules.LeaveTypes;
+using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.Users;
 
@@ -11,9 +14,10 @@ public class UserServiceTests
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        return new UserService(context);
+        return new UserService(new UserRepository(context), new UserLeaveAllowanceRepository(context), new LeaveTypeRepository(context));
     }
 
     private static async Task<User> AddUserAsync(AppDbContext context, string name, string email, UserRole role, bool isArchived = false)
