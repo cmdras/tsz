@@ -117,7 +117,7 @@ export function AppNavbar() {
         aria-label="Timesheet Zone home"
       >
         <EuricomMark className="h-7 w-7 shrink-0" />
-        <span className="hidden text-[18px] font-bold tracking-[-0.005em] text-[#014046] dark:text-[#00FF00] sm:block whitespace-nowrap">
+        <span className="hidden text-[18px] font-bold tracking-[-0.005em] text-[#014046] dark:text-foreground sm:block whitespace-nowrap">
           Timesheet Zone
         </span>
       </Link>

@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- fix(navbar): replace non-compliant green brand text with theme foreground color
 - chore(.claude): update skills for response DTOs and fix PostToolUse hook exit code
 - refactor(api): introduce response DTOs and centralize domain exception handling
 - chore(lint): fix oxlint config and suppress false-positive warnings
