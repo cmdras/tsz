@@ -9,11 +9,20 @@ using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
 using Api.Modules.Stats;
 using Api.Modules.Users;
+using Microsoft.AspNetCore.HttpLogging;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddEntraJwtAuth();
+builder.Services.AddTszAuthentication(builder.Configuration, builder.Environment);
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPath
+        | HttpLoggingFields.RequestQuery
+        | HttpLoggingFields.ResponseStatusCode
+        | HttpLoggingFields.Duration;
+});
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -37,8 +46,10 @@ if (!app.Environment.IsEnvironment("Testing"))
     await app.InitializeDatabaseAsync();
 }
 
+app.UseHttpLogging();
 app.UseExceptionHandler();
-app.UseEntraJwtAuth();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapOpenApi("/openapi/{documentName}.json");
 app.MapScalarApiReference("/openapi", options =>

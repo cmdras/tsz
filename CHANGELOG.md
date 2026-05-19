@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- refactor(auth): replace manual JWT setup with Microsoft.Identity.Web
 - refactor(customers): extract data access into CustomerRepository
 - fix(navbar): replace non-compliant green brand text with theme foreground color
 - chore(.claude): update skills for response DTOs and fix PostToolUse hook exit code
