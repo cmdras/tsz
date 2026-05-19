@@ -1,0 +1,32 @@
+packages/web/src/features/leave-types/leave-types.schemas.ts
+  s_f4eaf020f8775d::t_130116dd0fd13b 31
+packages/web/src/features/contracts/contracts.schemas.ts
+  s_f4eaf020f8775d::t_293d5ce010abad 40
+CHANGELOG.md
+  s_f4eaf020f8775d::t_10a44e06b7bdd1 5
+packages/web/src/features/users/users.schemas.ts
+  s_f4eaf020f8775d::t_5298b55dac7f74 41
+packages/web/src/features/customers/customers.schemas.ts
+  s_f4eaf020f8775d::t_3ba75cee2f2fd4 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "acd1ee36b29fca54e4d166435a513deeb67308ac",
+  "prompts": {},
+  "humans": {
+    "h_a4f6fa3f85f4e7": {
+      "author": "Chris Ras"
+    }
+  },
+  "sessions": {
+    "s_f4eaf020f8775d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "451e5da2-9805-47f2-b915-a6d6919213fe",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
