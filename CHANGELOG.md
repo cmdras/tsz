@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- chore(auth): log access token in API client middleware
 - refactor(auth): replace manual JWT setup with Microsoft.Identity.Web
 - refactor(customers): extract data access into CustomerRepository
 - fix(navbar): replace non-compliant green brand text with theme foreground color
