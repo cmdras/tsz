@@ -164,7 +164,7 @@ public class ContractService
         return ToResponse(contract);
     }
 
-    private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId = default) =>
+    private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId) =>
         new()
         {
             Id = Guid.NewGuid(),
