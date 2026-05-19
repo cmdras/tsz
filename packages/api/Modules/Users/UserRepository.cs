@@ -100,7 +100,8 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> ExistsByEmailAsync(string email, Guid? excludeId = null, CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Users.Where(user => user.Email == email);
+        var normalizedEmail = email.ToLower();
+        var query = _dbContext.Users.Where(user => user.Email.ToLower() == normalizedEmail);
         if (excludeId.HasValue)
             query = query.Where(user => user.Id != excludeId.Value);
         return await query.AnyAsync(cancellationToken);
@@ -108,7 +109,8 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
+        var normalizedEmail = email.ToLower();
+        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == normalizedEmail, cancellationToken);
     }
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)

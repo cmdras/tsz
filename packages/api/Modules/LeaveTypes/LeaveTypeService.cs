@@ -40,6 +40,9 @@ public class LeaveTypeService(ILeaveTypeRepository leaveTypeRepository)
 
     public async Task<LeaveTypeResponse?> UpdateAsync(Guid id, LeaveTypeRequest request, CancellationToken cancellationToken = default)
     {
+        if (await _leaveTypeRepository.GetByIdAsync(id, cancellationToken) is null)
+            return null;
+
         if (await _leaveTypeRepository.ExistsByNameAsync(request.Name, excludeId: id, cancellationToken: cancellationToken))
             throw new DuplicateLeaveTypeNameException(request.Name);
 

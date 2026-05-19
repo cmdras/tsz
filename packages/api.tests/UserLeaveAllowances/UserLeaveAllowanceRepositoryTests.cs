@@ -1,4 +1,5 @@
 using Api.Common.Database;
+using Api.Modules.LeaveTypes;
 using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,20 @@ public class UserLeaveAllowanceRepositoryTests
             .Options;
         context = new AppDbContext(options);
         return new UserLeaveAllowanceRepository(context);
+    }
+
+    private static async Task<Guid> AddLeaveTypeAsync(AppDbContext context, string name = "Annual Leave")
+    {
+        var leaveType = new LeaveType
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            DefaultDays = 20m,
+            DefaultMode = AllowanceMode.Limited,
+        };
+        context.LeaveTypes.Add(leaveType);
+        await context.SaveChangesAsync();
+        return leaveType.Id;
     }
 
     private static async Task<User> AddUserAsync(AppDbContext context, string name = "Alice")
@@ -39,11 +54,12 @@ public class UserLeaveAllowanceRepositoryTests
         AllowanceMode mode = AllowanceMode.Limited,
         decimal totalDays = 20m)
     {
+        var leaveTypeId = await AddLeaveTypeAsync(context, $"Leave-{Guid.NewGuid()}");
         var allowance = new UserLeaveAllowance
         {
             Id = Guid.NewGuid(),
             UserId = userId,
-            LeaveTypeId = Guid.NewGuid(),
+            LeaveTypeId = leaveTypeId,
             Year = year,
             Mode = mode,
             TotalDays = totalDays,
@@ -112,8 +128,8 @@ public class UserLeaveAllowanceRepositoryTests
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
-        var firstLeaveTypeId = Guid.NewGuid();
-        var secondLeaveTypeId = Guid.NewGuid();
+        var firstLeaveTypeId = await AddLeaveTypeAsync(context, "Annual Leave");
+        var secondLeaveTypeId = await AddLeaveTypeAsync(context, "Sick Leave");
         var entities = new List<UserLeaveAllowance>
         {
             new() { Id = Guid.NewGuid(), UserId = user.Id, LeaveTypeId = firstLeaveTypeId, Year = 2026, Mode = AllowanceMode.Limited, TotalDays = 20m },

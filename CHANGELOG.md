@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- fix(api): correct update-before-exist check, case-insensitive email, and test FK seeds
 - refactor(api): consolidate update logic from services into repositories
 - refactor(api): roll out repository pattern across contracts, users, and leave types
 - chore(docs): remove feature/IMPL/VALIDATION docs from all feature slots

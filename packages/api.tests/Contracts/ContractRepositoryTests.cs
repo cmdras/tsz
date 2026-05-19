@@ -20,12 +20,14 @@ public class ContractRepositoryTests
         return new ContractRepository(context);
     }
 
+    private static int _nextCustomerNumber = 100000;
+
     private static async Task<Guid> AddCustomerAsync(AppDbContext context, string name = "Test Customer", bool isArchived = false)
     {
         var customer = new Customer
         {
             Id = Guid.NewGuid(),
-            Number = 100000,
+            Number = Interlocked.Increment(ref _nextCustomerNumber),
             Name = name,
             Country = "Belgium",
             IsArchived = isArchived,
