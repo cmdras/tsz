@@ -92,7 +92,7 @@ Time Entry sits at the top. It needs a current user (auth), tasks (via Contracts
 
 **Includes:** week navigation (prev/next/today/calendar picker); auto-save on navigation away or week change — replaces the manual save from S7.
 
-**Why split from S7:** auto-save pairs naturally with navigation because the triggers *are* navigation events. Splitting them out lets us prove the grid behavior in isolation first, then layer state transitions on top.
+**Why split from S7:** auto-save pairs naturally with navigation because the triggers _are_ navigation events. Splitting them out lets us prove the grid behavior in isolation first, then layer state transitions on top.
 
 ### S9 — Time Entry (leaves + hotkeys + submit)
 

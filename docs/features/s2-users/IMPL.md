@@ -5,6 +5,7 @@ Started: 2026-05-13T11:00:00Z
 Finished: 2026-05-13T11:35:00Z
 
 ## Acceptance check
+
 - [✓] `GET /api/users` supports `?search=`, `?sort=Name|Email|Role`, `?sortDirection=Asc|Desc`, `?page=`, `?pageSize=`; archived excluded
 - [✓] Role sort uses logical order Admin → ClientManager → User (asc) via CASE WHEN expression in LINQ
 - [✓] `POST` and `PUT` enforce required fields, valid email, and email uniqueness (409 on duplicate, excluding self on update)
@@ -16,6 +17,7 @@ Finished: 2026-05-13T11:35:00Z
 - [✓] Backend test suite passes (29 unit + 18 integration = 47 total); `bun check` passes
 
 ## Log
+
 - 2026-05-13T11:00:00Z — read S1 Customers patterns; wrote IMPL.md header
 - 2026-05-13T11:05:00Z — created User.cs, UserContracts.cs (UserRole, UserSort, UserSortDirection, DuplicateEmailException, PagedUsers, UserRequest), UserConfiguration.cs, UserService.cs, UserEndpoints.cs, UserSeeder.cs
 - 2026-05-13T11:08:00Z — added UserSortDirection to Users namespace (avoids cross-module dep on Customers.SortDirection); SortDirection renamed UserSortDirection throughout
@@ -32,6 +34,7 @@ Finished: 2026-05-13T11:35:00Z
 - 2026-05-13T11:30:00Z — all 29 unit tests pass; all 18 integration tests pass; bun check passes
 
 ## Notes
+
 - No React component tests per project convention
 - `UserSortDirection` enum defined in Users namespace rather than reusing `SortDirection` from Customers, to avoid cross-module dependency; both have same Asc/Desc values
 - 409 duplicate email propagated through TanStack Start server function boundary via `Error('EMAIL_ALREADY_IN_USE')` message sentinel; shown as toast in user-form

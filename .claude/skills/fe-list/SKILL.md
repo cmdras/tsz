@@ -23,7 +23,7 @@ Top-level constant: `const PAGE_SIZE = 25;` (mirrors BE default).
 
 - `const { items, total } = Route.useLoaderData();`
 - `const { search, sort, page = 1 } = Route.useSearch();` — no defaults for `sort`; absent = unsorted (BE applies its own fallback).
-- `const router = useRouter();`  ·  `const navigate = Route.useNavigate();`
+- `const router = useRouter();` · `const navigate = Route.useNavigate();`
 - `const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));`
 
 ## Handlers

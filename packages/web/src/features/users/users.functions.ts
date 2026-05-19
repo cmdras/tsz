@@ -37,7 +37,7 @@ export const createUserFn = createServerFn({ method: 'POST' })
       return await createUser(data);
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 409) {
-        throw new Error('EMAIL_ALREADY_IN_USE');
+        throw new Error('EMAIL_ALREADY_IN_USE', { cause: error });
       }
       throw error;
     }
@@ -56,9 +56,9 @@ export const updateUserFn = createServerFn({ method: 'POST' })
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 409) {
         if (error.body?.includes('leave allowance')) {
-          throw new Error('DUPLICATE_LEAVE_ALLOWANCE');
+          throw new Error('DUPLICATE_LEAVE_ALLOWANCE', { cause: error });
         }
-        throw new Error('EMAIL_ALREADY_IN_USE');
+        throw new Error('EMAIL_ALREADY_IN_USE', { cause: error });
       }
       throw error;
     }

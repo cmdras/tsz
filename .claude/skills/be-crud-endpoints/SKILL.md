@@ -9,6 +9,7 @@ Pairs with [[be-crud-service]] (DB work). Consumed by [[fe-data-access]] via the
 ## Module layout
 
 `packages/api/Modules/<Entities>/` contains:
+
 - `<Entity>.cs` — EF entity, PK `Guid Id`, soft-delete `bool IsArchived`
 - `<Entity>Configuration.cs` — `IEntityTypeConfiguration<>` for column constraints
 - `<Entity>Contracts.cs` — `<Entity>Sort` enum, `Paged<Entities>` record, `<Entity>Request` DTO with `[Required]`/`[StringLength]`/`[EmailAddress]` data annotations
@@ -20,14 +21,14 @@ Endpoints register via a static `Map(WebApplication app)` called from `Program.c
 
 ## Operations
 
-| Verb  | Path                       | Returns                       |
-| ----- | -------------------------- | ----------------------------- |
-| GET   | `/`                        | `Ok<Paged<Entity>>`           |
-| GET   | `/{id:guid}`               | `Ok<Entity>` \| `NotFound`    |
-| POST  | `/`                        | `CreatedAtRoute<Entity>`      |
-| PUT   | `/{id:guid}`               | `Ok<Entity>` \| `NotFound`    |
-| PATCH | `/{id:guid}/archive`       | `NoContent` \| `NotFound`     |
-| PATCH | `/{id:guid}/unarchive`     | `NoContent` \| `NotFound`     |
+| Verb  | Path                   | Returns                    |
+| ----- | ---------------------- | -------------------------- |
+| GET   | `/`                    | `Ok<Paged<Entity>>`        |
+| GET   | `/{id:guid}`           | `Ok<Entity>` \| `NotFound` |
+| POST  | `/`                    | `CreatedAtRoute<Entity>`   |
+| PUT   | `/{id:guid}`           | `Ok<Entity>` \| `NotFound` |
+| PATCH | `/{id:guid}/archive`   | `NoContent` \| `NotFound`  |
+| PATCH | `/{id:guid}/unarchive` | `NoContent` \| `NotFound`  |
 
 No hard `DELETE` — soft-delete only.
 

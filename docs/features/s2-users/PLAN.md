@@ -3,6 +3,7 @@
 Source: feature.md
 
 ## Goal
+
 Add Users CRUD with fields Name, Email, Role (Admin / User / ClientManager), IsArchived. Establishes the identity records that S6 OAuth/Entra ID will later authenticate against. No per-user leave configuration in this slice (deferred to S5).
 
 ## Approach
@@ -10,6 +11,7 @@ Add Users CRUD with fields Name, Email, Role (Admin / User / ClientManager), IsA
 Mirrors the S1 Customers pattern in `packages/api/Modules/Customers/` and `packages/web/src/routes/admin/customers/`. Reuse shared components (TextField, FieldError, SortableHeader, TablePagination) — no duplication.
 
 **API** (`packages/api/Modules/Users/`)
+
 - Entity `User`: `Id` (Guid PK), `Name`, `Email`, `Role` (enum `UserRole { Admin, User, ClientManager }`), `IsArchived`. No business `Number`.
 - EF configuration: table `Users`, unique index on `Email`, `Role` stored as string conversion, max-lengths Name(200)/Email(254). Register `UserConfiguration` in `AppDbContext`.
 - New EF Core migration on `AppDbContext`.
@@ -19,6 +21,7 @@ Mirrors the S1 Customers pattern in `packages/api/Modules/Customers/` and `packa
 - Seeder `UserSeeder`: idempotent; inserts ~10 users (1 Admin, 2 ClientManagers, 7 Users) when table is empty. Called from `Program.cs` alongside customer seeding.
 
 **Web** (`packages/web/src/routes/admin/users/`)
+
 - Regenerate openapi-fetch types after API compiles; add `packages/web/src/api/users/index.ts` wrappers matching customer client shape.
 - Routes:
   - `index.tsx` — list with debounced search, three `SortableHeader`s (Name/Email/Role), `TablePagination`. Archived users excluded server-side (only non-archived listed). Per-row Edit link + Archive button with `AlertDialog`.
@@ -30,10 +33,12 @@ Mirrors the S1 Customers pattern in `packages/api/Modules/Customers/` and `packa
 - Add shadcn `Select` component if not already installed (`bunx shadcn@latest add select` in `packages/web`).
 
 **Tests**
+
 - Backend: xUnit tests for `UserService` (sort/search/page, role ordinal sort, duplicate email 409, archive/unarchive) and endpoint smoke tests, in line with S1 coverage.
 - No React component tests (per project convention). Note this omission in IMPL.md.
 
 ## Acceptance criteria
+
 - `GET /api/users` supports `?search=` (substring on Name/Email/Role), `?sort=Name|Email|Role`, `?sortDirection=Asc|Desc`, `?page=`, `?pageSize=`; archived users excluded.
 - Role sort uses logical order Admin → ClientManager → User (asc) regardless of stored-string lexicographic order.
 - `POST /api/users` and `PUT /api/users/{id}` enforce required fields, valid email, and email uniqueness (409 on duplicate, excluding self on update).

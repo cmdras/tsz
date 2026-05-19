@@ -13,6 +13,7 @@ Wire Microsoft Entra ID (single-tenant, Euricom) authentication into the full st
 `/home/chris/git/poc-tsz` contains a working proof-of-concept. Mirror it closely.
 
 Key files to port:
+
 - `packages/api/Common/Extensions/AuthExtensions.cs` — `AddEntraJwtAuth` / `UseEntraJwtAuth`
 - `packages/web/src/lib/auth.server.ts` — Auth.js config, token storage, `getServerSession`, `getAccessToken`, inline refresh
 - `packages/web/src/lib/auth-client.ts` — `signInWithMicrosoft`, `signOut`, `useSession`

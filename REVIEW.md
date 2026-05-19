@@ -4,7 +4,7 @@
 
 - your program.cs file is messy, split configuration into helper methods and move configuration responsibility to each module seperately
 - your db conection strings are hardcoded, move them to appsettings.json
-  
+
 ```csharp
 // bad
 ...
@@ -63,20 +63,21 @@ Your tests focus on implementation details and do not communicate business value
 
 - Separation of concerns:
 
-Your services do to much. 
-  - they contain your Database logic, 
-  - your bussiness logic 
-  - your transaction management
-  - your error handling
+Your services do to much.
+
+- they contain your Database logic,
+- your bussiness logic
+- your transaction management
+- your error handling
 
 You are introducing a lot of coupling throughout your application,
 
 Making it impossible to seperate modules later on.
 For example Common.Counters is tightly coupled to your appcontext basicly coupling all of your modules together.
 
-- API 
+- API
 
-Your API will not scale, 
+Your API will not scale,
 
 The way you catch each exception and return a custom error message is not maintainable, you should use a global exception handler and return a standard error response with an error code that can be used by the client to display a user friendly message.
 
@@ -90,34 +91,34 @@ Your api is exposing full database entities, you should use DTOs to decouple you
 ```js
 // bad
 <div>
-    <Input
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
-        onBlur={field.handleBlur}
-        autoFocus
-    />
-    {field.state.meta.errors.length > 0 && (
-        <p className="mt-1 text-xs text-destructive">{field.state.meta.errors.join(', ')}</p>
-    )}
+  <Input
+    value={field.state.value}
+    onChange={(e) => field.handleChange(e.target.value)}
+    onBlur={field.handleBlur}
+    autoFocus
+  />
+  {field.state.meta.errors.length > 0 && (
+    <p className="mt-1 text-xs text-destructive">{field.state.meta.errors.join(', ')}</p>
+  )}
 </div>
 ```
 
 ```js
 // impr
 <div className="grid gap-2">
-    <Label htmlFor={field.name}>Name</Label>
-    <Input
+  <Label htmlFor={field.name}>Name</Label>
+  <Input
     id={field.name}
     name={field.name}
     value={field.state.value}
     onBlur={field.handleBlur}
     onChange={(e) => field.handleChange(e.target.value)}
-    />
-    <FieldError field={field} />
+  />
+  <FieldError field={field} />
 </div>
 ```
 
-en 
+en
 
 ```js
 function FieldError({ field }: { field: { state: { meta: { isTouched: boolean; errors: Array<unknown> } } } }) {
