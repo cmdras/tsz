@@ -1,0 +1,26 @@
+packages/web/src/api/client.ts
+  h_f5e73ed3339dc5 29
+CHANGELOG.md
+  s_0795915f5e4754::t_500cf6b1abeaed 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "5f7d6392d9db5987ac3c87a9da5e37c5cd6af137",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_0795915f5e4754": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fe4028d6-7eb1-48d3-b2de-fb64a5587de5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
