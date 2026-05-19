@@ -1,0 +1,44 @@
+packages/api/api.csproj
+  s_0795915f5e4754::t_6233bac1a5320e 22
+CHANGELOG.md
+  s_0795915f5e4754::t_a78d36c567c44a 5
+packages/api/Program.cs
+  s_7ec00fa78c14e5::t_6299b49b0bb72b 49
+  s_0795915f5e4754::t_9bed26c1808a53 51-52
+  s_0795915f5e4754::t_e8c0e7d6c8e334 17
+  s_7ec00fa78c14e5::t_3e47aedf2d6fcb 12,18-25
+packages/api/Common/Extensions/EndpointRouteBuilderExtensions.cs
+  s_0795915f5e4754::t_fc735f4c43ead3 6
+packages/api/Common/Extensions/AuthExtensions.cs
+  h_f5e73ed3339dc5 2-3,9-12,14-15,17-20,22,28-29
+  s_0795915f5e4754::t_c015d8ba22c791 24-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "df44094e7f7a336a8f91df8ff9f64c686c665cd0",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_0795915f5e4754": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fe4028d6-7eb1-48d3-b2de-fb64a5587de5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_7ec00fa78c14e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "209554ab-3a6a-4d73-bef7-6359a7ce0545",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
