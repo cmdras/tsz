@@ -1,0 +1,21 @@
+packages/api/Modules/Contracts/ContractService.cs
+  s_2eaebe076c8e40::t_30fae2bd61ea51 167
+CHANGELOG.md
+  s_2eaebe076c8e40::t_e16a838813e1a7 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "c6d0936b5749d6800071e4dc7fc38e9d94a34ae6",
+  "prompts": {},
+  "sessions": {
+    "s_2eaebe076c8e40": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "851a911f-5c6a-4271-b18e-5afbdb5d3327",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
