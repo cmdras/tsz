@@ -1,0 +1,30 @@
+packages/api/Modules/Users/UserRepository.cs
+  s_f6bf58c765edd2::t_c954374c85ef2b 103-104,112-113
+CHANGELOG.md
+  s_f6bf58c765edd2::t_e13195b6da716d 5
+packages/api.tests/UserLeaveAllowances/UserLeaveAllowanceRepositoryTests.cs
+  s_f6bf58c765edd2::t_80110caf528862 2
+  s_f6bf58c765edd2::t_c0ff6f30c5281a 22-35
+  s_f6bf58c765edd2::t_57da928ba363ca 57,62
+  s_f6bf58c765edd2::t_3c01075b4cdd68 131-132
+packages/api/Modules/LeaveTypes/LeaveTypeService.cs
+  s_f6bf58c765edd2::t_1855ca4fc4ec03 43-45
+packages/api.tests/Contracts/ContractRepositoryTests.cs
+  s_f6bf58c765edd2::t_0edd211d083ffd 23-24,30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "f4a1d52fc982c600f00ff497aaf028dc0e9f10b8",
+  "prompts": {},
+  "sessions": {
+    "s_f6bf58c765edd2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b80d6e45-669c-4b80-abc3-00cbfa136c6d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
