@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_2eaebe076c8e40::t_a0585163127722 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "bbcd626d59bb53ca8ef72c1692a9e0985b8017a3",
+  "prompts": {},
+  "sessions": {
+    "s_2eaebe076c8e40": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "851a911f-5c6a-4271-b18e-5afbdb5d3327",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
