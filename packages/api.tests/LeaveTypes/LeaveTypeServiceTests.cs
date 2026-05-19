@@ -16,7 +16,7 @@ public class LeaveTypeServiceTests
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        return new LeaveTypeService(context);
+        return new LeaveTypeService(new LeaveTypeRepository(context));
     }
 
     private static async Task<LeaveType> AddLeaveTypeAsync(

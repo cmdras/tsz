@@ -16,7 +16,7 @@ public class UserLeaveAllowanceServiceTests
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        return new UserService(context);
+        return new UserService(new UserRepository(context), new UserLeaveAllowanceRepository(context), new LeaveTypeRepository(context));
     }
 
     private static async Task<LeaveType> AddLeaveTypeAsync(
@@ -166,6 +166,7 @@ public class UserLeaveAllowanceServiceTests
             .AsNoTracking()
             .FirstAsync(allowance => allowance.Id == existing.Id);
         Assert.Equal(25m, refreshed.TotalDays);
+        Assert.Equal(AllowanceMode.Limited, refreshed.Mode);
     }
 
     [Fact]

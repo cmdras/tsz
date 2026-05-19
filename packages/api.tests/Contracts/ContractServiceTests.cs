@@ -1,6 +1,7 @@
 using Api.Common;
 using Api.Common.Database;
 using Api.Modules.Contracts;
+using Api.Modules.Customers;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -16,7 +17,7 @@ public class ContractServiceTests
             .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
         context = new AppDbContext(options);
-        return new ContractService(context);
+        return new ContractService(new ContractRepository(context), new CustomerRepository(context), new UserRepository(context));
     }
 
     private static async Task<Guid> AddConsultantAsync(AppDbContext context, UserRole role = UserRole.User, bool isArchived = false)
