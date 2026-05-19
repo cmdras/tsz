@@ -6,6 +6,7 @@ public static class CustomersModule
 {
     public static IServiceCollection AddCustomersModule(this IServiceCollection services)
     {
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<CustomerService>();
         return services;
     }

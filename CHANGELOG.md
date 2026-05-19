@@ -2,6 +2,7 @@
 
 ## 2026-05-19
 
+- refactor(customers): extract data access into CustomerRepository
 - fix(navbar): replace non-compliant green brand text with theme foreground color
 - chore(.claude): update skills for response DTOs and fix PostToolUse hook exit code
 - refactor(api): introduce response DTOs and centralize domain exception handling

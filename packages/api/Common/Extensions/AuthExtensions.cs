@@ -26,8 +26,8 @@ public static class AuthExtensions
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidAudiences = new[] { $"api://{clientId}" },
-                    ValidIssuers   = new[] { $"https://login.microsoftonline.com/{tenantId}/v2.0" },
+                    ValidAudiences = [$"api://{clientId}"],
+                    ValidIssuers   = [$"https://login.microsoftonline.com/{tenantId}/v2.0"],
                 };
             });
         builder.Services.AddAuthorization();

@@ -20,7 +20,20 @@ public record CustomerResponse(
     string Country,
     string ContactName,
     string ContactEmail,
-    bool IsArchived);
+    bool IsArchived)
+{
+    public static CustomerResponse FromEntity(Customer customer) => new(
+        customer.Id,
+        customer.Number,
+        customer.Name,
+        customer.Street,
+        customer.Zip,
+        customer.City,
+        customer.Country,
+        customer.ContactName,
+        customer.ContactEmail,
+        customer.IsArchived);
+}
 
 public record PagedCustomers(IReadOnlyList<CustomerResponse> Items, int Total);
 
