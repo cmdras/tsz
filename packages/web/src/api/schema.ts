@@ -708,6 +708,38 @@ export interface paths {
     };
     trace?: never;
   };
+  '/api/stats/admin': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            'application/json': components['schemas']['AdminStats'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/leave-types': {
     parameters: {
       query?: never;
@@ -1046,6 +1078,16 @@ export interface components {
       items: components['schemas']['User'][];
       /** Format: int32 */
       total: number;
+    };
+    AdminStats: {
+      /** Format: int32 */
+      customers: number;
+      /** Format: int32 */
+      users: number;
+      /** Format: int32 */
+      contracts: number;
+      /** Format: int32 */
+      leaveTypes: number;
     };
     ProblemDetails: {
       type?: null | string;

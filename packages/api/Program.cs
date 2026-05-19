@@ -6,6 +6,7 @@ using Api.Common.OpenApi;
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
+using Api.Modules.Stats;
 using Api.Modules.Users;
 using Scalar.AspNetCore;
 
@@ -23,6 +24,7 @@ builder.Services.AddCustomersModule();
 builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
 builder.Services.AddLeaveTypesModule();
+builder.Services.AddStatsModule();
 
 var app = builder.Build();
 
@@ -49,5 +51,6 @@ app.MapCustomersModule();
 app.MapUsersModule();
 app.MapContractsModule();
 app.MapLeaveTypesModule();
+app.MapStatsModule();
 
 app.Run();

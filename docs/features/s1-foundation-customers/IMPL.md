@@ -5,6 +5,7 @@ Started: 2026-05-12T12:00:00Z
 Finished: 2026-05-12T14:13:00Z
 
 ## Acceptance check
+
 - [✓] `/admin/customers` lists 5 seeded rows with numbers 100000–100004, sorted by Number ASC — verified via API, UI routes wired
 - [✓] `POST /api/customers` without `Number` in body returns 201 with server-assigned next Number; the 6th customer gets 100005 — smoke tested
 - [✓] `PUT /api/customers/{id}` rejects/ignores `Number` and `Id` mutation (DTO omits both) — PUT returned number:100000 unchanged
@@ -17,13 +18,14 @@ Finished: 2026-05-12T14:13:00Z
 - [✓] `packages/web/src/api/schema.ts` regenerated; openapi-fetch types compile — regenerated, types compile clean
 
 ## Log
+
 - 2026-05-12T12:00Z — Created IMPL.md
 - 2026-05-12T12:05Z — Added AppDb connection string to appsettings.json
 - 2026-05-12T12:06Z — Created AppDbContext, Customer, CustomerConfiguration, CustomerContracts, CustomerService, CustomerEndpoints
 - 2026-05-12T12:07Z — Updated Program.cs: registered AppDbContext, MigrateAsync, inline customer seeding
 - 2026-05-12T12:08Z — Generated EF Core migration via dotnet-ef: Migrations/AppDb/20260512120744_Initial.cs
 - 2026-05-12T12:10Z — Installed shadcn components: sonner, switch, alert-dialog
-- 2026-05-12T12:11Z — Mounted <Toaster /> in __root.tsx
+- 2026-05-12T12:11Z — Mounted <Toaster /> in \_\_root.tsx
 - 2026-05-12T12:12Z — Deleted flat routes/admin/customers.tsx; created customers/ folder structure
 - 2026-05-12T12:13Z — Created -schemas.ts, -server.ts, -components/customer-form.tsx
 - 2026-05-12T12:14Z — Created index.tsx (list), $id.tsx (edit), new.tsx (create)

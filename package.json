@@ -17,6 +17,9 @@
     "test:all": "bun run test:web && dotnet test tsz.sln",
     "cleanup": "bun run --filter '*' cleanup"
   },
+  "dependencies": {
+    "fallow": "^2.75.0"
+  },
   "devDependencies": {
     "eslint-plugin-better-tailwindcss": "^4.5.0",
     "eslint-plugin-no-secrets": "^2.3.3",
@@ -25,8 +28,5 @@
     "rimraf": "^6.1.3",
     "vite-plus": "^0.1.14"
   },
-  "packageManager": "bun@1.3.6",
-  "dependencies": {
-    "fallow": "^2.75.0"
-  }
+  "packageManager": "bun@1.3.6"
 }

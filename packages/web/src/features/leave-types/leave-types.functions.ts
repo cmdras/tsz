@@ -44,7 +44,7 @@ export const createLeaveTypeFn = createServerFn({ method: 'POST' })
       return await createLeaveType(data);
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 409) {
-        throw new Error('A leave type with this name already exists.');
+        throw new Error('A leave type with this name already exists.', { cause: error });
       }
       throw error;
     }
@@ -62,7 +62,7 @@ export const updateLeaveTypeFn = createServerFn({ method: 'POST' })
       return await updateLeaveType(id, data);
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 409) {
-        throw new Error('A leave type with this name already exists.');
+        throw new Error('A leave type with this name already exists.', { cause: error });
       }
       throw error;
     }

@@ -3,6 +3,7 @@
 Source: feature.md
 
 ## Goal
+
 Wire Microsoft Entra ID (single-tenant, Euricom) authentication into both halves of the stack. The .NET API enforces JWT Bearer on every route group; the web app signs users in via Auth.js, holds tokens in an encrypted server-side cookie, and forwards them as `Bearer` on outbound API calls. Mirrors the working poc-tsz implementation.
 
 ## Approach
@@ -20,6 +21,7 @@ Wire Microsoft Entra ID (single-tenant, Euricom) authentication into both halves
 **Out of scope.** Role-based authorization (all authenticated Euricom users equal). User profile page. Avatar display beyond initials. Auth in unit-test project (`packages/api.tests`) since those test services directly, not HTTP.
 
 ## Acceptance criteria
+
 - Unauthenticated visit to any URL except `/login` and `/api/auth/*` redirects to `/login`.
 - "Sign in with Microsoft" completes the Entra flow and returns the user to `/`.
 - Admin pages load `/api/*` data successfully when authenticated; the .NET API returns `401` for any request without a valid Bearer token (verified by hitting it directly with `curl`).

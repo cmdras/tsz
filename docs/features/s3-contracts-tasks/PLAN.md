@@ -3,9 +3,11 @@
 Source: feature.md
 
 ## Goal
+
 Ship admin CRUD for Contracts with a nested 1:N Tasks sub-form, copying S1's Customer patterns end-to-end. Extract the shared Counters service in the process and retrofit S1 onto it. Tasks become S7's Time Entry row primitive, so they get per-row soft-delete and stable identity.
 
 ## Approach
+
 **Counters service.** Add `Common/Counters/ICounterService` with `NextAsync(string key, CancellationToken)` backed by a new `Counters` table (`Key` PK, `Value` int). Implementation uses a serializable transaction to read-and-increment atomically. Refactor `CustomerService.CreateAsync` to call `counters.NextAsync("customer")`, removing the inline `MaxAsync + 1` logic. New migration covers the Counters table and seeds rows for `customer` and `contract` keys at the current high-water mark.
 
 **Backend Contract module.** Add `Modules/Contracts/{Contract.cs, Task.cs, ContractConfiguration.cs, TaskConfiguration.cs, ContractService.cs, ContractEndpoints.cs, ContractContracts.cs, ContractSeeder.cs}` mirroring `Modules/Customers/`. Contract: `Id` (Guid PK), `Number` (int, 6-digit via Counters key `contract`, starts 100000), `CustomerId`, `ConsultantId`, `Subject`, `StartDate`, `EndDate?`, `IsArchived`. Task: `Id` (Guid PK), `ContractId` FK, `Name`, `DayRate` (decimal), `Order` (int, server-assigned), `IsArchived`. Tasks live in their own DbSet (not EF-owned) so per-row archive and stable IDs survive Time Entry references; FK without cascade so archiving a Contract leaves Task rows queryable.
@@ -21,6 +23,7 @@ Ship admin CRUD for Contracts with a nested 1:N Tasks sub-form, copying S1's Cus
 **Seed.** `ContractSeeder` creates 5 contracts (Numbers 100000–100004 via Counters) with 2 Tasks each, drawing Customer + Consultant FKs from existing seed pools. Counters table seeded so the next call returns 100005.
 
 ## Acceptance criteria
+
 - `ICounterService` exists in `Common/Counters/`; `CustomerService.CreateAsync` uses it; S1's inline `MaxAsync + 1` is gone.
 - Counters table migration applied; rows for `customer` and `contract` initialized to current high-water marks.
 - `GET /api/contracts` paginates, searches Subject/Customer/Consultant, sorts on all six columns, hides archived unless `archived=true` query param.
