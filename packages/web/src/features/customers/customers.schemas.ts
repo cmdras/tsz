@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { CustomerSort } from './customers.server';
+import type { ArchivedFilter, CustomerSort } from './customers.server';
 
 export const customerSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
@@ -28,6 +28,12 @@ const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
 export const customerFilterValues = ['all', 'active', 'archived'] as const;
 export type CustomerFilter = (typeof customerFilterValues)[number];
+
+export const archivedFilterMap: Record<CustomerFilter, ArchivedFilter> = {
+  all: 'All',
+  active: 'Active',
+  archived: 'Archived',
+};
 
 export const searchSchema = z.object({
   search: z.string().optional(),

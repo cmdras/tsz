@@ -6,6 +6,8 @@
 - test(api): restructure suite for business-intent naming and fill integration gaps
 - test(api): tighten assertions, fix duplicate test, and add WithContact builder
 - feat(web): apply Euricom theme and polish customers admin
+- feat(admin): users split-panel and server-side archive filtering
+- fix(customers): include sort and page in loaderDeps and loader
 
 ## 2026-05-19
 

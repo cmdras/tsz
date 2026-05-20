@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { allowanceModeSchema, daysWithOneDecimal } from '#/features/leave-types/leave-types.schemas';
-import type { UserSort } from './users.server';
 
 export const userRoles = ['Admin', 'ClientManager', 'User'] as const;
 export type UserRole = (typeof userRoles)[number];
@@ -29,22 +28,8 @@ export const userSchema = z.object({
 
 export type UserInput = z.infer<typeof userSchema>;
 
-export const sortSlugs = {
-  name: 'Name',
-  email: 'Email',
-  role: 'Role',
-} as const satisfies Record<string, UserSort>;
-
-export type SortSlug = keyof typeof sortSlugs;
-
-const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
-// oxlint-disable-next-line security/detect-non-literal-regexp
-const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
-
 export const searchSchema = z.object({
   search: z.string().optional(),
-  sort: z.string().regex(sortPattern).optional(),
-  page: z.coerce.number().int().positive().optional(),
 });
 
 export type SearchInput = z.infer<typeof searchSchema>;

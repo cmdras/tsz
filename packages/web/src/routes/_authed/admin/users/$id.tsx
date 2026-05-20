@@ -1,51 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { UserForm } from './-components/form';
-import { fetchUserById, listLeaveTypesForPickerFn, updateUserFn } from '#/features/users/users.functions';
-import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { fetchUsers } from '#/features/users/users.functions';
+import { searchSchema } from '#/features/users/users.schemas';
+import { UsersPageLayout } from './-components/users-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/users/$id')({
-  loader: async ({ params }) => {
-    const [user, leaveTypes] = await Promise.all([fetchUserById({ data: params.id }), listLeaveTypesForPickerFn()]);
-    return { user, leaveTypes };
-  },
-  component: EditUser,
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({ search: search.search }),
+  loader: ({ deps }) => fetchUsers({ data: { search: deps.search } }),
+  staleTime: 30_000,
+  component: UserDetailLayout,
 });
 
-function EditUser() {
-  const { user, leaveTypes } = Route.useLoaderData();
+function UserDetailLayout() {
+  const { items } = Route.useLoaderData();
   const { id } = Route.useParams();
-
-  if (!user) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>User not found</AlertTitle>
-        <AlertDescription>No user exists with this ID.</AlertDescription>
-      </Alert>
-    );
-  }
+  const { search } = Route.useSearch();
 
   return (
-    <UserForm
-      title="Edit User"
-      initial={{
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        leaves: user.leaves.map((leave) => ({
-          id: leave.id,
-          leaveTypeId: leave.leaveTypeId,
-          mode: leave.mode,
-          totalDays: leave.totalDays,
-        })),
-      }}
-      leaveTypes={leaveTypes}
-      leaveSummaries={user.leaves.map((leave) => ({
-        leaveTypeId: leave.leaveTypeId,
-        name: leave.name,
-        taken: leave.taken,
-        balance: leave.balance,
-      }))}
-      onSubmit={(values) => updateUserFn({ data: { id, data: values } })}
-    />
+    <UsersPageLayout users={items} selectedId={id} search={search}>
+      <Outlet />
+    </UsersPageLayout>
   );
 }

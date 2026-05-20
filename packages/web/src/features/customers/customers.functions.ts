@@ -9,17 +9,19 @@ import {
   unarchiveCustomer,
 } from './customers.server';
 import { ApiRequestError } from '#/api/client';
-import { customerSchema, searchSchema, sortSlugs, type SortSlug } from './customers.schemas';
+import { customerSchema, searchSchema, sortSlugs, archivedFilterMap, type SortSlug } from './customers.schemas';
 
 export const fetchCustomers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
   .handler(async ({ data }) => {
-    const { sort, ...rest } = data;
-    if (!sort) return await getCustomers(rest);
+    const { sort, filter, ...rest } = data;
+    const archived = archivedFilterMap[filter ?? 'all'];
+    if (!sort) return await getCustomers({ ...rest, archived });
     const isDesc = sort.endsWith('-');
     const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
     return await getCustomers({
       ...rest,
+      archived,
       sort: sortSlugs[slug],
       sortDirection: isDesc ? 'Desc' : 'Asc',
     });
@@ -64,7 +66,3 @@ export const unarchiveCustomerFn = createServerFn({ method: 'POST' })
   .handler(async ({ data: id }) => {
     await unarchiveCustomer(id);
   });
-
-export const fetchAllCustomers = createServerFn({ method: 'GET' }).handler(async () => {
-  return await getCustomers({ includeArchived: true, pageSize: 9999 });
-});

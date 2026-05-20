@@ -1,11 +1,12 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { fetchAllCustomers } from '#/features/customers/customers.functions';
+import { fetchCustomers } from '#/features/customers/customers.functions';
 import { searchSchema } from '#/features/customers/customers.schemas';
 import { CustomersPageLayout } from './-components/customers-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/customers/$id')({
   validateSearch: searchSchema,
-  loader: () => fetchAllCustomers(),
+  loaderDeps: ({ search }) => ({ search: search.search, filter: search.filter }),
+  loader: ({ deps }) => fetchCustomers({ data: { search: deps.search, filter: deps.filter } }),
   staleTime: 30_000,
   component: CustomerDetailLayout,
 });
