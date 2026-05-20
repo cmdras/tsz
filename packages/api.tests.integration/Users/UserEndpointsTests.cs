@@ -199,7 +199,7 @@ public class UserEndpointsShould(IntegrationFactory factory) : IClassFixture<Int
         using (var scope3 = factory.Services.CreateScope())
         {
             var context3 = scope3.ServiceProvider.GetRequiredService<AppDbContext>();
-            var existing = await context3.UserLeaveAllowances.FirstAsync(allowance => allowance.UserId == seeded.Id);
+            var existing = await context3.UserLeaveAllowances.FirstAsync(allowance => allowance.UserId == seeded.Id && allowance.LeaveTypeId == leaveType.Id);
             existingAllowanceId = existing.Id;
         }
 

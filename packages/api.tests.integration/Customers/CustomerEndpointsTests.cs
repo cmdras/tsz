@@ -159,14 +159,15 @@ public class CustomerEndpointsShould(IntegrationFactory factory) : IClassFixture
     [Fact]
     public async Task Filter_Customer_List_By_Name_And_Contact()
     {
-        await SeedAsync(CustomerBuilder.Globex);
+        await SeedAsync(CustomerBuilder.Globex.WithContact("Alice"));
         await SeedAsync(CustomerBuilder.Acme.Named("Initech"));
 
         var byName = await factory.Client.GetFromJsonAsync<PagedCustomers>("/api/customers?search=globex", IntegrationFactory.JsonOptions);
-        var byContact = await factory.Client.GetFromJsonAsync<PagedCustomers>("/api/customers?search=Contact", IntegrationFactory.JsonOptions);
+        var byContact = await factory.Client.GetFromJsonAsync<PagedCustomers>("/api/customers?search=alice", IntegrationFactory.JsonOptions);
 
         Assert.Contains(byName!.Items, customer => customer.Name == "Globex Corp");
-        Assert.True(byContact!.Total > 0);
+        Assert.Equal(1, byContact!.Total);
+        Assert.Contains(byContact.Items, customer => customer.ContactName == "Alice");
     }
 
     [Fact]

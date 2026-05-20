@@ -110,17 +110,6 @@ public class ContractEndpointsShould(IntegrationFactory factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Reject_Contract_With_No_Tasks()
-    {
-        var request = BuildRequest();
-        request.Tasks = [];
-
-        var response = await factory.Client.PostAsJsonAsync("/api/contracts", request);
-
-        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
-    }
-
-    [Fact]
     public async Task Return_Validation_Error_Contract_For_No_Tasks()
     {
         var request = BuildRequest();
@@ -213,7 +202,7 @@ public class ContractEndpointsShould(IntegrationFactory factory) : IClassFixture
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var clientManager = new User
         {
-            Id = Guid.NewGuid(), Name = "Client Manager", Email = "manager2@test.com", Role = UserRole.ClientManager,
+            Id = Guid.NewGuid(), Name = "Client Manager", Email = "manager@test.com", Role = UserRole.ClientManager,
         };
         context.Users.Add(clientManager);
         await context.SaveChangesAsync();
@@ -269,7 +258,7 @@ public class ContractEndpointsShould(IntegrationFactory factory) : IClassFixture
         var contract = await response.Content.ReadFromJsonAsync<ContractResponse>(IntegrationFactory.JsonOptions);
 
         var activeTasks = contract!.Tasks.Where(task => !task.IsArchived).ToList();
-        Assert.True(activeTasks.Count >= 2);
+        Assert.Equal(3, activeTasks.Count);
         for (var index = 1; index < activeTasks.Count; index++)
             Assert.True(activeTasks[index - 1].Order <= activeTasks[index].Order);
     }

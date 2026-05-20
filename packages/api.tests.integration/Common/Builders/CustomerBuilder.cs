@@ -5,6 +5,7 @@ namespace Api.Tests.Integration.Common.Builders;
 public class CustomerBuilder
 {
     private string _name = "Test Customer";
+    private string _contactName = "Contact";
     private bool _isArchived;
 
     public static CustomerBuilder Globex => new CustomerBuilder().Named("Globex Corp");
@@ -13,6 +14,12 @@ public class CustomerBuilder
     public CustomerBuilder Named(string name)
     {
         _name = name;
+        return this;
+    }
+
+    public CustomerBuilder WithContact(string contactName)
+    {
+        _contactName = contactName;
         return this;
     }
 
@@ -31,7 +38,7 @@ public class CustomerBuilder
         Zip = "1000",
         City = "Brussels",
         Country = "Belgium",
-        ContactName = "Contact",
+        ContactName = _contactName,
         ContactEmail = "contact@example.com",
     };
 }

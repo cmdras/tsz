@@ -3,6 +3,7 @@
 ## 2026-05-20
 
 - test(api): restructure suite for business-intent naming and fill integration gaps
+- test(api): tighten assertions, fix duplicate test, and add WithContact builder
 
 ## 2026-05-19
 

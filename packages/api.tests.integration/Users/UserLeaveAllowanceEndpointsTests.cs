@@ -28,7 +28,7 @@ public class UserLeaveAllowanceEndpointsShould(IntegrationFactory factory) : ICl
     {
         using var scope = factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        var allowance = await context.UserLeaveAllowances.FirstAsync(allowance => allowance.UserId == userId);
+        var allowance = await context.UserLeaveAllowances.SingleAsync(allowance => allowance.UserId == userId);
         return allowance.Id;
     }
 
