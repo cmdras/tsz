@@ -17,6 +17,7 @@ public static class CustomerEndpoints
             SortDirection? sortDirection,
             int? page,
             int? pageSize,
+            bool? includeArchived,
             CustomerService service,
             CancellationToken cancellationToken) =>
         {
@@ -28,6 +29,7 @@ public static class CustomerEndpoints
                 sortDirection ?? SortDirection.Asc,
                 pageNumber,
                 size,
+                includeArchived ?? false,
                 cancellationToken));
         });
 

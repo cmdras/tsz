@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-20
+
+- feat(customers): redesign customers admin as master-detail split-panel layout
+
 ## 2026-05-19
 
 - test(users): merge duplicate leave allowance update test and add Mode assertion

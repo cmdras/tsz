@@ -74,6 +74,31 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
+    public async Task GetAll_WithIncludeArchived_ReturnsBothActiveAndArchived()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Active", number: 100001);
+        await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(2, total);
+    }
+
+    [Fact]
+    public async Task GetAll_WithIncludeArchived_SearchMatchesArchivedCustomers()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Globex", number: 100001);
+        await AddCustomerAsync(context, "Initech", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(1, total);
+        Assert.Equal("Initech", items[0].Name);
+    }
+
+    [Fact]
     public async Task GetAll_SearchMatchesName()
     {
         var repository = CreateRepository(out var context);

@@ -1,6 +1,13 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getCustomers, getCustomerById, createCustomer, updateCustomer, archiveCustomer } from './customers.server';
+import {
+  getCustomers,
+  getCustomerById,
+  createCustomer,
+  updateCustomer,
+  archiveCustomer,
+  unarchiveCustomer,
+} from './customers.server';
 import { ApiRequestError } from '#/api/client';
 import { customerSchema, searchSchema, sortSlugs, type SortSlug } from './customers.schemas';
 
@@ -51,3 +58,13 @@ export const archiveCustomerFn = createServerFn({ method: 'POST' })
   .handler(async ({ data: id }) => {
     await archiveCustomer(id);
   });
+
+export const unarchiveCustomerFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.string().uuid())
+  .handler(async ({ data: id }) => {
+    await unarchiveCustomer(id);
+  });
+
+export const fetchAllCustomers = createServerFn({ method: 'GET' }).handler(async () => {
+  return await getCustomers({ includeArchived: true, pageSize: 9999 });
+});

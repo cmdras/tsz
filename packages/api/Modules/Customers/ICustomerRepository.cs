@@ -10,6 +10,7 @@ public interface ICustomerRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
+        bool includeArchived = false,
         CancellationToken cancellationToken = default);
 
     Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

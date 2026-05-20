@@ -50,7 +50,7 @@ app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapOpenApi("/openapi/{documentName}.json");
+app.MapOpenApi("/openapi/{documentName}.json").AllowAnonymous();
 app.MapScalarApiReference("/openapi", options =>
 {
     options.WithOpenApiRoutePattern("/openapi/{documentName}.json");

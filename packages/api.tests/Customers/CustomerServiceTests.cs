@@ -74,6 +74,18 @@ public class CustomerServiceTests
     }
 
     [Fact]
+    public async Task GetAll_WithIncludeArchived_ReturnsBothActiveAndArchived()
+    {
+        var service = CreateService(out var context);
+        await AddCustomerAsync(context, "Active", number: 100001);
+        await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
+
+        var result = await service.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(2, result.Total);
+    }
+
+    [Fact]
     public async Task GetAll_SearchMatchesName()
     {
         var service = CreateService(out var context);

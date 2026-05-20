@@ -26,10 +26,14 @@ const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
 // oxlint-disable-next-line security/detect-non-literal-regexp
 const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
+export const customerFilterValues = ['all', 'active', 'archived'] as const;
+export type CustomerFilter = (typeof customerFilterValues)[number];
+
 export const searchSchema = z.object({
   search: z.string().optional(),
   sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
+  filter: z.enum(customerFilterValues).optional(),
 });
 
 export type SearchInput = z.infer<typeof searchSchema>;

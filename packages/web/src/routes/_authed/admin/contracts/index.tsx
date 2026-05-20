@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#
 import { SortableHeader } from '#/components/sortable-header';
 import { TablePagination } from '#/components/table-pagination';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
+import { formatEntityNumber } from '#/lib/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -128,7 +129,7 @@ function ContractList() {
             <TableRow key={contract.id} className={contract.isArchived ? 'opacity-50' : undefined}>
               <TableCell className="font-mono">
                 <Link to="/admin/contracts/$id" params={{ id: contract.id }} className="hover:underline">
-                  {String(contract.number).padStart(6, '0')}
+                  {formatEntityNumber(contract.number)}
                 </Link>
               </TableCell>
               <TableCell>{contract.customerName}</TableCell>

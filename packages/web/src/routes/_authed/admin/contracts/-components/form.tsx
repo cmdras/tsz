@@ -11,6 +11,7 @@ import { Label } from '#/components/ui/label';
 import { TextField } from '#/components/text-field';
 import { FieldError } from '#/components/field-error';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '#/components/ui/select';
+import { formatEntityNumber } from '#/lib/utils';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table';
 
 interface ContractFormProps {
@@ -72,7 +73,7 @@ export function ContractForm({ initial, customers, consultants, onSubmit, title 
                   <SelectContent>
                     {customers.map((customer) => (
                       <SelectItem key={customer.id} value={customer.id}>
-                        {String(customer.number).padStart(6, '0')} — {customer.name}
+                        {formatEntityNumber(customer.number)} — {customer.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
