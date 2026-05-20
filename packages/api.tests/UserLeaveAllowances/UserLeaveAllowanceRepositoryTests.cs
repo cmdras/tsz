@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.UserLeaveAllowances;
 
-public class UserLeaveAllowanceRepositoryTests
+public class UserLeaveAllowanceRepositoryShould
 {
     private static UserLeaveAllowanceRepository CreateRepository(out AppDbContext context)
     {
@@ -70,7 +70,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task GetForUserAndYear_ReturnsAllowancesForUser()
+    public async Task Return_Allowances_For_User_And_Year()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -84,7 +84,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task GetForUserAndYear_ExcludesOtherUsersAllowances()
+    public async Task Exclude_Other_Users_Allowances()
     {
         var repository = CreateRepository(out var context);
         var alice = await AddUserAsync(context, "Alice");
@@ -99,7 +99,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task GetForUserAndYear_ExcludesOtherYears()
+    public async Task Exclude_Other_Years()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -113,7 +113,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task GetForUserAndYear_NoAllowances_ReturnsEmpty()
+    public async Task Return_Empty_For_User_With_No_Allowances()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -124,7 +124,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task AddRangeAsync_PersistsAllowances()
+    public async Task Persist_New_Allowances()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -147,7 +147,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task AddRangeAsync_EmptyList_DoesNotPersistAnything()
+    public async Task Handle_Empty_Add_Range()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -161,7 +161,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task UpdateRangeAsync_PersistsChanges()
+    public async Task Persist_Updated_Allowances()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -177,7 +177,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task UpdateRangeAsync_EmptyList_NoOp()
+    public async Task Handle_Empty_Update_Range()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);
@@ -192,7 +192,7 @@ public class UserLeaveAllowanceRepositoryTests
     }
 
     [Fact]
-    public async Task RemoveRangeAsync_RemovesMultiple()
+    public async Task Remove_Multiple_Allowances()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context);

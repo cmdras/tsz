@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.Customers;
 
-public class CustomerRepositoryTests
+public class CustomerRepositoryShould
 {
     private static CustomerRepository CreateRepository(out AppDbContext context)
     {
@@ -61,7 +61,7 @@ public class CustomerRepositoryTests
     };
 
     [Fact]
-    public async Task GetAll_ExcludesArchivedCustomers()
+    public async Task Exclude_Archived_Customers_From_List()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Active", number: 100001);
@@ -74,32 +74,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_WithIncludeArchived_ReturnsBothActiveAndArchived()
-    {
-        var repository = CreateRepository(out var context);
-        await AddCustomerAsync(context, "Active", number: 100001);
-        await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
-
-        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
-
-        Assert.Equal(2, total);
-    }
-
-    [Fact]
-    public async Task GetAll_WithIncludeArchived_SearchMatchesArchivedCustomers()
-    {
-        var repository = CreateRepository(out var context);
-        await AddCustomerAsync(context, "Globex", number: 100001);
-        await AddCustomerAsync(context, "Initech", number: 100002, isArchived: true);
-
-        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
-
-        Assert.Equal(1, total);
-        Assert.Equal("Initech", items[0].Name);
-    }
-
-    [Fact]
-    public async Task GetAll_SearchMatchesName()
+    public async Task Match_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Globex Corp", number: 100001);
@@ -112,7 +87,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesContactName()
+    public async Task Match_Contact_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Globex", contactName: "Hank", number: 100001);
@@ -125,7 +100,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByNumberDesc_ReversesOrder()
+    public async Task Sort_By_Number_Descending()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Alpha", number: 100001);
@@ -140,7 +115,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByCity_OrdersAlphabetically()
+    public async Task Sort_By_City_Alphabetically()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Alpha", city: "Ghent", number: 100001);
@@ -155,7 +130,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_Pagination_ReturnsCorrectPage()
+    public async Task Page_Customer_List()
     {
         var repository = CreateRepository(out var context);
         for (var index = 1; index <= 5; index++)
@@ -168,7 +143,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_ExistingId_ReturnsCustomer()
+    public async Task Find_Customer_By_Id()
     {
         var repository = CreateRepository(out var context);
         var customer = await AddCustomerAsync(context, "Alice Co");
@@ -180,7 +155,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_NonExistingId_ReturnsNull()
+    public async Task Return_Null_For_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -190,7 +165,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Create_ValidRequest_CreatesCustomerWithFields()
+    public async Task Create_Customer_With_All_Fields()
     {
         var repository = CreateRepository(out _);
         var request = BuildRequest("Carol Co", "Carol", "carol@carol.test");
@@ -203,7 +178,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Create_FirstCustomer_GetsNumber1()
+    public async Task Assign_Number_One_To_First_Customer()
     {
         var repository = CreateRepository(out _);
 
@@ -213,7 +188,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Create_AssignsSequentialNumbers()
+    public async Task Assign_Sequential_Number()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Existing", number: 42);
@@ -224,7 +199,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Create_AssignsMaxPlusOne()
+    public async Task Increment_From_Highest_Existing_Number()
     {
         var repository = CreateRepository(out var context);
         await AddCustomerAsync(context, "Existing", number: 5);
@@ -237,7 +212,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Update_ValidRequest_UpdatesFields()
+    public async Task Update_Customer_Fields()
     {
         var repository = CreateRepository(out var context);
         var customer = await AddCustomerAsync(context, "Eve Ltd", contactEmail: "eve@eve.test");
@@ -252,7 +227,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Update_NonExistingId_ReturnsNull()
+    public async Task Return_Null_On_Update_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -262,7 +237,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Update_PreservesNumber()
+    public async Task Preserve_Number_On_Update()
     {
         var repository = CreateRepository(out var context);
         var customer = await AddCustomerAsync(context, "Original", number: 100077);
@@ -274,7 +249,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_ExistingId_SetsIsArchivedTrue()
+    public async Task Archive_Customer()
     {
         var repository = CreateRepository(out var context);
         var customer = await AddCustomerAsync(context, "Henry");
@@ -287,7 +262,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Archive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -297,7 +272,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_ExistingId_SetsIsArchivedFalse()
+    public async Task Unarchive_Customer()
     {
         var repository = CreateRepository(out var context);
         var customer = await AddCustomerAsync(context, "Irene", isArchived: true);
@@ -310,7 +285,7 @@ public class CustomerRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Unarchive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -318,12 +293,37 @@ public class CustomerRepositoryTests
 
         Assert.False(result);
     }
+
+    [Fact]
+    public async Task Include_Archived_Customers_In_List()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Active", number: 100001);
+        await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(2, total);
+    }
+
+    [Fact]
+    public async Task Match_Archived_Customer_In_Search_When_Included()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Globex", number: 100001);
+        await AddCustomerAsync(context, "Initech", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(1, total);
+        Assert.Equal("Initech", items[0].Name);
+    }
 }
 
-public class CustomerResponseTests
+public class CustomerResponseShould
 {
     [Fact]
-    public void FromEntity_MapsAllFields()
+    public void Map_All_Fields_From_Entity()
     {
         var customer = new Customer
         {
