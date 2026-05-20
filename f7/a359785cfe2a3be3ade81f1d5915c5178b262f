@@ -1,0 +1,68 @@
+packages/web/src/routes/_authed/admin/customers/-components/customer-detail-panel.tsx
+  s_d2500000c1333f::t_8b519b932b4362 70
+  s_4c5961314e1226::t_5fda42bc16a269 6,57-60,122-123
+packages/web/src/routes/__root.tsx
+  s_4c5961314e1226::t_5fda42bc16a269 14-22
+packages/web/src/routes/_authed/admin/customers/index.tsx
+  s_1a13ba7d6bc1e5::t_9e4906b07bc5be 10
+packages/web/src/routes/_authed/admin/customers/$id/edit.tsx
+  s_4c5961314e1226::t_5fda42bc16a269 1,15,33
+packages/web/src/routes/_authed/admin/customers/-components/customers-page-layout.tsx
+  s_d2500000c1333f::t_c3b6afcad5e7d6 27-29
+packages/web/src/routes/_authed/admin/customers/-components/customer-list-panel.tsx
+  s_d2500000c1333f::t_f8021292037970 76
+  s_d2500000c1333f::t_06facb51df5038 77,80-86
+  s_d2500000c1333f::t_4238d45c3054cd 88
+  s_d2500000c1333f::t_9b27125a7b58f7 66
+  s_4c5961314e1226::t_5fda42bc16a269 7,87,89-90
+packages/web/src/routes/_authed/admin/customers/$id/index.tsx
+  s_1a13ba7d6bc1e5::t_53dac2e823b4c0 1,5-6,12-13,16
+CHANGELOG.md
+  s_d2500000c1333f::t_deba65586e4c92 8
+packages/web/src/lib/utils.ts
+  s_4c5961314e1226::t_5fda42bc16a269 13-28
+packages/web/src/styles.css
+  s_4c5961314e1226::t_5fda42bc16a269 6-7,59,95,97-99,102-104,106-107,110,117-124,133-135
+  s_d2500000c1333f::t_7406388e881283 141,151,155
+  s_d2500000c1333f::t_e499b3d84dc79d 138-140,142-150,152-154
+  s_d2500000c1333f::t_237add54ba92bf 8-20
+  s_d2500000c1333f::t_74f85444223f3c 94,96,100-101,105,109,111
+packages/web/src/routes/_authed/admin/customers/$id.tsx
+  s_1a13ba7d6bc1e5::t_0907c3eb86fdc9 9
+packages/web/src/routes/_authed/admin/customers/-components/form.tsx
+  s_d2500000c1333f::t_07fa1fc3d87497 84
+  s_4c5961314e1226::t_5fda42bc16a269 13,16,43
+  s_d2500000c1333f::t_7518781b010fa2 18-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "f7a359785cfe2a3be3ade81f1d5915c5178b262f",
+  "prompts": {},
+  "sessions": {
+    "s_1a13ba7d6bc1e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8347462e-12d7-4114-a453-1e5ffcefceeb",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_4c5961314e1226": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a7cc378-3348-4ca3-bae5-8d55a84736a1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_d2500000c1333f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9e9aabe-73c7-46b5-a38e-45fe141bb12a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
