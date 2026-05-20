@@ -24,7 +24,9 @@ export function CustomersPageLayout({ customers, selectedId, search, filter, chi
       </div>
       <div className="flex gap-4 h-[calc(100vh-10rem)]">
         <CustomerListPanel customers={customers} selectedId={selectedId} search={search} filter={filter} />
-        <div className="flex-1 border rounded-lg overflow-y-auto">{children}</div>
+        <div key={selectedId ?? 'empty'} className="flex-1 border rounded-lg overflow-y-auto animate-fade-in">
+          {children}
+        </div>
       </div>
     </div>
   );

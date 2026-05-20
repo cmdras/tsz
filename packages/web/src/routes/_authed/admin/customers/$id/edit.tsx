@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { CustomerForm } from '../-components/form';
 import { CustomerNotFound } from '../-components/customer-not-found';
 import { fetchCustomerById, updateCustomerFn } from '#/features/customers/customers.functions';
@@ -12,6 +12,7 @@ export const Route = createFileRoute('/_authed/admin/customers/$id/edit')({
 function EditCustomer() {
   const customer = Route.useLoaderData();
   const { id } = Route.useParams();
+  const navigate = useNavigate();
 
   if (!customer) return <CustomerNotFound />;
 
@@ -29,6 +30,7 @@ function EditCustomer() {
           contactEmail: customer.contactEmail,
         }}
         onSubmit={(values) => updateCustomerFn({ data: { id, data: values } })}
+        onDone={() => navigate({ to: '/admin/customers/$id', params: { id } })}
       />
     </div>
   );

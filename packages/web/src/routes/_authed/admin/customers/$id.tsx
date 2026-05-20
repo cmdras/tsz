@@ -6,6 +6,7 @@ import { CustomersPageLayout } from './-components/customers-page-layout';
 export const Route = createFileRoute('/_authed/admin/customers/$id')({
   validateSearch: searchSchema,
   loader: () => fetchAllCustomers(),
+  staleTime: 30_000,
   component: CustomerDetailLayout,
 });
 

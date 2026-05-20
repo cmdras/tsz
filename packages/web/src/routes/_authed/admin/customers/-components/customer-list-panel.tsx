@@ -4,7 +4,7 @@ import { Input } from '#/components/ui/input';
 import { Badge } from '#/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '#/components/ui/tabs';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
-import { cn, formatEntityNumber } from '#/lib/utils';
+import { cn, formatEntityNumber, getAvatarColor } from '#/lib/utils';
 import type { Customer } from '#/features/customers/customers.server';
 import { customerFilterValues, type CustomerFilter } from '#/features/customers/customers.schemas';
 
@@ -63,7 +63,7 @@ export function CustomerListPanel({ customers, selectedId, search, filter }: Cus
         </Tabs>
       </div>
 
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">
         {filteredCustomers.map((customer) => {
           const isSelected = customer.id === selectedId;
           return (
@@ -73,11 +73,21 @@ export function CustomerListPanel({ customers, selectedId, search, filter }: Cus
               params={{ id: customer.id }}
               search={(previous) => previous}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 border-l-2 hover:bg-muted/50 transition-colors',
-                isSelected ? 'border-primary bg-muted/30' : 'border-transparent',
+                'group relative flex items-center gap-3 px-3 py-2.5 hover:bg-muted/50 transition-colors',
+                isSelected && 'bg-muted/30',
               )}
             >
-              <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-semibold flex-shrink-0">
+              <span
+                aria-hidden
+                className={cn(
+                  'absolute left-0 top-0 h-full w-0.5 bg-primary origin-center transition-transform duration-200 ease-out',
+                  isSelected ? 'scale-y-100' : 'scale-y-0',
+                )}
+              />
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 text-white transition-transform duration-200 ease-out group-hover:scale-105"
+                style={{ backgroundColor: getAvatarColor(customer.name) }}
+              >
                 {customer.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">

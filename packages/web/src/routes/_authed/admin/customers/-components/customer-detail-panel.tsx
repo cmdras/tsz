@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { archiveCustomerFn, unarchiveCustomerFn } from '#/features/customers/customers.functions';
 import type { Customer } from '#/features/customers/customers.server';
-import { formatEntityNumber } from '#/lib/utils';
+import { formatEntityNumber, getAvatarColor } from '#/lib/utils';
 import { Button } from '#/components/ui/button';
 import { Badge } from '#/components/ui/badge';
 import {
@@ -54,7 +54,10 @@ export function CustomerDetailPanel({ customer, onArchiveSuccess }: CustomerDeta
   return (
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-start gap-4">
-        <div className="w-[72px] h-[72px] rounded-full bg-muted flex items-center justify-center text-2xl font-bold flex-shrink-0">
+        <div
+          className="w-[72px] h-[72px] rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0 text-white"
+          style={{ backgroundColor: getAvatarColor(customer.name) }}
+        >
           {customer.name.slice(0, 2).toUpperCase()}
         </div>
         <div className="flex-1">
@@ -64,7 +67,7 @@ export function CustomerDetailPanel({ customer, onArchiveSuccess }: CustomerDeta
             {customer.isArchived ? (
               <Badge variant="secondary">Archived</Badge>
             ) : (
-              <Badge variant="outline" className="border-green-500 text-green-500">
+              <Badge variant="outline" className="border-primary text-primary">
                 Active
               </Badge>
             )}
@@ -116,8 +119,8 @@ export function CustomerDetailPanel({ customer, onArchiveSuccess }: CustomerDeta
 function FieldValue({ label, value, className }: { label: string; value: string; className?: string }) {
   return (
     <div className={className}>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm">{value || '—'}</p>
+      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+      <p className="text-sm mt-0.5">{value || '—'}</p>
     </div>
   );
 }

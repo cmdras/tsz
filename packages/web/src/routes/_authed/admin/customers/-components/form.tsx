@@ -10,10 +10,18 @@ interface CustomerFormProps {
   initial: Partial<CustomerInput>;
   onSubmit: (values: CustomerInput) => Promise<unknown>;
   title: string;
+  onDone?: () => void;
 }
 
-export function CustomerForm({ initial, onSubmit, title }: CustomerFormProps) {
+export function CustomerForm({ initial, onSubmit, title, onDone }: CustomerFormProps) {
   const router = useRouter();
+  const navigateOnDone = () => {
+    if (onDone) {
+      onDone();
+      return;
+    }
+    router.navigate({ to: '/admin/customers' });
+  };
 
   const form = useForm({
     defaultValues: {
@@ -32,7 +40,7 @@ export function CustomerForm({ initial, onSubmit, title }: CustomerFormProps) {
       try {
         await onSubmit(value);
         toast.success('Customer saved');
-        router.navigate({ to: '/admin/customers' });
+        navigateOnDone();
       } catch {
         toast.error('Failed to save customer');
       }
@@ -73,12 +81,7 @@ export function CustomerForm({ initial, onSubmit, title }: CustomerFormProps) {
                 <Button type="submit" disabled={!canSubmit}>
                   {isSubmitting ? 'Saving…' : 'Save'}
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.navigate({ to: '/admin/customers' })}
-                  disabled={isSubmitting}
-                >
+                <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
                   Cancel
                 </Button>
               </div>
