@@ -1,0 +1,22 @@
+packages/api.tests/Customers/CustomerRepositoryTests.cs
+  s_e48ae7d7caf7bf::t_4543c2911efed2 9,64,77,90,103,118,133,146,158,168,181,191,202,215,230,240,252,265,275,288
+  s_e48ae7d7caf7bf::t_2a4d6e65043e6e 296-320,323,326
+CHANGELOG.md
+  ai_agent 6-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "d1009972cb6e6aa9962f582bba8a94ca5798cbbc",
+  "prompts": {},
+  "sessions": {
+    "s_e48ae7d7caf7bf": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ca531071-4164-4c14-b6af-fb8f4f9b1734",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
