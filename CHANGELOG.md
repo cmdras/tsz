@@ -2,6 +2,7 @@
 
 ## 2026-05-20
 
+- chore(claude): add 17 new agent skills to .claude/skills
 - feat(customers): redesign customers admin as master-detail split-panel layout
 - test(api): restructure suite for business-intent naming and fill integration gaps
 - test(api): tighten assertions, fix duplicate test, and add WithContact builder
