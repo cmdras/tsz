@@ -1,61 +1,42 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Input } from '#/components/ui/input';
 import { Badge } from '#/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger } from '#/components/ui/tabs';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
-import { cn, formatEntityNumber, getAvatarColor } from '#/lib/utils';
-import type { Customer } from '#/features/customers/customers.server';
-import { customerFilterValues, type CustomerFilter } from '#/features/customers/customers.schemas';
+import { cn, getAvatarColor } from '#/lib/utils';
+import type { User } from '#/features/users/users.server';
+import { roleLabels } from '#/features/users/users.schemas';
 
-interface CustomerListPanelProps {
-  customers: Customer[];
+interface UserListPanelProps {
+  users: User[];
   selectedId?: string;
   search?: string;
-  filter?: CustomerFilter;
 }
 
-export function CustomerListPanel({ customers, selectedId, search, filter }: CustomerListPanelProps) {
+export function UserListPanel({ users, selectedId, search }: UserListPanelProps) {
   const navigate = useNavigate();
 
   const handleSearch = useDebouncedCallback((value: string) => {
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined }) });
   }, 300);
 
-  const handleFilterChange = (value: string) => {
-    void navigate({ search: (previous) => ({ ...previous, filter: value as CustomerFilter }) });
-  };
-
   return (
     <div className="w-80 flex flex-col border rounded-lg overflow-hidden flex-shrink-0">
-      <div className="p-3 border-b space-y-2">
+      <div className="p-3 border-b">
         <Input
-          placeholder="Search name or contact…"
+          placeholder="Search name or email…"
           defaultValue={search ?? ''}
           onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
         />
-        <Tabs value={filter ?? customerFilterValues[0]} onValueChange={handleFilterChange}>
-          <TabsList className="w-full">
-            <TabsTrigger value="all" className="flex-1">
-              All
-            </TabsTrigger>
-            <TabsTrigger value="active" className="flex-1">
-              Active
-            </TabsTrigger>
-            <TabsTrigger value="archived" className="flex-1">
-              Archived
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
 
       <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">
-        {customers.map((customer) => {
-          const isSelected = customer.id === selectedId;
+        {users.map((user) => {
+          const isSelected = user.id === selectedId;
           return (
             <Link
-              key={customer.id}
-              to="/admin/customers/$id"
-              params={{ id: customer.id }}
+              key={user.id}
+              to="/admin/users/$id"
+              params={{ id: user.id }}
               search={(previous) => previous}
               preload={false}
               className={cn(
@@ -72,32 +53,30 @@ export function CustomerListPanel({ customers, selectedId, search, filter }: Cus
               />
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 text-white transition-transform duration-200 ease-out group-hover:scale-105"
-                style={{ backgroundColor: getAvatarColor(customer.name) }}
+                style={{ backgroundColor: getAvatarColor(user.name) }}
               >
-                {customer.name.slice(0, 2).toUpperCase()}
+                {user.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium truncate">{customer.name}</span>
-                  {customer.isArchived && (
+                  <span className="text-sm font-medium truncate">{user.name}</span>
+                  {user.isArchived && (
                     <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4 flex-shrink-0">
                       Archived
                     </Badge>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground truncate">
-                  #{formatEntityNumber(customer.number)} · {customer.city}
+                  {roleLabels[user.role]} · {user.email}
                 </p>
               </div>
             </Link>
           );
         })}
-        {customers.length === 0 && (
-          <p className="text-center text-muted-foreground text-sm py-8">No customers found.</p>
-        )}
+        {users.length === 0 && <p className="text-center text-muted-foreground text-sm py-8">No users found.</p>}
       </div>
 
-      <div className="px-3 py-2 border-t text-xs text-muted-foreground">{customers.length} customers</div>
+      <div className="px-3 py-2 border-t text-xs text-muted-foreground">{users.length} users</div>
     </div>
   );
 }

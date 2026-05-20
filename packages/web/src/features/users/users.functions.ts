@@ -3,21 +3,11 @@ import { z } from 'zod';
 import { getUsers, getUserById, createUser, updateUser, archiveUser } from './users.server';
 import { getLeaveTypes } from '#/features/leave-types/leave-types.server';
 import { ApiRequestError } from '#/api/client';
-import { userSchema, searchSchema, sortSlugs, type SortSlug } from './users.schemas';
+import { userSchema, searchSchema } from './users.schemas';
 
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
-  .handler(async ({ data }) => {
-    const { sort, ...rest } = data;
-    if (!sort) return await getUsers(rest);
-    const isDesc = sort.endsWith('-');
-    const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
-    return await getUsers({
-      ...rest,
-      sort: sortSlugs[slug],
-      sortDirection: isDesc ? 'Desc' : 'Asc',
-    });
-  });
+  .handler(({ data }) => getUsers(data));
 
 export const fetchUserById = createServerFn({ method: 'GET' })
   .inputValidator(z.string().uuid())

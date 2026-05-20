@@ -301,7 +301,7 @@ public class CustomerRepositoryShould
         await AddCustomerAsync(context, "Active", number: 100001);
         await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.All);
 
         Assert.Equal(2, total);
     }
@@ -313,7 +313,7 @@ public class CustomerRepositoryShould
         await AddCustomerAsync(context, "Globex", number: 100001);
         await AddCustomerAsync(context, "Initech", number: 100002, isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.All);
 
         Assert.Equal(1, total);
         Assert.Equal("Initech", items[0].Name);

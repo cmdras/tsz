@@ -6,6 +6,7 @@ export type CustomerRequest = components['schemas']['CustomerRequest'];
 export type PagedCustomers = components['schemas']['PagedCustomers'];
 export type CustomerSort = NonNullable<components['schemas']['CustomerSort']>;
 export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
+export type ArchivedFilter = NonNullable<components['schemas']['ArchivedFilter']>;
 
 export interface ListCustomersParams {
   search?: string;
@@ -13,7 +14,7 @@ export interface ListCustomersParams {
   sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
-  includeArchived?: boolean;
+  archived?: ArchivedFilter;
 }
 
 export const getCustomers = async (params: ListCustomersParams = {}): Promise<PagedCustomers> => {
