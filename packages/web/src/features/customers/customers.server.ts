@@ -13,6 +13,7 @@ export interface ListCustomersParams {
   sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
+  includeArchived?: boolean;
 }
 
 export const getCustomers = async (params: ListCustomersParams = {}): Promise<PagedCustomers> => {
@@ -39,4 +40,8 @@ export const updateCustomer = async (id: string, body: CustomerRequest): Promise
 
 export const archiveCustomer = async (id: string): Promise<void> => {
   await client.PATCH('/api/customers/{id}/archive', { params: { path: { id } } });
+};
+
+export const unarchiveCustomer = async (id: string): Promise<void> => {
+  await client.PATCH('/api/customers/{id}/unarchive', { params: { path: { id } } });
 };

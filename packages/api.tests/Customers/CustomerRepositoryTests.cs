@@ -293,4 +293,63 @@ public class CustomerRepositoryShould
 
         Assert.False(result);
     }
+
+    [Fact]
+    public async Task Include_Archived_Customers_In_List()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Active", number: 100001);
+        await AddCustomerAsync(context, "Archived", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync(null, CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(2, total);
+    }
+
+    [Fact]
+    public async Task Match_Archived_Customer_In_Search_When_Included()
+    {
+        var repository = CreateRepository(out var context);
+        await AddCustomerAsync(context, "Globex", number: 100001);
+        await AddCustomerAsync(context, "Initech", number: 100002, isArchived: true);
+
+        var (items, total) = await repository.GetAllAsync("initech", CustomerSort.Number, SortDirection.Asc, 1, 25, includeArchived: true);
+
+        Assert.Equal(1, total);
+        Assert.Equal("Initech", items[0].Name);
+    }
+}
+
+public class CustomerResponseShould
+{
+    [Fact]
+    public void Map_All_Fields_From_Entity()
+    {
+        var customer = new Customer
+        {
+            Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+            Number = 100001,
+            Name = "Acme",
+            Street = "Main 1",
+            Zip = "1000",
+            City = "Brussels",
+            Country = "Belgium",
+            ContactName = "Alice",
+            ContactEmail = "alice@acme.test",
+            IsArchived = false,
+        };
+
+        var response = CustomerResponse.FromEntity(customer);
+
+        Assert.Equal(customer.Id, response.Id);
+        Assert.Equal(customer.Number, response.Number);
+        Assert.Equal(customer.Name, response.Name);
+        Assert.Equal(customer.Street, response.Street);
+        Assert.Equal(customer.Zip, response.Zip);
+        Assert.Equal(customer.City, response.City);
+        Assert.Equal(customer.Country, response.Country);
+        Assert.Equal(customer.ContactName, response.ContactName);
+        Assert.Equal(customer.ContactEmail, response.ContactEmail);
+        Assert.Equal(customer.IsArchived, response.IsArchived);
+    }
 }

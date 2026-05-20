@@ -17,9 +17,10 @@ public class CustomerService
         SortDirection sortDirection,
         int page,
         int pageSize,
+        bool includeArchived = false,
         CancellationToken cancellationToken = default)
     {
-        var (items, total) = await _repository.GetAllAsync(search, sort, sortDirection, page, pageSize, cancellationToken);
+        var (items, total) = await _repository.GetAllAsync(search, sort, sortDirection, page, pageSize, includeArchived, cancellationToken);
         return new PagedCustomers(items.Select(CustomerResponse.FromEntity).ToList(), total);
     }
 

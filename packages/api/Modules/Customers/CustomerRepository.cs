@@ -20,9 +20,12 @@ public class CustomerRepository : ICustomerRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
+        bool includeArchived = false,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Customers.Where(customer => !customer.IsArchived);
+        var query = includeArchived
+            ? _dbContext.Customers.AsQueryable()
+            : _dbContext.Customers.Where(customer => !customer.IsArchived);
 
         if (!string.IsNullOrWhiteSpace(search))
         {

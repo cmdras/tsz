@@ -1,39 +1,22 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { CustomerForm } from './-components/form';
-import { fetchCustomerById, updateCustomerFn } from '#/features/customers/customers.functions';
-import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { fetchAllCustomers } from '#/features/customers/customers.functions';
+import { searchSchema } from '#/features/customers/customers.schemas';
+import { CustomersPageLayout } from './-components/customers-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/customers/$id')({
-  loader: ({ params }) => fetchCustomerById({ data: params.id }),
-  component: EditCustomer,
+  validateSearch: searchSchema,
+  loader: () => fetchAllCustomers(),
+  component: CustomerDetailLayout,
 });
 
-function EditCustomer() {
-  const customer = Route.useLoaderData();
+function CustomerDetailLayout() {
+  const { items } = Route.useLoaderData();
   const { id } = Route.useParams();
-
-  if (!customer) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>Customer not found</AlertTitle>
-        <AlertDescription>No customer exists with this ID.</AlertDescription>
-      </Alert>
-    );
-  }
+  const { search, filter } = Route.useSearch();
 
   return (
-    <CustomerForm
-      title={`Edit Customer #${String(customer.number).padStart(6, '0')}`}
-      initial={{
-        name: customer.name,
-        street: customer.street,
-        zip: customer.zip,
-        city: customer.city,
-        country: customer.country,
-        contactName: customer.contactName,
-        contactEmail: customer.contactEmail,
-      }}
-      onSubmit={(values) => updateCustomerFn({ data: { id, data: values } })}
-    />
+    <CustomersPageLayout customers={items} selectedId={id} search={search} filter={filter}>
+      <Outlet />
+    </CustomersPageLayout>
   );
 }

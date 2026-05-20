@@ -6,6 +6,7 @@ import {
   updateContractFn,
 } from '#/features/contracts/contracts.functions';
 import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
+import { formatEntityNumber } from '#/lib/utils';
 
 export const Route = createFileRoute('/_authed/admin/contracts/$id')({
   loader: async ({ params }) => {
@@ -32,7 +33,7 @@ function EditContract() {
 
   return (
     <ContractForm
-      title={`Edit Contract #${String(contract.number).padStart(6, '0')}`}
+      title={`Edit Contract #${formatEntityNumber(contract.number)}`}
       initial={{
         customerId: contract.customerId,
         consultantId: contract.consultantId,

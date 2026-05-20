@@ -54,6 +54,7 @@ export interface paths {
           sortDirection?: components['schemas']['SortDirection'];
           page?: number;
           pageSize?: number;
+          includeArchived?: boolean;
         };
         header?: never;
         path?: never;
