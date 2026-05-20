@@ -5,6 +5,7 @@
 - feat(customers): redesign customers admin as master-detail split-panel layout
 - test(api): restructure suite for business-intent naming and fill integration gaps
 - test(api): tighten assertions, fix duplicate test, and add WithContact builder
+- feat(web): apply Euricom theme and polish customers admin
 
 ## 2026-05-19
 
