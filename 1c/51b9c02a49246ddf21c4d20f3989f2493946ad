@@ -1,0 +1,30 @@
+packages/api.tests.integration/Users/UserEndpointsTests.cs
+  s_e48ae7d7caf7bf::t_de10119943ea1e 202
+packages/api.tests.integration/Common/Builders/CustomerBuilder.cs
+  s_e48ae7d7caf7bf::t_4ddc5e7065384b 8,20-25,41
+CHANGELOG.md
+  s_e48ae7d7caf7bf::t_cb7a3169a4fa7e 6
+packages/api.tests.integration/Contracts/ContractEndpointsTests.cs
+  s_e48ae7d7caf7bf::t_4a4f32f2bd1daa 205
+  s_e48ae7d7caf7bf::t_ca3f26cf7c2dd3 261
+packages/api.tests.integration/Customers/CustomerEndpointsTests.cs
+  s_e48ae7d7caf7bf::t_35b0cdd803f065 162,166,169-170
+packages/api.tests.integration/Users/UserLeaveAllowanceEndpointsTests.cs
+  s_e48ae7d7caf7bf::t_04f5797df71611 31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "1c51b9c02a49246ddf21c4d20f3989f2493946ad",
+  "prompts": {},
+  "sessions": {
+    "s_e48ae7d7caf7bf": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ca531071-4164-4c14-b6af-fb8f4f9b1734",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
