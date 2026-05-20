@@ -1,0 +1,97 @@
+.claude/skills/matt-grill-with-docs/ADR-FORMAT.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-47
+.claude/skills/matt-tdd/typescript/interface-design.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-31
+.claude/skills/matt-triage/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-105
+.claude/skills/euri-worktree-merge/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-153
+.claude/skills/matt-improve-codebase-architecture/LANGUAGE.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-53
+.claude/skills/matt-grill-me/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-12
+.claude/skills/karpathy-guidelines/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-74
+.claude/skills/matt-tdd/csharp/tests.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-121
+.claude/skills/matt-to-issues/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-85
+.claude/skills/euri-worktree-merge/references/edge-cases.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-14
+CHANGELOG.md
+  s_b86d2e3c43a091::t_8189073dfe2eec 5
+.claude/skills/matt-improve-codebase-architecture/DEEPENING.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-37
+.claude/skills/matt-tdd/csharp/mocking.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-86
+.claude/skills/matt-tdd/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-129
+.claude/skills/matt-to-prd/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-78
+.claude/skills/matt-triage/OUT-OF-SCOPE.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-104
+.claude/skills/app-do-work/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-60
+.claude/skills/matt-grill-with-docs/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-90
+.claude/skills/matt-diagnose/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-120
+.claude/skills/euri-start-app/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-46
+.claude/skills/matt-tdd/deep-modules.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-33
+.claude/skills/matt-tdd/csharp/interface-design.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-33
+.claude/skills/matt-zoom-out/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-10
+.claude/skills/euri-context-audit/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-157
+.claude/skills/matt-improve-codebase-architecture/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-73
+.claude/skills/matt-triage/AGENT-BRIEF.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-179
+.claude/skills/matt-improve-codebase-architecture/INTERFACE-DESIGN.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-44
+.claude/skills/matt-tdd/typescript/mocking.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-60
+.claude/skills/app-do-work-tdd/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-64
+.claude/skills/matt-grill-with-docs/CONTEXT-FORMAT
+  s_38663ae8a702d7::t_59137c5646d29b 1-77
+.claude/skills/matt-tdd/refactoring.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-10
+.claude/skills/matt-tdd/typescript/tests.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-61
+.claude/skills/matt-diagnose/scripts/hitl-loop.template.sh
+  s_38663ae8a702d7::t_59137c5646d29b 1-41
+.claude/skills/matt-handoff/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-15
+.claude/skills/euri-worktree-merge/references/rebase-variant.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-27
+.claude/skills/matt-caveman/SKILL.md
+  s_38663ae8a702d7::t_59137c5646d29b 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "fda4c85ea21b59b74f84853a55cf95990354f9a8",
+  "prompts": {},
+  "sessions": {
+    "s_38663ae8a702d7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "baeab47f-5d98-426d-a8e3-94c32c6527b6",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_b86d2e3c43a091": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ce61dc3f-5f1e-429e-a778-b64f38437f90",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
