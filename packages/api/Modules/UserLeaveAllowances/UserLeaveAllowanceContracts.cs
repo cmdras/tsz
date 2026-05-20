@@ -9,7 +9,7 @@ public class DuplicateUserLeaveAllowanceException()
     : DomainException("A leave allowance for this user, leave type, and year already exists.", 409);
 
 public class UnknownLeaveTypeException(Guid leaveTypeId)
-    : DomainException($"Leave type {leaveTypeId} does not exist.", 400);
+    : DomainException($"Leave type {leaveTypeId} does not exist.", 422);
 
 public record UserLeaveAllowanceResponse(
     Guid Id,

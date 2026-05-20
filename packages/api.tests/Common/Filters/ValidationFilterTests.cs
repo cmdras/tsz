@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Tests.Common.Filters;
 
-public class ValidationFilterTests
+public class ValidationFilterShould
 {
     private sealed class TestModel
     {
@@ -24,7 +24,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_NoMatchingArgument_ReturnsBadRequest()
+    public async Task Return_Bad_Request_When_No_Matching_Argument()
     {
         var filter = new ValidationFilter<TestModel>();
         var context = CreateContext("not a model", 42);
@@ -39,7 +39,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_NullArgument_ReturnsBadRequest()
+    public async Task Return_Bad_Request_For_Null_Argument()
     {
         var filter = new ValidationFilter<TestModel>();
         var context = CreateContext(new object?[] { null });
@@ -53,7 +53,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_ValidModel_CallsNext()
+    public async Task Pass_Through_Valid_Model()
     {
         var filter = new ValidationFilter<TestModel>();
         var model = new TestModel { Name = "Alice", Age = 30 };
@@ -67,7 +67,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_InvalidModel_ReturnsValidationProblem()
+    public async Task Return_Validation_Problem_For_Invalid_Model()
     {
         var filter = new ValidationFilter<TestModel>();
         var model = new TestModel { Name = null, Age = 30 };
@@ -85,7 +85,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_MultipleValidationErrors_AllReturned()
+    public async Task Return_All_Validation_Errors()
     {
         var filter = new ValidationFilter<TestModel>();
         var model = new TestModel { Name = null, Age = 999 };
@@ -102,7 +102,7 @@ public class ValidationFilterTests
     }
 
     [Fact]
-    public async Task InvokeAsync_FindsMatchingArgumentAmongOthers()
+    public async Task Find_Matching_Argument_Among_Others()
     {
         var filter = new ValidationFilter<TestModel>();
         var model = new TestModel { Name = "Bob", Age = 25 };

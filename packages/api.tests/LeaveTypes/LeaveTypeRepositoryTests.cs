@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.LeaveTypes;
 
-public class LeaveTypeRepositoryTests
+public class LeaveTypeRepositoryShould
 {
     private static LeaveTypeRepository CreateRepository(out AppDbContext context)
     {
@@ -50,7 +50,7 @@ public class LeaveTypeRepositoryTests
     };
 
     [Fact]
-    public async Task GetAll_ExcludesArchivedLeaveTypes()
+    public async Task Exclude_Archived_Leave_Types_By_Default()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -63,7 +63,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_ShowArchived_IncludesArchivedLeaveTypes()
+    public async Task Include_Archived_Leave_Types_When_Requested()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -76,7 +76,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesName()
+    public async Task Match_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -89,7 +89,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByNameAsc_OrdersAlphabetically()
+    public async Task Sort_By_Name_Alphabetically()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Sickness");
@@ -104,7 +104,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByDefaultDaysDesc_ReversesOrder()
+    public async Task Sort_By_Default_Days_Descending()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m);
@@ -117,7 +117,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_Pagination_ReturnsCorrectPage()
+    public async Task Page_Leave_Type_List()
     {
         var repository = CreateRepository(out var context);
         for (var index = 1; index <= 5; index++)
@@ -130,7 +130,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_ExistingId_ReturnsLeaveType()
+    public async Task Find_Leave_Type_By_Id()
     {
         var repository = CreateRepository(out var context);
         var leaveType = await AddLeaveTypeAsync(context, "Holiday");
@@ -142,7 +142,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_NonExistingId_ReturnsNull()
+    public async Task Return_Null_For_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -152,7 +152,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Create_ValidRequest_CreatesLeaveType()
+    public async Task Create_Leave_Type_With_All_Fields()
     {
         var repository = CreateRepository(out _);
 
@@ -164,7 +164,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Update_ValidRequest_UpdatesLeaveType()
+    public async Task Update_Leave_Type_Fields()
     {
         var repository = CreateRepository(out var context);
         var leaveType = await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m);
@@ -177,7 +177,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Update_NonExistingId_ReturnsNull()
+    public async Task Return_Null_On_Update_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -187,7 +187,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByName_ExistingName_ReturnsTrue()
+    public async Task Detect_Existing_Name()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -198,7 +198,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByName_CaseInsensitive_ReturnsTrue()
+    public async Task Match_Name_Case_Insensitively()
     {
         var repository = CreateRepository(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -209,7 +209,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByName_ExcludeId_ExcludesSelf()
+    public async Task Exclude_Self_From_Name_Existence_Check()
     {
         var repository = CreateRepository(out var context);
         var leaveType = await AddLeaveTypeAsync(context, "Holiday");
@@ -220,7 +220,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByName_UnknownName_ReturnsFalse()
+    public async Task Return_False_For_Unknown_Name()
     {
         var repository = CreateRepository(out _);
 
@@ -230,7 +230,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_ExistingId_SetsIsArchivedTrue()
+    public async Task Archive_Leave_Type()
     {
         var repository = CreateRepository(out var context);
         var leaveType = await AddLeaveTypeAsync(context, "Holiday");
@@ -243,7 +243,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Archive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -253,7 +253,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_ExistingId_SetsIsArchivedFalse()
+    public async Task Unarchive_Leave_Type()
     {
         var repository = CreateRepository(out var context);
         var leaveType = await AddLeaveTypeAsync(context, "Holiday", isArchived: true);
@@ -266,7 +266,7 @@ public class LeaveTypeRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Unarchive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
