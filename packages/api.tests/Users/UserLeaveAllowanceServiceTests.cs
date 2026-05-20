@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.Users;
 
-public class UserLeaveAllowanceServiceTests
+public class UserLeaveAllowanceServiceShould
 {
     private static UserService CreateService(out AppDbContext context)
     {
@@ -52,7 +52,7 @@ public class UserLeaveAllowanceServiceTests
     };
 
     [Fact]
-    public async Task Create_WithActiveLeaveTypes_AutoPopulatesCurrentYearAllowances()
+    public async Task Populate_Current_Year_Allowances_On_Create()
     {
         var service = CreateService(out var context);
         var holiday = await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m, defaultMode: AllowanceMode.Limited);
@@ -76,7 +76,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Create_ExcludesArchivedLeaveTypes()
+    public async Task Exclude_Archived_Leave_Types_When_Populating_Allowances()
     {
         var service = CreateService(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -91,7 +91,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Create_WithNoLeaveTypes_CreatesNoAllowances()
+    public async Task Create_No_Allowances_When_No_Leave_Types_Exist()
     {
         var service = CreateService(out var context);
 
@@ -104,7 +104,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task GetById_IncludesCurrentYearLeavesInResponse()
+    public async Task Include_Current_Year_Leaves_In_Response()
     {
         var service = CreateService(out var context);
         var holiday = await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m, defaultMode: AllowanceMode.Limited);
@@ -124,7 +124,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task GetById_UnlimitedMode_BalanceIsNull()
+    public async Task Return_Null_Balance_For_Unlimited_Mode()
     {
         var service = CreateService(out var context);
         await AddLeaveTypeAsync(context, "Sickness", defaultDays: 0m, defaultMode: AllowanceMode.Unlimited);
@@ -139,7 +139,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Update_ExistingLeaveById_UpdatesModeAndTotalDays()
+    public async Task Update_Existing_Leave_Allowance()
     {
         var service = CreateService(out var context);
         var holiday = await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m, defaultMode: AllowanceMode.Limited);
@@ -170,7 +170,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Update_LeafMissingFromRequest_HardDeletesAllowance()
+    public async Task Delete_Allowance_Removed_From_Request()
     {
         var service = CreateService(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -192,7 +192,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Update_NewLeafWithNullId_InsertsAllowance()
+    public async Task Insert_New_Allowance_With_Null_Id()
     {
         var service = CreateService(out var context);
         await AddLeaveTypeAsync(context, "Holiday");
@@ -235,7 +235,7 @@ public class UserLeaveAllowanceServiceTests
     }
 
     [Fact]
-    public async Task Update_DuplicateLeaveTypeForSameYear_ThrowsDuplicateUserLeaveAllowanceException()
+    public async Task Reject_Duplicate_Leave_Type_For_Same_Year()
     {
         var service = CreateService(out var context);
         var holiday = await AddLeaveTypeAsync(context, "Holiday");

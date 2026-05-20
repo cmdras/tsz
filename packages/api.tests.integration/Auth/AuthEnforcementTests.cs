@@ -1,23 +1,16 @@
-using Api.Tests.Integration.Customers;
+using Api.Tests.Integration.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests.Integration.Auth;
 
-public class AuthMetadataTests : IClassFixture<CustomerApiFactory>
+public class AuthEnforcementShould(IntegrationFactory factory) : IClassFixture<IntegrationFactory>
 {
-    private readonly CustomerApiFactory _factory;
-
-    public AuthMetadataTests(CustomerApiFactory factory)
-    {
-        _factory = factory;
-    }
-
     [Fact]
-    public void Every_api_endpoint_requires_authorization()
+    public void Require_Authorization_On_All_Endpoints()
     {
-        var endpointDataSource = _factory.Services.GetRequiredService<EndpointDataSource>();
+        var endpointDataSource = factory.Services.GetRequiredService<EndpointDataSource>();
         var unprotectedEndpoints = endpointDataSource.Endpoints
             .OfType<RouteEndpoint>()
             .Where(endpoint => endpoint.RoutePattern.RawText?.StartsWith("api/") == true)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.Users;
 
-public class UserRepositoryTests
+public class UserRepositoryShould
 {
     private static UserRepository CreateRepository(out AppDbContext context)
     {
@@ -43,7 +43,7 @@ public class UserRepositoryTests
     };
 
     [Fact]
-    public async Task GetAll_ExcludesArchivedUsers()
+    public async Task Exclude_Archived_Users_From_List()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Active", "active@example.com");
@@ -56,7 +56,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesName()
+    public async Task Match_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Alice Smith", "alice@example.com");
@@ -69,7 +69,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesEmail()
+    public async Task Match_Email_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Alice", "alice@company.com");
@@ -82,7 +82,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesRole()
+    public async Task Match_Role_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Admin User", "admin@example.com", UserRole.Admin);
@@ -95,7 +95,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesRoleDisplayLabelWithSpace()
+    public async Task Match_Client_Manager_Label_In_Search()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Mike", "mike@example.com", UserRole.ClientManager);
@@ -108,7 +108,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByRole_UsesLogicalOrder()
+    public async Task Sort_By_Role_In_Logical_Order()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Zara User", "zara@example.com", UserRole.User);
@@ -123,7 +123,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByRoleDesc_ReversesLogicalOrder()
+    public async Task Sort_By_Role_Descending()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Zara User", "zara@example.com", UserRole.User);
@@ -138,7 +138,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_Pagination_ReturnsCorrectPage()
+    public async Task Page_User_List()
     {
         var repository = CreateRepository(out var context);
         for (var index = 1; index <= 5; index++)
@@ -151,7 +151,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_ExistingId_ReturnsUser()
+    public async Task Find_User_By_Id()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context, "Alice", "alice@example.com", UserRole.Admin);
@@ -163,7 +163,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_NonExistingId_ReturnsNull()
+    public async Task Return_Null_For_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -173,7 +173,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Create_ValidRequest_CreatesUser()
+    public async Task Create_User_With_All_Fields()
     {
         var repository = CreateRepository(out _);
 
@@ -185,7 +185,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Update_ValidRequest_UpdatesUser()
+    public async Task Update_User_Fields()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context, "Alice", "alice@example.com");
@@ -199,7 +199,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Update_NonExistingId_ReturnsNull()
+    public async Task Return_Null_On_Update_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -209,7 +209,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByEmail_ExistingEmail_ReturnsTrue()
+    public async Task Detect_Existing_Email()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Alice", "alice@example.com");
@@ -220,7 +220,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByEmail_UnknownEmail_ReturnsFalse()
+    public async Task Return_False_For_Unknown_Email()
     {
         var repository = CreateRepository(out _);
 
@@ -230,7 +230,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task ExistsByEmail_ExcludeId_ExcludesMatchingUser()
+    public async Task Exclude_Self_From_Email_Existence_Check()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context, "Alice", "alice@example.com");
@@ -241,7 +241,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task FindByEmail_ExistingEmail_ReturnsUser()
+    public async Task Find_User_By_Email()
     {
         var repository = CreateRepository(out var context);
         await AddUserAsync(context, "Alice", "alice@example.com");
@@ -253,7 +253,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task FindByEmail_UnknownEmail_ReturnsNull()
+    public async Task Return_Null_For_Unknown_Email()
     {
         var repository = CreateRepository(out _);
 
@@ -263,7 +263,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_ExistingId_SetsIsArchivedTrue()
+    public async Task Archive_User()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context, "Alice", "alice@example.com");
@@ -276,7 +276,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Archive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -286,7 +286,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_ExistingId_SetsIsArchivedFalse()
+    public async Task Unarchive_User()
     {
         var repository = CreateRepository(out var context);
         var user = await AddUserAsync(context, "Alice", "alice@example.com", isArchived: true);
@@ -299,7 +299,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Unarchive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 

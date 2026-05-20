@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Api.Tests.Contracts;
 
-public class ContractRepositoryTests
+public class ContractRepositoryShould
 {
     private static ContractRepository CreateRepository(out AppDbContext context)
     {
@@ -91,7 +91,7 @@ public class ContractRepositoryTests
     };
 
     [Fact]
-    public async Task GetAll_ExcludesArchivedByDefault()
+    public async Task Exclude_Archived_Contracts_By_Default()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -106,7 +106,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_IncludesArchivedWhenRequested()
+    public async Task Include_Archived_Contracts_When_Requested()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -121,7 +121,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesSubject()
+    public async Task Match_Subject_In_Search()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -136,7 +136,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesCustomerName()
+    public async Task Match_Customer_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         var acmeId = await AddCustomerAsync(context, "Acme Corp");
@@ -152,7 +152,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SearchMatchesConsultantName()
+    public async Task Match_Consultant_Name_In_Search()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -168,7 +168,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_SortByNumberDesc_ReversesOrder()
+    public async Task Sort_By_Number_Descending()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -184,7 +184,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_Pagination_ReturnsCorrectPage()
+    public async Task Page_Contract_List()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -199,7 +199,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_ExistingId_ReturnsContract()
+    public async Task Find_Contract_By_Id()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -213,7 +213,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_NonExistingId_ReturnsNull()
+    public async Task Return_Null_For_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -223,7 +223,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Create_AssignsNumberOne()
+    public async Task Assign_Number_One_To_First_Contract()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -235,7 +235,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Create_AssignsSequentialNumbers()
+    public async Task Assign_Sequential_Number()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -248,7 +248,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Create_CreatesTasks()
+    public async Task Create_Contract_With_Tasks()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -267,7 +267,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_ExistingId_SetsIsArchivedTrue()
+    public async Task Archive_Contract()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -282,7 +282,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Archive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Archive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
@@ -292,7 +292,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_ExistingArchivedContract_SetsIsArchivedFalse()
+    public async Task Unarchive_Contract()
     {
         var repository = CreateRepository(out var context);
         var customerId = await AddCustomerAsync(context);
@@ -307,7 +307,7 @@ public class ContractRepositoryTests
     }
 
     [Fact]
-    public async Task Unarchive_NonExistingId_ReturnsFalse()
+    public async Task Return_False_On_Unarchive_With_Unknown_Id()
     {
         var repository = CreateRepository(out _);
 
