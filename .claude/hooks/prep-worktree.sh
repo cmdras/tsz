@@ -6,7 +6,7 @@ REPO_ROOT=$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)
 name=$(jq -r '.name' <<< "$(cat)")
 worktree="$REPO_ROOT/.claude/worktrees/$name"
 
-git -C "$REPO_ROOT" worktree add "$worktree" -b "worktree-$name" HEAD
+git -C "$REPO_ROOT" worktree add "$worktree" -b "worktree-$name" HEAD >&2
 
 copy_if_exists() {
   local src="$1" dst="$2"
