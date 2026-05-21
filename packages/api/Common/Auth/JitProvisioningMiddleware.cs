@@ -1,5 +1,6 @@
 using Api.Common.Database;
 using Api.Modules.Users;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Common.Auth;
@@ -34,7 +35,7 @@ public class JitProvisioningMiddleware(RequestDelegate next)
                     {
                         await dbContext.SaveChangesAsync();
                     }
-                    catch (DbUpdateException)
+                    catch (DbUpdateException exception) when (exception.InnerException is SqliteException { SqliteErrorCode: 19 })
                     {
                         // race condition: another request inserted the same user first
                     }

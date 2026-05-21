@@ -2,6 +2,7 @@
 
 ## 2026-05-21
 
+- fix(auth): JIT user provisioning no longer silently swallows unrelated database errors on first login
 - feat(auth): new users are provisioned automatically on first login via Azure Entra — no manual DB entry needed
 - fix(time-entries): task picker search now filters correctly as you type
 - fix(time-entries): day column headers now align with task row cells
