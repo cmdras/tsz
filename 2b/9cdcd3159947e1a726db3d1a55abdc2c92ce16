@@ -1,0 +1,37 @@
+.agents/skills/git-commit/SKILL.md
+  h_f5e73ed3339dc5 95,97-101
+.claude/skills/app-do-work-tdd/SKILL.md
+  h_f5e73ed3339dc5 54,64
+.claude/hooks/prep-worktree.sh
+  s_615946113160fc::t_cdd468df0dbda1 4
+  s_40bf09fd25219e::t_0f88ca02f2b928 27-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "2b9cdcd3159947e1a726db3d1a55abdc2c92ce16",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_40bf09fd25219e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76940836-41bc-48ec-9151-e28f6e05b892",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_615946113160fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2558d800-6208-4abd-a4a6-6d7eb3403772",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
