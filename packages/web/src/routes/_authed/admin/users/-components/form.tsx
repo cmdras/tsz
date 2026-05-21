@@ -282,12 +282,7 @@ export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries,
             <Button type="submit" disabled={!canSubmit}>
               {isSubmitting ? 'Saving…' : 'Save'}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.navigate({ to: '/admin/users' })}
-              disabled={isSubmitting}
-            >
+            <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
               Cancel
             </Button>
           </div>

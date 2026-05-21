@@ -8,7 +8,6 @@ export const Route = createFileRoute('/_authed/admin/contracts/')({
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({
     search: search.search,
-    sort: search.sort,
     page: search.page,
     archived: search.archived,
   }),

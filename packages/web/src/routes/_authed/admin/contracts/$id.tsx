@@ -7,7 +7,6 @@ export const Route = createFileRoute('/_authed/admin/contracts/$id')({
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({
     search: search.search,
-    sort: search.sort,
     page: search.page,
     archived: search.archived,
   }),

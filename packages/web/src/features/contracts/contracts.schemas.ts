@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import type { ContractSort } from './contracts.server';
 
 export const contractTaskSchema = z.object({
   id: z.string().uuid().optional(),
@@ -25,26 +24,10 @@ export const contractSchema = z
 
 export type ContractInput = z.infer<typeof contractSchema>;
 
-export const sortSlugs = {
-  number: 'Number',
-  customer: 'Customer',
-  subject: 'Subject',
-  consultant: 'Consultant',
-  startdate: 'StartDate',
-  enddate: 'EndDate',
-} as const satisfies Record<string, ContractSort>;
-
-export type SortSlug = keyof typeof sortSlugs;
-
-const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
-// oxlint-disable-next-line security/detect-non-literal-regexp
-const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
-
 export const PAGE_SIZE = 25;
 
 export const searchSchema = z.object({
   search: z.string().optional(),
-  sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
   archived: z.boolean().optional(),
 });

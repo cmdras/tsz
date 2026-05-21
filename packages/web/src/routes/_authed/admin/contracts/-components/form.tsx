@@ -213,12 +213,7 @@ export function ContractForm({ initial, customers, consultants, onSubmit, title,
                 <Button type="submit" disabled={!canSubmit}>
                   {isSubmitting ? 'Saving…' : 'Save'}
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.navigate({ to: '/admin/contracts' })}
-                  disabled={isSubmitting}
-                >
+                <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
                   Cancel
                 </Button>
               </div>

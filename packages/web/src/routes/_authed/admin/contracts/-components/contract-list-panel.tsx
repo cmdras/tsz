@@ -24,7 +24,7 @@ export function ContractListPanel({
   page = 1,
   archived,
 }: ContractListPanelProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/admin/contracts/' });
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const handleSearch = useDebouncedCallback((value: string) => {
@@ -114,23 +114,27 @@ export function ContractListPanel({
         <span>{total} contracts</span>
         {totalPages > 1 && (
           <div className="flex items-center gap-1">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-1.5"
               onClick={() => goToPage(page - 1)}
               disabled={page <= 1}
-              className="px-1.5 py-0.5 rounded hover:bg-muted disabled:opacity-50"
             >
               ‹
-            </button>
+            </Button>
             <span>
               {page} / {totalPages}
             </span>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-1.5"
               onClick={() => goToPage(page + 1)}
               disabled={page >= totalPages}
-              className="px-1.5 py-0.5 rounded hover:bg-muted disabled:opacity-50"
             >
               ›
-            </button>
+            </Button>
           </div>
         )}
       </div>

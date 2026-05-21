@@ -15,7 +15,7 @@ interface CustomerListPanelProps {
 }
 
 export function CustomerListPanel({ customers, selectedId, search, filter }: CustomerListPanelProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/admin/customers/' });
 
   const handleSearch = useDebouncedCallback((value: string) => {
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined }) });

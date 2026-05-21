@@ -6,9 +6,8 @@ import { CustomersPageLayout } from './-components/customers-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/customers/')({
   validateSearch: searchSchema,
-  loaderDeps: ({ search }) => ({ search: search.search, filter: search.filter, sort: search.sort, page: search.page }),
-  loader: ({ deps }) =>
-    fetchCustomers({ data: { search: deps.search, filter: deps.filter, sort: deps.sort, page: deps.page } }),
+  loaderDeps: ({ search }) => ({ search: search.search, filter: search.filter, page: search.page }),
+  loader: ({ deps }) => fetchCustomers({ data: deps }),
   staleTime: 30_000,
   component: CustomerList,
 });

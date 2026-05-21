@@ -11,14 +11,7 @@ import {
 import { getCustomers } from '#/features/customers/customers.server';
 import { getUsers } from '#/features/users/users.server';
 import { ApiRequestError } from '#/api/client';
-import {
-  contractSchema,
-  PAGE_SIZE,
-  searchSchema,
-  sortSlugs,
-  type ContractInput,
-  type SortSlug,
-} from './contracts.schemas';
+import { contractSchema, PAGE_SIZE, searchSchema, type ContractInput } from './contracts.schemas';
 
 function toContractRequest(data: ContractInput) {
   return {
@@ -38,17 +31,7 @@ function toContractRequest(data: ContractInput) {
 export const fetchContracts = createServerFn({ method: 'GET' })
   .inputValidator(searchSchema)
   .handler(async ({ data }) => {
-    const { sort, archived, ...rest } = data;
-    if (!sort) return await getContracts({ ...rest, pageSize: PAGE_SIZE, archived });
-    const isDesc = sort.endsWith('-');
-    const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
-    return await getContracts({
-      ...rest,
-      pageSize: PAGE_SIZE,
-      sort: sortSlugs[slug],
-      sortDirection: isDesc ? 'Desc' : 'Asc',
-      archived,
-    });
+    return await getContracts({ ...data, pageSize: PAGE_SIZE });
   });
 
 export const fetchContractById = createServerFn({ method: 'GET' })
