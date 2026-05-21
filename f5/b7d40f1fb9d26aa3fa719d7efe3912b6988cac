@@ -1,0 +1,53 @@
+docs/agents/issue-tracker.md
+  s_1df0db5ac6f04e::t_c276665cdfe1b0 1-22
+.claude/skills/matt-setup-tracking/issue-tracker-local.md
+  s_3478494086383e::t_2fa62ea09bf756 1-19
+.claude/skills/matt-setup-tracking/triage-labels.md
+  s_3478494086383e::t_2fa62ea09bf756 1-15
+.claude/skills/matt-setup-tracking/domain.md
+  s_3478494086383e::t_2fa62ea09bf756 1-51
+.claude/skills/matt-setup-tracking/issue-tracker-github.md
+  s_3478494086383e::t_2fa62ea09bf756 1-22
+docs/agents/triage-labels.md
+  s_1df0db5ac6f04e::t_8bda14d57bab20 1-15
+.claude/skills/matt-setup-tracking/SKILL.md
+  s_3478494086383e::t_2fa62ea09bf756 1-122
+CHANGELOG.md
+  s_fdbf5cb0ff2f2c::t_92090ff70656dc 5
+AGENTS.md
+  s_1df0db5ac6f04e::t_0f4403ed1b14e3 8-21
+docs/agents/domain.md
+  s_1df0db5ac6f04e::t_f762a396720d62 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "f5b7d40f1fb9d26aa3fa719d7efe3912b6988cac",
+  "prompts": {},
+  "sessions": {
+    "s_1df0db5ac6f04e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f49d9d05-694f-4be0-bc55-d1edf9b62870",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_3478494086383e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6c1bb9a5-6587-48c3-9d7e-94185b2ab3db",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_fdbf5cb0ff2f2c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3a95dc58-f953-4896-882d-7af293322693",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
