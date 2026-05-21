@@ -1,0 +1,16 @@
+.claude/skills/app-do-work-tdd/SKILL.md
+  h_f5e73ed3339dc5 44,46,62
+.claude/hooks/prep-worktree.sh
+  h_f5e73ed3339dc5 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "7417fabb694b42c5142ccfdef7f371942f2f040d",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
