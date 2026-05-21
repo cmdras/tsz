@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-21
+
+- chore(claude): add WorktreeCreate hook to prep worktrees on creation
+
 ## 2026-05-20
 
 - chore(claude): add 17 new agent skills to .claude/skills
