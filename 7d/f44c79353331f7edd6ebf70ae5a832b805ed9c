@@ -1,0 +1,77 @@
+packages/web/src/routes/_authed/admin/contracts/$id.tsx
+  s_418f57f2ad2bcd::t_8ca10e45276127 15,22
+  s_418f57f2ad2bcd::t_c3dc7064e4c534 1-4,7-14,16,19-20,25-34
+CHANGELOG.md
+  s_dde4030b4e8d43::t_6a76a9e0cf3852 5-10
+packages/web/src/routes/_authed/admin/contracts/-components/contracts-page-layout.tsx
+  s_418f57f2ad2bcd::t_cd3f9cc23da0a2 1-49
+packages/web/src/routeTree.gen.ts
+  s_418f57f2ad2bcd::t_2ed4c890af4eca 35,38,160-165,177-182,193,205,208,229,232,247,259,262,289,292,313,316,342,345,519-525,540-546,550-565,597,613
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_dde4030b4e8d43::t_953119baa560b2 36,41,43-49,65
+packages/web/src/routes/_authed/admin/contracts/-components/contract-detail-panel.tsx
+  s_418f57f2ad2bcd::t_92c7fd367ceceb 1,3-6,8-23,25-26,28-40,42-121
+  s_418f57f2ad2bcd::t_01423c9acf2a0b 2,7
+  s_418f57f2ad2bcd::t_3f25c6e2c36401 24,27,41
+packages/web/src/routes/_authed/admin/contracts/$id/index.tsx
+  s_418f57f2ad2bcd::t_b1995d4590b892 2-12,14-23,25
+  s_418f57f2ad2bcd::t_e210b63315e5a9 13,24
+  s_418f57f2ad2bcd::t_99a89be703dc2a 1
+packages/web/src/routes/_authed/admin/contracts/index.tsx
+  s_418f57f2ad2bcd::t_ca6ab2a822b5f2 1-2,4-5,26-27
+  s_418f57f2ad2bcd::t_c9f87959e5358d 16,22,25
+packages/web/src/routes/_authed/admin/contracts/-components/form.tsx
+  s_dde4030b4e8d43::t_24a6bba75f8c0d 23,26,28-34,52
+packages/web/src/routes/_authed/admin/contracts/-components/contract-empty-panel.tsx
+  s_418f57f2ad2bcd::t_0fc5999093dae8 1-7
+packages/web/src/features/contracts/contracts.functions.ts
+  s_dde4030b4e8d43::t_1e24adc0c0d2b7 42,47
+  s_dde4030b4e8d43::t_b64a5e99a1aa00 14-19,21
+packages/web/src/features/contracts/contracts.schemas.ts
+  s_dde4030b4e8d43::t_70015f2faa4c90 43-44
+packages/web/src/routes/_authed/admin/contracts/$id/edit.tsx
+  s_dde4030b4e8d43::t_e0c66c2786ee10 21-22
+  s_418f57f2ad2bcd::t_7a44d3e1ec4075 53
+  s_dde4030b4e8d43::t_5dbcc144c1bce9 54
+  s_dde4030b4e8d43::t_4ffd6449e78bb9 1
+  s_418f57f2ad2bcd::t_cefa22761cede5 2-5,7-20,23-52,55-58
+packages/web/src/routes/_authed/admin/users/-components/user-detail-panel.tsx
+  s_418f57f2ad2bcd::t_c4611c037e7043 8
+packages/web/src/components/field-value.tsx
+  s_418f57f2ad2bcd::t_bf299caa498761 1-8
+packages/web/src/routes/_authed/admin/customers/-components/customer-detail-panel.tsx
+  s_418f57f2ad2bcd::t_4b3a7929b05ed2 7
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_418f57f2ad2bcd::t_aa4e0c32cffaf3 59
+  s_418f57f2ad2bcd::t_a1db9762e79a20 1-7,9-18,27-58,60-139
+  s_418f57f2ad2bcd::t_0071e9826349d6 19-24,26
+  s_dde4030b4e8d43::t_f5f1bf975cb908 8
+packages/web/src/routes/_authed/admin/users/$id/edit.tsx
+  s_dde4030b4e8d43::t_1433126a847e28 1
+  s_dde4030b4e8d43::t_654f62f5eebe68 17
+  s_dde4030b4e8d43::t_b12ee9964cb0b2 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "7df44c79353331f7edd6ebf70ae5a832b805ed9c",
+  "prompts": {},
+  "sessions": {
+    "s_418f57f2ad2bcd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e32b88b-18b4-4075-b729-7e8d503ff36a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_dde4030b4e8d43": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d6a0cc6f-a8c4-442b-aacb-f1f726d69901",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
