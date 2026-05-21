@@ -1,0 +1,22 @@
+packages/api/Common/Auth/JitProvisioningMiddleware.cs
+  s_156f2fadfd412d::t_06ae0f90adc51b 38
+  s_156f2fadfd412d::t_e71cf9fd58b8e8 3
+CHANGELOG.md
+  s_156f2fadfd412d::t_7e0d3d1bd4b582 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "6561ccc689df93bddb7d118fd5d60415ed68f005",
+  "prompts": {},
+  "sessions": {
+    "s_156f2fadfd412d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "56715c3a-8ea5-454b-ac41-cda11fdc6510",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
