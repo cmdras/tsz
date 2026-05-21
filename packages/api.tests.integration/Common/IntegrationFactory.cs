@@ -64,6 +64,8 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.TimeEntries.RemoveRange(context.TimeEntries);
+        context.WeekSubmissions.RemoveRange(context.WeekSubmissions);
         context.ContractTasks.RemoveRange(context.ContractTasks);
         context.Contracts.RemoveRange(context.Contracts);
         context.UserLeaveAllowances.RemoveRange(context.UserLeaveAllowances);

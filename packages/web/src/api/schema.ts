@@ -959,6 +959,44 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/time-entries/weeks/{weekStart}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** Format: date */
+          weekStart: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['WeekResponse'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1155,6 +1193,26 @@ export interface components {
     UserRole: 'Admin' | 'User' | 'ClientManager';
     /** @enum {unknown} */
     UserSort: 'Name' | 'Email' | 'Role' | null;
+    WeekChipResponse: {
+      label: string;
+      /** Format: double */
+      hours: number;
+    };
+    WeekPreviousSummaryResponse: {
+      chips: components['schemas']['WeekChipResponse'][];
+      overflow: null | string;
+    };
+    WeekResponse: {
+      /** Format: date */
+      weekStart: string;
+      isSubmitted: boolean;
+      /** Format: date-time */
+      submittedAt: null | string;
+      /** Format: date-time */
+      lastSavedAt: null | string;
+      rows: Record<string, never>[];
+      previousWeekSummary: components['schemas']['WeekPreviousSummaryResponse'];
+    };
   };
   responses: never;
   parameters: never;

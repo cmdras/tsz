@@ -7,6 +7,7 @@ using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
 using Api.Modules.Stats;
+using Api.Modules.TimeEntries;
 using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 using Microsoft.AspNetCore.HttpLogging;
@@ -37,6 +38,7 @@ builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
 builder.Services.AddLeaveTypesModule();
 builder.Services.AddStatsModule();
+builder.Services.AddTimeEntriesModule();
 
 var app = builder.Build();
 
@@ -67,5 +69,6 @@ app.MapUsersModule();
 app.MapContractsModule();
 app.MapLeaveTypesModule();
 app.MapStatsModule();
+app.MapTimeEntriesModule();
 
 app.Run();
