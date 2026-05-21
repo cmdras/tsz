@@ -1,0 +1,95 @@
+packages/web/src/components/ui/calendar.tsx
+  s_40bf09fd25219e::t_a3051e163e36cb 102-103,105,107,111,114
+  s_40bf09fd25219e::t_4131de481a8d78 117,119
+  s_40bf09fd25219e::t_b367347a587590 1,3-5,7-8,14-15,20,22,28,31,35,39-42,45-46,50-51,54-55,58-59,62-63,65,67-74,76-81,83,85-91,93-98,106,110,120,122,128,131-132,134,136-137,146,152,154,158,161
+  s_40bf09fd25219e::t_e2dd6499691b82 2,6,9-13,16-19,21,23-27,29-30,32-34,36-38,43-44,47-49,52-53,56-57,60-61,64,66,75,82,84,92,99-101,104,108-109,112-113,115-116,118,121,123-127,129-130,133,135,138-145,147-151,153,155-157,159-160
+packages/api.tests.integration/Common/IntegrationFactory.cs
+  s_40bf09fd25219e::t_a88cee6282f8be 67-68
+packages/web/src/routes/_authed/time-entry/-components/week-nav.tsx
+  s_40bf09fd25219e::t_2f351824795640 2-13,15-29,31-71
+  s_40bf09fd25219e::t_1fea1d05416002 1,14,30
+packages/api/Modules/TimeEntries/TimeEntryConfiguration.cs
+  s_40bf09fd25219e::t_953a9408d2472d 1-52
+packages/web/src/api/schema.ts
+  s_40bf09fd25219e::t_b588094055014f 1196-1215
+  s_40bf09fd25219e::t_c3d2f59b6d44a0 962-999
+packages/web/package.json
+  s_40bf09fd25219e::t_db5bfa7ff73fba 30,35
+packages/api/Common/Database/AppDbContext.cs
+  s_40bf09fd25219e::t_b1efff3a443404 4,23-24,34-35
+packages/api.tests/TimeEntries/TimeEntryRepositoryTests.cs
+  s_40bf09fd25219e::t_06857dfa245831 1-133
+packages/api/Program.cs
+  s_40bf09fd25219e::t_fe1f1164caef8e 72
+  s_40bf09fd25219e::t_6f75ecf7033b9d 41
+  s_40bf09fd25219e::t_60a3a23ac0f2cb 10
+packages/api/Migrations/AppDb/20260521091404_AddTimeEntries.cs
+  s_40bf09fd25219e::t_e06f80c253f312 1-111
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_40bf09fd25219e::t_3520a322df09a6 24
+  s_40bf09fd25219e::t_172c86ffbd82e7 2-6,8-23,25-32
+CHANGELOG.md
+  s_40bf09fd25219e::t_43e4f814618182 5
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_40bf09fd25219e::t_6cfa7a4fcb13ad 1-9
+packages/api/Modules/TimeEntries/TimeEntriesModule.cs
+  s_40bf09fd25219e::t_3bc298bb97cdf2 1-17
+packages/api/Modules/TimeEntries/TimeEntryContracts.cs
+  s_40bf09fd25219e::t_2496bd1bfabb75 1-12
+  s_40bf09fd25219e::t_2997f7a313d231 13
+packages/api.tests.integration/TimeEntries/TimeEntryEndpointsTests.cs
+  s_40bf09fd25219e::t_e3e501418ca138 1-59
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_40bf09fd25219e::t_7a3056071dd5b4 1-8
+packages/api/Modules/TimeEntries/WeekSubmissionConfiguration.cs
+  s_40bf09fd25219e::t_234e8963007914 1-28
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_40bf09fd25219e::t_ac8acb69e9a772 1-11
+packages/api/Modules/TimeEntries/TimeEntryEndpoints.cs
+  s_40bf09fd25219e::t_7f950d54645101 1-29
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_40bf09fd25219e::t_ab4bc9cf155f96 1-38
+bun.lock
+  ai_agent 30,35,124-125,838-839,1166
+packages/api/Modules/TimeEntries/WeekSubmission.cs
+  s_40bf09fd25219e::t_061039c2f6bd47 1-12
+packages/api/Migrations/AppDb/AppDbContextModelSnapshot.cs
+  s_40bf09fd25219e::t_e06f80c253f312 184-250,344-377
+packages/web/src/components/ui/popover.tsx
+  s_40bf09fd25219e::t_b367347a587590 1-2,4,6-7,10-11,16,27-28,33,36-37,40-41,44-45,48-49,52
+  s_40bf09fd25219e::t_db5bfa7ff73fba 3,5,8-9,12-15,17-26,29-32,34-35,38-39,42-43,46-47,50-51
+packages/api/Modules/TimeEntries/TimeEntry.cs
+  s_40bf09fd25219e::t_31ba40cdc9541d 1-19
+packages/web/src/lib/date-utils.ts
+  s_40bf09fd25219e::t_eba371f3a13c9b 1-28
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_40bf09fd25219e::t_65e1d9f9e979b3 1-29
+packages/web/src/features/time-entries/time-entries.schemas.ts
+  s_40bf09fd25219e::t_08bb6a428bf797 1-10
+packages/api/Migrations/AppDb/20260521091404_AddTimeEntries.Designer.cs
+  s_40bf09fd25219e::t_e06f80c253f312 1-405
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_40bf09fd25219e::t_b43437bf9dd9c9 1-15,22-23
+  s_40bf09fd25219e::t_1c8850bd089394 16-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "1f541a1ec5e940e04f7851808c6b829f6bcada3c",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_40bf09fd25219e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76940836-41bc-48ec-9151-e28f6e05b892",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
