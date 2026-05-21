@@ -41,9 +41,9 @@ bun run test:web  # runs frontend unit tests
 bun run test:api  # runs backend unit tests
 ```
 
-### 4. Simplify
+### 4. Code review
 
-Run `Skill('simplify')` to simplify the code.
+Run `Skill('code-review')` to simplify the code.
 
 Run the validation loops again and fix any issues. Repeat until all pass cleanly.
 
@@ -59,7 +59,7 @@ bun run test:api:int # runs integration tests
 Once static analysis and tests pass
 
 - commit the work. Run `Skill('git-commit')` to commit the work.
-- push the feature branch and create a PR
+- push the feature branch and create a PR. Link the current issue to the PR
 
 ### 6. Report QA
 

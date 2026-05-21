@@ -27,4 +27,13 @@ public class TimeEntryService
             Rows: [],
             PreviousWeekSummary: new WeekPreviousSummaryResponse([], null));
     }
+
+    public async Task<PickerOptions> GetPickerOptionsAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
+    {
+        if (weekStart.DayOfWeek != DayOfWeek.Monday)
+            throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
+
+        var rawData = await _repository.GetPickerDataAsync(userId, weekStart, cancellationToken);
+        return WeekScheduler.BuildPickerOptions(userId, weekStart, rawData.Contracts, rawData.LeaveTypes, rawData.AlreadyOnGrid);
+    }
 }

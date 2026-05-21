@@ -971,7 +971,6 @@ export interface paths {
         query?: never;
         header?: never;
         path: {
-          /** Format: date */
           weekStart: string;
         };
         cookie?: never;
@@ -985,6 +984,43 @@ export interface paths {
           };
           content: {
             'application/json': components['schemas']['WeekResponse'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/time-entries/pickers': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query: {
+          weekStart: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['PickerOptions'];
           };
         };
       };
@@ -1131,6 +1167,22 @@ export interface components {
       /** Format: int32 */
       total: number;
     };
+    PickerLeaveTypeOption: {
+      /** Format: uuid */
+      leaveTypeId: string;
+      name: string;
+    };
+    PickerOptions: {
+      availableTasks: components['schemas']['PickerTaskOption'][];
+      availableLeaveTypes: components['schemas']['PickerLeaveTypeOption'][];
+    };
+    PickerTaskOption: {
+      /** Format: uuid */
+      contractTaskId: string;
+      customerName: string;
+      contractSubject: string;
+      taskName: string;
+    };
     ProblemDetails: {
       type?: null | string;
       title?: null | string;
@@ -1210,7 +1262,7 @@ export interface components {
       submittedAt: null | string;
       /** Format: date-time */
       lastSavedAt: null | string;
-      rows: Record<string, never>[];
+      rows: unknown[];
       previousWeekSummary: components['schemas']['WeekPreviousSummaryResponse'];
     };
   };
