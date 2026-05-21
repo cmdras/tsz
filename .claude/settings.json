@@ -30,6 +30,16 @@
           }
         ]
       }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/prep-worktree.sh"
+          }
+        ]
+      }
     ]
   }
 }

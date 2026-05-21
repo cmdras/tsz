@@ -19,6 +19,10 @@ Then explore the codebase to understand the relevant files, patterns, and conven
 
 If the task is ambiguous, ask the user to clarify scope before proceeding.
 
+### 1.5 Switch Branch(Optional)
+
+Ensure that the to be implemented work is in a feature branch. Create and switch if the current branch is master. Skip if we are already in a feature branch.
+
 ### 2. Implement
 
 Work through the plan step by step.
@@ -47,18 +51,16 @@ Run the validation loops again and fix any issues. Repeat until all pass cleanly
 bun run check     # static analysis of Typescript code with linting, typechecking, and formatting
 bun run test:web  # runs frontend unit tests
 bun run test:api  # runs backend unit tests
+bun run test:api:int # runs integration tests
 ```
 
 ### 5. Commit
 
 Once static analysis and tests pass
 
-- Update `CHANGELOG.md` under today's date with functional, user-facing bullet points. Each bullet answers "what can a user now do?" or "what behavior changed?" — not "what was built". No class/method names, no test counts, no migration names. Example:
-  - ✓ "Admins can view all users and create new ones via an Add dialog"
-  - ✓ "Creating a user automatically assigns a leave balance for each active leave type"
-  - ✗ "Added UserService.CreateAsync with single SaveChangesAsync and 10 unit tests"
 - commit the work. Run `Skill('git-commit')` to commit the work.
+- push the feature branch and create a PR
 
-### 5. Report QA
+### 6. Report QA
 
 Write a list of items the user should test to verify the work.

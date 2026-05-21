@@ -1,6 +1,7 @@
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
+using Api.Modules.TimeEntries;
 using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ public class AppDbContext : DbContext
     public DbSet<ContractTask> ContractTasks => Set<ContractTask>();
     public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
     public DbSet<UserLeaveAllowance> UserLeaveAllowances => Set<UserLeaveAllowance>();
+    public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
+    public DbSet<WeekSubmission> WeekSubmissions => Set<WeekSubmission>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,5 +31,7 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ContractTaskConfiguration());
         modelBuilder.ApplyConfiguration(new LeaveTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserLeaveAllowanceConfiguration());
+        modelBuilder.ApplyConfiguration(new TimeEntryConfiguration());
+        modelBuilder.ApplyConfiguration(new WeekSubmissionConfiguration());
     }
 }
