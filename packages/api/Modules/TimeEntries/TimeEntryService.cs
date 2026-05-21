@@ -1,4 +1,8 @@
+using Api.Common.Exceptions;
+
 namespace Api.Modules.TimeEntries;
+
+public class InvalidTimeEntryRequestException(string message) : DomainException(message, 400);
 
 public class TimeEntryService
 {
@@ -11,6 +15,9 @@ public class TimeEntryService
 
     public async Task<WeekResponse> GetWeekAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
     {
+        if (weekStart.DayOfWeek != DayOfWeek.Monday)
+            throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
+
         var weekData = await _repository.GetWeekAsync(userId, weekStart, cancellationToken);
         return new WeekResponse(
             WeekStart: weekStart,

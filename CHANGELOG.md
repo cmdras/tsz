@@ -2,6 +2,11 @@
 
 ## 2026-05-21
 
+- fix(time-entries): calendar date picker now navigates to the correct week (was landing on a 404)
+- feat(time-entries): week grid fades in when switching between weeks
+- fix(time-entries): time entry endpoint rejects non-Monday week start dates with a 400 error
+- fix(web): correct PopoverTitle props type to match the rendered element
+- chore(claude): fix prep-worktree hook to derive repo root dynamically instead of using a hardcoded path
 - feat(time-entries): week skeleton with navigation — navigate to /time-entry to see the current week grid with Mon–Sun headers, weekend columns dimmed, prev/next/Today buttons, and a calendar popover for jumping to any week
 - chore(claude): add setup-tracking skill and agent config docs
 - chore(claude): add WorktreeCreate hook to prep worktrees on creation

@@ -22,6 +22,7 @@ public class TimeEntryEndpointsShould(IntegrationFactory factory) : IClassFixtur
     public async Task Return_Week_With_Correct_WeekStart()
     {
         var response = await factory.Client.GetAsync("/api/time-entries/weeks/2026-05-18");
+        response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
 
         Assert.Equal("2026-05-18", json.GetProperty("weekStart").GetString());
@@ -31,6 +32,7 @@ public class TimeEntryEndpointsShould(IntegrationFactory factory) : IClassFixtur
     public async Task Return_Week_Not_Submitted_By_Default()
     {
         var response = await factory.Client.GetAsync("/api/time-entries/weeks/2026-05-18");
+        response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
 
         Assert.False(json.GetProperty("isSubmitted").GetBoolean());
@@ -42,6 +44,7 @@ public class TimeEntryEndpointsShould(IntegrationFactory factory) : IClassFixtur
     public async Task Return_Week_With_Empty_Rows_And_Summary()
     {
         var response = await factory.Client.GetAsync("/api/time-entries/weeks/2026-05-18");
+        response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
 
         Assert.Equal(0, json.GetProperty("rows").GetArrayLength());

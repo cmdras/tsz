@@ -11,7 +11,7 @@ interface WeekNavProps {
 }
 
 export function WeekNav({ weekStart }: WeekNavProps) {
-  const navigate = useNavigate({ from: '/_authed/time-entry/' });
+  const navigate = useNavigate({ from: '/time-entry/' });
   const [calendarOpen, setCalendarOpen] = useState(false);
   const currentDate = fromIsoDateString(weekStart);
   const todayMonday = toIsoDateString(getIsoMonday(new Date()));

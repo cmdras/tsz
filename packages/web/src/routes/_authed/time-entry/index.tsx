@@ -26,7 +26,9 @@ function TimeEntryPage() {
         <WeekNav weekStart={data.weekStart} />
       </div>
 
-      <WeekGrid weekStart={data.weekStart} />
+      <div key={data.weekStart} className="animate-fade-in">
+        <WeekGrid weekStart={data.weekStart} />
+      </div>
     </div>
   );
 }
