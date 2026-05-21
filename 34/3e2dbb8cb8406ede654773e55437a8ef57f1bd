@@ -1,0 +1,105 @@
+packages/web/src/routes/_authed/admin/users/-components/user-detail-panel.tsx
+  s_418f57f2ad2bcd::t_c4611c037e7043 8
+packages/web/src/routes/_authed/admin/users/$id/edit.tsx
+  s_dde4030b4e8d43::t_1433126a847e28 1
+  s_dde4030b4e8d43::t_654f62f5eebe68 17
+  s_dde4030b4e8d43::t_b12ee9964cb0b2 44
+CHANGELOG.md
+  s_08bdf80affbb09::t_f9eee8050ad0cb 45
+  s_1a929a2c761472::t_32c4dd7be11038 41
+  s_2eaebe076c8e40::t_ce0123f84c50a8 43
+  s_2e8c7a4f0d4109::t_5b1c44de0794f8 38
+  s_a5799c422ee306::t_1a99e36bef042a 46
+  s_9198afa6388279::t_ff4683147692e0 49
+  s_0795915f5e4754::t_a78d36c567c44a 48
+  s_dde4030b4e8d43::t_6a76a9e0cf3852 5-7,13-15
+  s_b86d2e3c43a091::t_8189073dfe2eec 28
+  s_0795915f5e4754::t_500cf6b1abeaed 47
+  s_2eaebe076c8e40::t_a0585163127722 42
+  s_f4eaf020f8775d::t_10a44e06b7bdd1 53
+  6e8637b417657972 55
+  s_2eaebe076c8e40::t_e16a838813e1a7 44
+  s_c572ce7a779b93::t_df100bd29cff81 51
+  s_f6bf58c765edd2::t_e13195b6da716d 39
+  s_071f962633bc8c::t_fb5ff195a9c0fa 52
+  f969a005196a9cda 54
+  s_7632175bf13b36::t_c680acc78d9b8e 16
+  s_652e24607b22ad::t_c1b7a2f8bda64f 40
+  s_7ec00fa78c14e5::t_ff6e1dfeea7b3b 50
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_418f57f2ad2bcd::t_0071e9826349d6 19-24,26
+  s_418f57f2ad2bcd::t_aa4e0c32cffaf3 59
+  s_418f57f2ad2bcd::t_a1db9762e79a20 1-7,9-18,27-58,60-139
+  s_dde4030b4e8d43::t_f5f1bf975cb908 8
+packages/web/src/routes/_authed/admin/contracts/$id/index.tsx
+  s_418f57f2ad2bcd::t_e210b63315e5a9 13,24
+  s_418f57f2ad2bcd::t_99a89be703dc2a 1
+  s_418f57f2ad2bcd::t_b1995d4590b892 2-12,14-23,25
+packages/web/src/features/contracts/contracts.functions.ts
+  s_dde4030b4e8d43::t_b64a5e99a1aa00 14-19,21
+  s_dde4030b4e8d43::t_1e24adc0c0d2b7 42,47
+packages/web/src/routes/_authed/admin/contracts/-components/form.tsx
+  s_dde4030b4e8d43::t_24a6bba75f8c0d 23,26,28-34,52
+packages/web/src/routes/_authed/admin/contracts/$id.tsx
+  s_418f57f2ad2bcd::t_c3dc7064e4c534 1-4,7-14,16,19-20,25-34
+  s_418f57f2ad2bcd::t_8ca10e45276127 15,22
+packages/web/src/routeTree.gen.ts
+  s_418f57f2ad2bcd::t_2ed4c890af4eca 35,38,160-165,177-182,193,205,208,229,232,247,259,262,289,292,313,316,342,345,519-525,540-546,550-565,597,613
+packages/web/src/components/field-value.tsx
+  s_418f57f2ad2bcd::t_bf299caa498761 1-8
+packages/web/src/routes/_authed/admin/contracts/-components/contract-detail-panel.tsx
+  s_418f57f2ad2bcd::t_3f25c6e2c36401 24,27,41
+  s_418f57f2ad2bcd::t_92c7fd367ceceb 1,3-6,8-23,25-26,28-40,42-121
+  s_418f57f2ad2bcd::t_01423c9acf2a0b 2,7
+packages/web/src/routes/_authed/admin/contracts/-components/contracts-page-layout.tsx
+  s_418f57f2ad2bcd::t_cd3f9cc23da0a2 1-49
+packages/web/src/routes/_authed/admin/contracts/index.tsx
+  s_418f57f2ad2bcd::t_c9f87959e5358d 16,22,25
+  s_418f57f2ad2bcd::t_ca6ab2a822b5f2 1-2,4-5,26-27
+packages/web/src/features/contracts/contracts.schemas.ts
+  s_dde4030b4e8d43::t_70015f2faa4c90 43-44
+  s_f4eaf020f8775d::t_293d5ce010abad 40
+packages/web/src/routes/_authed/admin/customers/-components/customer-detail-panel.tsx
+  s_418f57f2ad2bcd::t_4b3a7929b05ed2 7
+packages/web/src/routes/_authed/admin/contracts/$id/edit.tsx
+  s_dde4030b4e8d43::t_4ffd6449e78bb9 1
+  s_418f57f2ad2bcd::t_cefa22761cede5 2-5,7-20,23-52,55-58
+  s_dde4030b4e8d43::t_5dbcc144c1bce9 54
+  s_dde4030b4e8d43::t_e0c66c2786ee10 21-22
+  s_418f57f2ad2bcd::t_7a44d3e1ec4075 53
+packages/web/src/routes/_authed/admin/contracts/-components/contract-empty-panel.tsx
+  s_418f57f2ad2bcd::t_0fc5999093dae8 1-7
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_dde4030b4e8d43::t_953119baa560b2 36,41,43-49,65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "343e2dbb8cb8406ede654773e55437a8ef57f1bd",
+  "prompts": {
+    "6e8637b417657972": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b445dbef-e3a9-4da1-b42c-c1212d424534",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras",
+      "total_additions": 13,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "f969a005196a9cda": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "23987f95-ced6-4923-9a3f-ffeb2479ba62",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras",
+      "total_additions": 1500,
+      "total_deletions": 1494,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
