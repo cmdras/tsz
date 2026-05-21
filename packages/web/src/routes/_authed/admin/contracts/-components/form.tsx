@@ -20,10 +20,18 @@ interface ContractFormProps {
   consultants: User[];
   onSubmit: (values: ContractInput) => Promise<unknown>;
   title: string;
+  onDone?: () => void;
 }
 
-export function ContractForm({ initial, customers, consultants, onSubmit, title }: ContractFormProps) {
+export function ContractForm({ initial, customers, consultants, onSubmit, title, onDone }: ContractFormProps) {
   const router = useRouter();
+  const navigateOnDone = () => {
+    if (onDone) {
+      onDone();
+      return;
+    }
+    router.navigate({ to: '/admin/contracts' });
+  };
 
   const form = useForm({
     defaultValues: {
@@ -41,7 +49,7 @@ export function ContractForm({ initial, customers, consultants, onSubmit, title 
       try {
         await onSubmit(value);
         toast.success('Contract saved');
-        router.navigate({ to: '/admin/contracts' });
+        navigateOnDone();
       } catch {
         toast.error('Failed to save contract');
       }

@@ -1,54 +1,36 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { ContractForm } from './-components/form';
-import {
-  fetchContractById,
-  fetchContractFormOptions,
-  updateContractFn,
-} from '#/features/contracts/contracts.functions';
-import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
-import { formatEntityNumber } from '#/lib/utils';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { fetchContracts } from '#/features/contracts/contracts.functions';
+import { searchSchema } from '#/features/contracts/contracts.schemas';
+import { ContractsPageLayout } from './-components/contracts-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/contracts/$id')({
-  loader: async ({ params }) => {
-    const [contract, options] = await Promise.all([fetchContractById({ data: params.id }), fetchContractFormOptions()]);
-    return { contract, ...options };
-  },
-  component: EditContract,
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({
+    search: search.search,
+    sort: search.sort,
+    page: search.page,
+    archived: search.archived,
+  }),
+  loader: ({ deps }) => fetchContracts({ data: deps }),
+  staleTime: 30_000,
+  component: ContractDetailLayout,
 });
 
-function EditContract() {
-  const { contract, customers, consultants } = Route.useLoaderData();
+function ContractDetailLayout() {
+  const { items, total } = Route.useLoaderData();
   const { id } = Route.useParams();
-
-  if (!contract) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>Contract not found</AlertTitle>
-        <AlertDescription>No contract exists with this ID.</AlertDescription>
-      </Alert>
-    );
-  }
-
-  const activeTasks = contract.tasks.filter((task) => !task.isArchived);
+  const { search, page, archived } = Route.useSearch();
 
   return (
-    <ContractForm
-      title={`Edit Contract #${formatEntityNumber(contract.number)}`}
-      initial={{
-        customerId: contract.customerId,
-        consultantId: contract.consultantId,
-        subject: contract.subject,
-        startDate: contract.startDate,
-        endDate: contract.endDate ?? '',
-        tasks: activeTasks.map((task) => ({
-          id: task.id,
-          name: task.name,
-          dayRate: task.dayRate,
-        })),
-      }}
-      customers={customers}
-      consultants={consultants}
-      onSubmit={(values) => updateContractFn({ data: { id, data: values } })}
-    />
+    <ContractsPageLayout
+      contracts={items}
+      total={total}
+      selectedId={id}
+      search={search}
+      page={page}
+      archived={archived}
+    >
+      <Outlet />
+    </ContractsPageLayout>
   );
 }

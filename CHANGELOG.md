@@ -2,6 +2,9 @@
 
 ## 2026-05-21
 
+- feat(admin): contracts admin page now uses the same split-panel layout as customers and users — list on the left, detail on the right
+- fix(admin): editing a contract or user now returns to that entity's detail view instead of the list
+- fix(admin): contract list pagination now correctly sends page size to the API (was relying on the backend default by accident)
 - fix(auth): JIT user provisioning no longer silently swallows unrelated database errors on first login
 - feat(auth): new users are provisioned automatically on first login via Azure Entra — no manual DB entry needed
 - fix(time-entries): task picker search now filters correctly as you type

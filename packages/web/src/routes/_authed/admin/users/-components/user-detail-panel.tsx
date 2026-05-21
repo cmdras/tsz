@@ -5,6 +5,7 @@ import { archiveUserFn } from '#/features/users/users.functions';
 import type { User } from '#/features/users/users.server';
 import { getAvatarColor } from '#/lib/utils';
 import { roleLabels } from '#/features/users/users.schemas';
+import { FieldValue } from '#/components/field-value';
 import { Button } from '#/components/ui/button';
 import { Badge } from '#/components/ui/badge';
 import {
@@ -97,15 +98,6 @@ export function UserDetailPanel({ user, onArchiveSuccess }: UserDetailPanelProps
         <FieldValue label="Email" value={user.email} className="col-span-2" />
         <FieldValue label="Role" value={roleLabels[user.role]} />
       </div>
-    </div>
-  );
-}
-
-function FieldValue({ label, value, className }: { label: string; value: string; className?: string }) {
-  return (
-    <div className={className}>
-      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
-      <p className="text-sm mt-0.5">{value || '—'}</p>
     </div>
   );
 }
