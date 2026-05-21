@@ -1,0 +1,51 @@
+packages/web/src/routes/_authed/admin/contracts/-components/contracts-page-layout.tsx
+  s_b34cd8904212be::t_bbff20d4fa7a53 3,28-30,34-35,44-48
+packages/web/src/features/customers/customers.schemas.ts
+  s_b34cd8904212be::t_59fc63853c8982 2
+packages/web/src/routes/_authed/admin/customers/-components/customers-page-layout.tsx
+  s_b34cd8904212be::t_8d82782ac4b74a 3,19-21,25-30
+packages/web/src/features/contracts/contracts.functions.ts
+  s_b34cd8904212be::t_36c6b28330aeac 34
+  s_b34cd8904212be::t_a4ae80a35cdd77 14
+packages/web/src/routes/_authed/admin/users/-components/users-page-layout.tsx
+  s_b34cd8904212be::t_c28b13ba53843f 3,17-19,23-28
+packages/web/src/features/customers/customers.functions.ts
+  s_b34cd8904212be::t_3f159687f40d78 12,17-18
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_b34cd8904212be::t_53d0c0a870ee9d 117-120,125,129-132,137
+  s_b34cd8904212be::t_80cc0c2f5f8318 27
+packages/web/src/routes/_authed/admin/users/-components/user-list-panel.tsx
+  s_b34cd8904212be::t_f6e15ccb44f1a1 16
+packages/web/src/components/admin-split-page-layout.tsx
+  s_b34cd8904212be::t_1557f1d36d52a9 1-26
+packages/web/src/routes/_authed/admin/customers/-components/customer-list-panel.tsx
+  s_b34cd8904212be::t_41eacbdba92865 18
+packages/web/src/routes/_authed/time-entry/-components/week-nav.tsx
+  s_b34cd8904212be::t_91e7e362270cfa 54,61-63
+  s_b34cd8904212be::t_d717d7fa069f67 36
+  s_b34cd8904212be::t_6432e49e7d0422 49
+packages/web/src/routes/_authed/admin/contracts/-components/form.tsx
+  s_b34cd8904212be::t_c2cb18547aded5 216
+packages/web/src/routes/_authed/admin/customers/index.tsx
+  s_b34cd8904212be::t_1290e96a2fbd1d 9-10
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_b34cd8904212be::t_35eefa4f23a7d5 285
+packages/web/tsconfig.json
+  s_b34cd8904212be::t_3f7849b921146f 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "822d7c0e57a482e8f002ffca51b98a087bfda83d",
+  "prompts": {},
+  "sessions": {
+    "s_b34cd8904212be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "327e9230-d1e9-453b-9153-fded4b64bbde",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
