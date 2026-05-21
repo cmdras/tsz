@@ -1,0 +1,64 @@
+packages/web/package.json
+  s_7632175bf13b36::t_de9c91f779a363 30
+packages/api.tests.integration/TimeEntries/TimeEntryPickersEndpointTests.cs
+  s_7632175bf13b36::t_44d23d97be6396 1-110
+CHANGELOG.md
+  s_7632175bf13b36::t_c680acc78d9b8e 5
+packages/api.tests/TimeEntries/WeekSchedulerTests.cs
+  s_7632175bf13b36::t_be3e199a663e4c 1-160
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_7632175bf13b36::t_490c5b752f31f7 13-19,24,32,35-36
+  ai_agent 2
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_7632175bf13b36::t_e0068382a3afec 5-6,14-17
+bun.lock
+  ai_agent 30,813
+packages/api/Modules/TimeEntries/WeekScheduler.cs
+  s_7632175bf13b36::t_0b1ef864984431 1-36,38-39
+  s_7632175bf13b36::t_fdf95d3f6a6f51 37
+packages/web/src/components/ui/dialog.tsx
+  s_7632175bf13b36::t_bf0adf470016df 1-3,5-6,8-9,12-13,16-17,20-21,24,29-30,34,43,51-52,68,71,75,78,86-87,92,102,105,109,112,115,119,122,136
+  s_7632175bf13b36::t_de9c91f779a363 4,7,10-11,14-15,18-19,22-23,25-28,31-33,35-42,44-50,53-67,69-70,72-74,76-77,79-85,88-91,93-101,103-104,106-108,110-111,113-114,116-118,120-121,123-135
+packages/api/Modules/TimeEntries/TimeEntryEndpoints.cs
+  s_7632175bf13b36::t_6cda94e58c72a0 20-29
+packages/web/src/components/ui/command.tsx
+  s_7632175bf13b36::t_bf0adf470016df 1,3-5,7-8,10,15-16,20,24-25,31-34,42,48,51,53,58-59,64,67,71,74,77-78,81,86-87,91,94,98,101,104,110,114,117,121,124,137
+  s_7632175bf13b36::t_de9c91f779a363 2,6,9,11-14,17-19,21-23,26-30,35-41,43-47,49-50,52,54-57,60-63,65-66,68-70,72-73,75-76,79-80,82-85,88-90,92-93,95-97,99-100,102-103,105-109,111-113,115-116,118-120,122-123,125-136
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_7632175bf13b36::t_f1a7f30c4be4ea 3,10-14
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_7632175bf13b36::t_eb5612204244c7 6,10-14
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_7632175bf13b36::t_fc8c7279221a8f 30-38
+packages/api/Modules/TimeEntries/TimeEntryContracts.cs
+  s_7632175bf13b36::t_6f071e48ee6868 14-21
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  ai_agent 4,97,108,110
+  s_7632175bf13b36::t_a6e8c19be51186 1-3,5,7-8,12-18,21,24-96,98-103,105-107,109,111-126,149-165
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_7632175bf13b36::t_90f9550c65caf3 2-3
+  s_7632175bf13b36::t_36f774b27c61f7 31-56
+packages/web/src/api/schema.ts
+  s_7632175bf13b36::t_bf0adf470016df 999-1035,1170-1185,1265
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "4270741bcf9b9e0675ef13b4206940990a1b1a71",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_7632175bf13b36": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cbff16f1-20dd-4fc7-90eb-1a892ca7e6b3",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
