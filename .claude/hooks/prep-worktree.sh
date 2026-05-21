@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_ROOT="/home/chris/git/tsz"
+REPO_ROOT=$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)
 
 name=$(jq -r '.name' <<< "$(cat)")
 worktree="$REPO_ROOT/.claude/worktrees/$name"
@@ -24,4 +24,5 @@ copy_if_exists "$REPO_ROOT/.claude/settings.local.json"               "$worktree
 (cd "$worktree" && bun install) </dev/null >/dev/null 2>&1 &
 disown 2>/dev/null || true
 
-echo "cd $worktree"
+echo "cd $worktree" >&2
+echo "$worktree"
