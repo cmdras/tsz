@@ -2,6 +2,7 @@
 
 ## 2026-05-21
 
+- chore(claude): add setup-tracking skill and agent config docs
 - chore(claude): add WorktreeCreate hook to prep worktrees on creation
 
 ## 2026-05-20
