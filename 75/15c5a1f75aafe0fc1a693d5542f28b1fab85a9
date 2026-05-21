@@ -1,0 +1,44 @@
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_e1ccd40ab458fe::t_f7af1b1c395ee0 125,154
+  s_e1ccd40ab458fe::t_dde709aa078684 7
+  s_e1ccd40ab458fe::t_000b18bc47cb11 120
+  s_e1ccd40ab458fe::t_2de98f3c630475 133-134,136
+  s_e1ccd40ab458fe::t_42354580428849 100
+  s_e1ccd40ab458fe::t_1c6cbf481a0d3f 99,101
+  s_e1ccd40ab458fe::t_691253cc9fd4d8 55-56
+  s_e1ccd40ab458fe::t_61e06c5ef0b2c2 2
+  s_e1ccd40ab458fe::t_f80c4c4f62e452 98
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_e1ccd40ab458fe::t_d90f1cafbeeb79 1-3,15-16
+packages/api/Common/Auth/JitProvisioningMiddleware.cs
+  s_e1ccd40ab458fe::t_ed0708fd61f3d9 1-47
+packages/api/Program.cs
+  s_e1ccd40ab458fe::t_a23ab34e7b96bf 54
+packages/api.tests.integration/TimeEntries/TimeEntryPickersEndpointTests.cs
+  s_e1ccd40ab458fe::t_cc18657af8fc33 24,30
+packages/api/Common/Extensions/AuthExtensions.cs
+  s_e1ccd40ab458fe::t_e1de0db95002a7 1,10-12
+CHANGELOG.md
+  s_e1ccd40ab458fe::t_010ebeb4f067d4 5-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "7515c5a1f75aafe0fc1a693d5542f28b1fab85a9",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_e1ccd40ab458fe": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9e2ae52b-36d0-44ee-82c6-a8657c7c1685",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
