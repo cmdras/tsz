@@ -17,6 +17,16 @@ public static class TimeEntryEndpoints
             var userId = GetUserIdFromClaims(httpContext);
             return TypedResults.Ok(await service.GetWeekAsync(userId, weekStart, cancellationToken));
         });
+
+        group.MapGet("/pickers", async (
+            DateOnly weekStart,
+            HttpContext httpContext,
+            TimeEntryService service,
+            CancellationToken cancellationToken) =>
+        {
+            var userId = GetUserIdFromClaims(httpContext);
+            return TypedResults.Ok(await service.GetPickerOptionsAsync(userId, weekStart, cancellationToken));
+        });
     }
 
     private static Guid GetUserIdFromClaims(HttpContext httpContext)

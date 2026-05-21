@@ -11,3 +11,11 @@ public record WeekResponse(
     DateTime? LastSavedAt,
     IReadOnlyList<object> Rows,
     WeekPreviousSummaryResponse PreviousWeekSummary);
+
+public record PickerTaskOption(Guid ContractTaskId, string CustomerName, string ContractSubject, string TaskName);
+
+public record PickerLeaveTypeOption(Guid LeaveTypeId, string Name);
+
+public record PickerOptions(
+    IReadOnlyList<PickerTaskOption> AvailableTasks,
+    IReadOnlyList<PickerLeaveTypeOption> AvailableLeaveTypes);

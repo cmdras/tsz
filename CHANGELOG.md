@@ -2,6 +2,7 @@
 
 ## 2026-05-21
 
+- feat(time-entries): task picker — click "Add task" below the week grid to search contracts by customer, contract subject, or task name and add rows; each row shows a colored initials chip, bold customer name, and contract · task subtitle; rows sort A-Z by customer then task; picked tasks are removed from the picker until the page reloads
 - fix(time-entries): calendar date picker now navigates to the correct week (was landing on a 404)
 - feat(time-entries): week grid fades in when switching between weeks
 - fix(time-entries): time entry endpoint rejects non-Monday week start dates with a 400 error
