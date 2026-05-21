@@ -1,3 +1,6 @@
+using Api.Modules.Contracts;
+using Api.Modules.LeaveTypes;
+
 namespace Api.Modules.TimeEntries;
 
 public interface ITimeEntryRepository
@@ -9,6 +12,6 @@ public interface ITimeEntryRepository
 public record WeekData(bool IsSubmitted, DateTime? SubmittedAt, DateTime? LastSavedAt);
 
 public record PickerRawData(
-    IReadOnlyList<Api.Modules.Contracts.Contract> Contracts,
-    IReadOnlyList<Api.Modules.LeaveTypes.LeaveType> LeaveTypes,
+    IReadOnlyList<Contract> Contracts,
+    IReadOnlyList<LeaveType> LeaveTypes,
     IReadOnlyList<Guid> AlreadyOnGrid);

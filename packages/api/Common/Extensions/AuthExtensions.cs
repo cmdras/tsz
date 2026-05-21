@@ -1,3 +1,4 @@
+using Api.Common.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
@@ -6,6 +7,9 @@ namespace Api.Common.Extensions;
 
 public static class AuthExtensions
 {
+    public static IApplicationBuilder UseJitProvisioning(this IApplicationBuilder app)
+        => app.UseMiddleware<JitProvisioningMiddleware>();
+
     public static IServiceCollection AddTszAuthentication(
     this IServiceCollection services,
     IConfiguration configuration,

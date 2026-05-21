@@ -6,7 +6,6 @@ using Api.Modules.Contracts;
 using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
 using Api.Modules.UserLeaveAllowances;
-using Api.Modules.Users;
 using Api.Tests.Integration.Common;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,13 +21,13 @@ public class TimeEntryPickersEndpointShould(IntegrationFactory factory) : IClass
         using var scope = factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        var customer = new Customer { Id = Guid.NewGuid(), Number = new Random().Next(100000, 999999), Name = customerName, Country = "Belgium" };
+        var customer = new Customer { Id = Guid.NewGuid(), Number = Random.Shared.Next(100000, 999999), Name = customerName, Country = "Belgium" };
         context.Customers.Add(customer);
 
         var contract = new Contract
         {
             Id = Guid.NewGuid(),
-            Number = new Random().Next(100000, 999999),
+            Number = Random.Shared.Next(100000, 999999),
             CustomerId = customer.Id,
             Customer = customer,
             ConsultantId = consultantId,

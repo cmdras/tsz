@@ -51,6 +51,7 @@ app.UseHttpLogging();
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseJitProvisioning();
 
 app.MapOpenApi("/openapi/{documentName}.json").AllowAnonymous();
 app.MapScalarApiReference("/openapi", options =>

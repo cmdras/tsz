@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, XIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '#/components/ui/popover';
 import { addDays, fromIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
-import { getAvatarColor } from '#/lib/utils';
+import { cn, getAvatarColor } from '#/lib/utils';
 import type { PickerOptions, PickerTaskOption } from '#/features/time-entries/time-entries.server';
 
 const WEEKEND_INDICES = new Set([5, 6]);
@@ -52,7 +52,8 @@ function TaskPickerPopover({
               {availableTasks.map((task) => (
                 <CommandItem
                   key={task.contractTaskId}
-                  value={`${task.customerName} ${task.contractSubject} ${task.taskName}`}
+                  value={task.contractTaskId}
+                  keywords={[task.customerName, task.contractSubject, task.taskName]}
                   onSelect={() => handleSelect(task)}
                 >
                   <span className="font-medium">{task.customerName}</span>
@@ -94,8 +95,10 @@ function TaskRowLabel({ row }: { row: GridRow }) {
 
 function DisabledCell({ isWeekend }: { isWeekend: boolean }) {
   return (
-    <div className={`border-l p-2 ${isWeekend ? 'bg-muted/40' : ''}`}>
-      <div className="h-8 rounded border border-dashed border-muted-foreground/20 bg-muted/20" />
+    <div className={cn('border-l p-2', isWeekend && 'bg-muted/40')}>
+      <div className="relative flex h-8 items-center justify-center rounded border border-dashed border-muted-foreground/20 bg-muted/20">
+        {isWeekend && <XIcon className="h-4 w-4 text-primary/40" />}
+      </div>
     </div>
   );
 }
@@ -114,20 +117,12 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
   });
 
   function handlePick(task: PickerTaskOption) {
-    setRows((previousRows) => [
-      ...previousRows,
-      {
-        contractTaskId: task.contractTaskId,
-        customerName: task.customerName,
-        contractSubject: task.contractSubject,
-        taskName: task.taskName,
-      },
-    ]);
+    setRows((previousRows) => [...previousRows, task]);
   }
 
   return (
     <div className="rounded-lg border">
-      <div className="grid grid-cols-[auto_repeat(7,1fr)] border-b">
+      <div className="grid grid-cols-[12rem_repeat(7,1fr)] border-b">
         <div className="p-3" />
         {DAYS_OF_WEEK.map((day, index) => {
           const date = addDays(monday, index);
@@ -135,7 +130,10 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
           return (
             <div
               key={day}
-              className={`border-l p-3 text-center text-sm font-medium ${isWeekend ? 'bg-muted/40 text-muted-foreground' : ''}`}
+              className={cn(
+                'border-l p-3 text-center text-sm font-medium',
+                isWeekend && 'bg-muted/40 text-muted-foreground',
+              )}
             >
               <div>{day}</div>
               <div className="text-xs text-muted-foreground">
@@ -153,7 +151,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       )}
 
       {sortedRows.map((row) => (
-        <div key={row.contractTaskId} className="grid grid-cols-[auto_repeat(7,1fr)] border-b last:border-b-0">
+        <div key={row.contractTaskId} className="grid grid-cols-[12rem_repeat(7,1fr)] border-b last:border-b-0">
           <TaskRowLabel row={row} />
           {DAYS_OF_WEEK.map((day, index) => (
             <DisabledCell key={day} isWeekend={WEEKEND_INDICES.has(index)} />
