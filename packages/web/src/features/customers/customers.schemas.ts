@@ -22,10 +22,10 @@ export const archivedFilterMap: Record<CustomerFilter, ArchivedFilter> = {
   archived: 'Archived',
 };
 
-export const searchSchema = z.object({
+export const customerSearchSchema = z.object({
   search: z.string().optional(),
   page: z.coerce.number().int().positive().optional(),
   filter: z.enum(customerFilterValues).optional(),
 });
 
-export type SearchInput = z.infer<typeof searchSchema>;
+export type CustomerSearchInput = z.infer<typeof customerSearchSchema>;

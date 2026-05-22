@@ -9,10 +9,10 @@ import {
   unarchiveLeaveType,
 } from './leave-types.server';
 import { ApiRequestError } from '#/api/client';
-import { leaveTypeSchema, searchSchema, sortSlugs, type SortSlug } from './leave-types.schemas';
+import { leaveTypeSchema, leaveTypeSearchSchema, sortSlugs, type SortSlug } from './leave-types.schemas';
 
 export const fetchLeaveTypes = createServerFn({ method: 'GET' })
-  .inputValidator(searchSchema)
+  .inputValidator(leaveTypeSearchSchema)
   .handler(async ({ data }) => {
     const { sort, archived, ...rest } = data;
     if (!sort) return await getLeaveTypes({ ...rest, showArchived: archived });

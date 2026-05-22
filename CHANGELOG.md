@@ -2,6 +2,8 @@
 
 ## 2026-05-22
 
+- chore(web): removed unused components, dead exports, and unreachable code flagged by fallow — zero warnings project-wide
+
 - feat(admin): the Leave Types admin page now uses the same split-panel layout as Customers, Contracts, and Users — list panel on the left with search and archive filter, detail panel on the right with Edit and Archive/Unarchive actions
 - fix(time-entries): leave row initials chip is now amber instead of a random color
 - feat(time-entries): consultants can now log leave alongside project work — an "Add leave" button opens a searchable popover showing non-archived leave types not already on the grid

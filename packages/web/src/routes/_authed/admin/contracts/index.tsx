@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { fetchContracts } from '#/features/contracts/contracts.functions';
-import { searchSchema } from '#/features/contracts/contracts.schemas';
+import { contractSearchSchema } from '#/features/contracts/contracts.schemas';
 import { ContractEmptyPanel } from './-components/contract-empty-panel';
 import { ContractsPageLayout } from './-components/contracts-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/contracts/')({
-  validateSearch: searchSchema,
+  validateSearch: contractSearchSchema,
   loaderDeps: ({ search }) => ({
     search: search.search,
     page: search.page,

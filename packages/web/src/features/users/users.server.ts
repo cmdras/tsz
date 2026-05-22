@@ -8,8 +8,7 @@ export type UserLeaveAllowanceResponse = components['schemas']['UserLeaveAllowan
 export type UserLeaveAllowanceRequest = components['schemas']['UserLeaveAllowanceRequest'];
 export type PagedUsers = components['schemas']['PagedUsers'];
 export type UserSort = NonNullable<components['schemas']['UserSort']>;
-export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
-export type UserRole = NonNullable<components['schemas']['UserRole']>;
+type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
 export interface ListUsersParams {
   search?: string;
@@ -43,8 +42,4 @@ export const updateUser = async (id: string, body: UserRequest): Promise<User> =
 
 export const archiveUser = async (id: string): Promise<void> => {
   await client.PATCH('/api/users/{id}/archive', { params: { path: { id } } });
-};
-
-export const unarchiveUser = async (id: string): Promise<void> => {
-  await client.PATCH('/api/users/{id}/unarchive', { params: { path: { id } } });
 };

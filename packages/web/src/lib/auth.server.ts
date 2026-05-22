@@ -48,7 +48,7 @@ async function refreshAccessToken(refreshToken: string): Promise<{
   };
 }
 
-export const authConfig: AuthConfig = {
+const authConfig: AuthConfig = {
   secret: env.AUTH_SECRET,
   trustHost: true,
   basePath: '/api/auth',

@@ -10,7 +10,7 @@ export const roleLabels: Record<UserRole, string> = {
   User: 'User',
 };
 
-export const userLeaveAllowanceSchema = z.object({
+const userLeaveAllowanceSchema = z.object({
   id: z.string().uuid().nullish(),
   leaveTypeId: z.string().uuid(),
   mode: allowanceModeSchema,
@@ -28,8 +28,8 @@ export const userSchema = z.object({
 
 export type UserInput = z.infer<typeof userSchema>;
 
-export const searchSchema = z.object({
+export const userSearchSchema = z.object({
   search: z.string().optional(),
 });
 
-export type SearchInput = z.infer<typeof searchSchema>;
+export type UserSearchInput = z.infer<typeof userSearchSchema>;

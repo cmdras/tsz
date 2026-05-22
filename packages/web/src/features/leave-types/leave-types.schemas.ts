@@ -33,11 +33,11 @@ const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
 export const PAGE_SIZE = 25;
 
-export const searchSchema = z.object({
+export const leaveTypeSearchSchema = z.object({
   search: z.string().optional(),
   sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
   archived: z.boolean().optional(),
 });
 
-export type SearchInput = z.infer<typeof searchSchema>;
+export type LeaveTypeSearchInput = z.infer<typeof leaveTypeSearchSchema>;

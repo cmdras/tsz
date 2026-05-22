@@ -11,7 +11,7 @@ import {
 import { getCustomers } from '#/features/customers/customers.server';
 import { getUsers } from '#/features/users/users.server';
 import { ApiRequestError } from '#/api/client';
-import { contractSchema, PAGE_SIZE, searchSchema, type ContractInput } from './contracts.schemas';
+import { contractSchema, contractSearchSchema, PAGE_SIZE, type ContractInput } from './contracts.schemas';
 
 function toContractRequest(data: ContractInput) {
   return {
@@ -29,7 +29,7 @@ function toContractRequest(data: ContractInput) {
 }
 
 export const fetchContracts = createServerFn({ method: 'GET' })
-  .inputValidator(searchSchema)
+  .inputValidator(contractSearchSchema)
   .handler(async ({ data }) => {
     return await getContracts({ ...data, pageSize: PAGE_SIZE });
   });

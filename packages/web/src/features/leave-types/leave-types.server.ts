@@ -5,7 +5,7 @@ export type LeaveType = components['schemas']['LeaveTypeResponse'];
 export type LeaveTypeRequest = components['schemas']['LeaveTypeRequest'];
 export type PagedLeaveTypes = components['schemas']['PagedLeaveTypes'];
 export type LeaveTypeSort = NonNullable<components['schemas']['LeaveTypeSort']>;
-export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
+type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
 export interface ListLeaveTypesParams {
   search?: string;

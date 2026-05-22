@@ -5,7 +5,7 @@ export type Customer = components['schemas']['CustomerResponse'];
 export type CustomerRequest = components['schemas']['CustomerRequest'];
 export type PagedCustomers = components['schemas']['PagedCustomers'];
 export type CustomerSort = NonNullable<components['schemas']['CustomerSort']>;
-export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
+type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 export type ArchivedFilter = NonNullable<components['schemas']['ArchivedFilter']>;
 
 export interface ListCustomersParams {

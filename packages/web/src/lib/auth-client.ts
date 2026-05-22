@@ -1,9 +1,4 @@
-import { useEffect, useState } from 'react';
-
 const LOG_PREFIX = '[auth-client]';
-
-type SessionUser = { id?: string; name?: string | null; email?: string | null };
-type Session = { user?: SessionUser; expires?: string; error?: string };
 
 async function fetchJson<T>(url: string): Promise<T> {
   console.log(`${LOG_PREFIX} → GET ${url}`);
@@ -48,28 +43,4 @@ export async function signOut(callbackUrl = '/login') {
   console.log(`${LOG_PREFIX} → POST /api/auth/signout`);
   const csrfToken = await getCsrfToken();
   submitForm('/api/auth/signout', { csrfToken, callbackUrl });
-}
-
-export function useSession(): { data: Session | null; isPending: boolean } {
-  const [data, setData] = useState<Session | null>(null);
-  const [isPending, setIsPending] = useState(true);
-  useEffect(() => {
-    let cancelled = false;
-    fetchJson<Session>('/api/auth/session')
-      .then((s) => {
-        if (cancelled) return;
-        // Auth.js returns `{}` for no session; normalize to null.
-        setData(s && s.user ? s : null);
-      })
-      .catch(() => {
-        if (!cancelled) setData(null);
-      })
-      .finally(() => {
-        if (!cancelled) setIsPending(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-  return { data, isPending };
 }

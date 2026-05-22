@@ -1,10 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { fetchLeaveTypes } from '#/features/leave-types/leave-types.functions';
-import { searchSchema } from '#/features/leave-types/leave-types.schemas';
+import { leaveTypeSearchSchema } from '#/features/leave-types/leave-types.schemas';
 import { LeaveTypesPageLayout } from './-components/leave-types-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/leave-types/$id')({
-  validateSearch: searchSchema,
+  validateSearch: leaveTypeSearchSchema,
   loaderDeps: ({ search }) => ({
     search: search.search,
     page: search.page,

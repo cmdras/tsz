@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const contractTaskSchema = z.object({
+const contractTaskSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1, 'Name is required'),
   dayRate: z.number().positive('Day rate must be greater than 0'),
@@ -26,10 +26,10 @@ export type ContractInput = z.infer<typeof contractSchema>;
 
 export const PAGE_SIZE = 25;
 
-export const searchSchema = z.object({
+export const contractSearchSchema = z.object({
   search: z.string().optional(),
   page: z.coerce.number().int().positive().optional(),
   archived: z.boolean().optional(),
 });
 
-export type SearchInput = z.infer<typeof searchSchema>;
+export type ContractSearchInput = z.infer<typeof contractSearchSchema>;

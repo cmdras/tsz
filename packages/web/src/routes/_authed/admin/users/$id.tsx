@@ -1,10 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { fetchUsers } from '#/features/users/users.functions';
-import { searchSchema } from '#/features/users/users.schemas';
+import { userSearchSchema } from '#/features/users/users.schemas';
 import { UsersPageLayout } from './-components/users-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/users/$id')({
-  validateSearch: searchSchema,
+  validateSearch: userSearchSchema,
   loaderDeps: ({ search }) => ({ search: search.search }),
   loader: ({ deps }) => fetchUsers({ data: { search: deps.search } }),
   staleTime: 30_000,

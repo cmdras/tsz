@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { fetchCustomers } from '#/features/customers/customers.functions';
-import { searchSchema } from '#/features/customers/customers.schemas';
+import { customerSearchSchema } from '#/features/customers/customers.schemas';
 import { CustomerEmptyPanel } from './-components/customer-empty-panel';
 import { CustomersPageLayout } from './-components/customers-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/customers/')({
-  validateSearch: searchSchema,
+  validateSearch: customerSearchSchema,
   loaderDeps: ({ search }) => ({ search: search.search, filter: search.filter, page: search.page }),
   loader: ({ deps }) => fetchCustomers({ data: deps }),
   staleTime: 30_000,

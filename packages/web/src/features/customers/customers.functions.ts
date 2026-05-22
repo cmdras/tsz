@@ -9,10 +9,10 @@ import {
   unarchiveCustomer,
 } from './customers.server';
 import { ApiRequestError } from '#/api/client';
-import { customerSchema, searchSchema, archivedFilterMap } from './customers.schemas';
+import { customerSchema, customerSearchSchema, archivedFilterMap } from './customers.schemas';
 
 export const fetchCustomers = createServerFn({ method: 'GET' })
-  .inputValidator(searchSchema)
+  .inputValidator(customerSearchSchema)
   .handler(async ({ data }) => {
     const { filter, ...rest } = data;
     return await getCustomers({ ...rest, archived: archivedFilterMap[filter ?? 'all'] });

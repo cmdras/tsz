@@ -7,7 +7,7 @@ export type PagedContracts = components['schemas']['PagedContracts'];
 export type ContractSort = NonNullable<components['schemas']['ContractSort']>;
 export type ContractTask = components['schemas']['ContractTaskResponse'];
 export type ContractTaskRequest = components['schemas']['ContractTaskRequest'];
-export type SortDirection = NonNullable<components['schemas']['SortDirection']>;
+type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
 export interface ListContractsParams {
   search?: string;

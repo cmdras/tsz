@@ -3,10 +3,10 @@ import { z } from 'zod';
 import { getUsers, getUserById, createUser, updateUser, archiveUser } from './users.server';
 import { getLeaveTypes } from '#/features/leave-types/leave-types.server';
 import { ApiRequestError } from '#/api/client';
-import { userSchema, searchSchema } from './users.schemas';
+import { userSchema, userSearchSchema } from './users.schemas';
 
 export const fetchUsers = createServerFn({ method: 'GET' })
-  .inputValidator(searchSchema)
+  .inputValidator(userSearchSchema)
   .handler(({ data }) => getUsers(data));
 
 export const fetchUserById = createServerFn({ method: 'GET' })
