@@ -3,6 +3,7 @@ import { client } from '#/api/client';
 
 export type WeekResponse = components['schemas']['WeekResponse'];
 export type WeekRowResponse = components['schemas']['WeekRowResponse'];
+export type WeekPreviousSummaryResponse = components['schemas']['WeekPreviousSummaryResponse'];
 export type WeekCell = components['schemas']['WeekCell'];
 export type PickerOptions = components['schemas']['PickerOptions'];
 export type PickerTaskOption = components['schemas']['PickerTaskOption'];

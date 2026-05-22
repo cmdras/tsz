@@ -4,7 +4,7 @@ import { cn } from '#/lib/utils';
 import type { PickerLeaveTypeOption, PickerTaskOption } from '#/features/time-entries/time-entries.server';
 import { HourCell, type HourCellHandle } from './hour-cell';
 import { type GridRow, type LeaveGridRow, type TaskGridRow, hoursFromSaved, rowsFromSaved } from './week-grid-model';
-import type { WeekGridProps } from './week-grid-model';
+import type { WeekGridProps, WeekRowResponse } from './week-grid-model';
 import { LeavePickerPopover, TaskPickerPopover } from './week-grid-pickers';
 import { DisabledCell, LeaveRowLabel, TaskRowLabel } from './week-grid-rows';
 
@@ -56,6 +56,24 @@ export const WeekGrid = forwardRef<import('./week-grid-model').WeekGridHandle, W
   useImperativeHandle(ref, () => ({
     resetDirty() {
       isDirtyRef.current = false;
+    },
+    hasRows() {
+      return rows.length > 0;
+    },
+    loadWeek(newRows: WeekRowResponse[]) {
+      const newCellRefsMap = new Map<string, React.RefObject<HourCellHandle | null>[]>(
+        newRows
+          .filter((row) => row.contractTaskId || row.leaveTypeId)
+          .map((row) => [
+            row.contractTaskId ?? row.leaveTypeId!,
+            Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
+          ]),
+      );
+      cellRefsMap.current = newCellRefsMap;
+      setRows(rowsFromSaved(newRows));
+      setHours(hoursFromSaved(newRows));
+      isDirtyRef.current = true;
+      onDirtyChange(true);
     },
     getCells() {
       return rows.flatMap((row) => {

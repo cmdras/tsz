@@ -17,8 +17,11 @@ import { Button } from '#/components/ui/button';
 import { Card, CardContent } from '#/components/ui/card';
 import { fetchPickerOptions, fetchWeek, saveDraft, submitWeekFn } from '#/features/time-entries/time-entries.functions';
 import { weekSearchSchema } from '#/features/time-entries/time-entries.schemas';
-import { getIsoMonday, toIsoDateString } from '#/lib/date-utils';
+import type { WeekRowResponse } from '#/features/time-entries/time-entries.server';
+import { addDays, fromIsoDateString, getIsoMonday, toIsoDateString } from '#/lib/date-utils';
 import { WeekGrid, type WeekGridHandle } from './-components/week-grid';
+import { LastWeekCard } from './-components/last-week-card';
+import { LoggedCard } from './-components/logged-card';
 import { WeekNav } from './-components/week-nav';
 
 export const Route = createFileRoute('/_authed/time-entry/')({
@@ -62,6 +65,7 @@ function TimeEntryPage() {
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingCopyRows, setPendingCopyRows] = useState<WeekRowResponse[] | null>(null);
   const gridRef = useRef<WeekGridHandle>(null);
 
   useBlocker({
@@ -118,6 +122,55 @@ function TimeEntryPage() {
     }
   }
 
+  async function handleCopyLastWeek() {
+    const previousWeekStart = toIsoDateString(addDays(fromIsoDateString(weekData.weekStart), -7));
+    let previousWeekData;
+    try {
+      previousWeekData = await fetchWeek({ data: { week: previousWeekStart } });
+    } catch {
+      toast.error('Failed to fetch last week.');
+      return;
+    }
+
+    if (previousWeekData.rows.length === 0) {
+      toast.info('No entries last week.');
+      return;
+    }
+
+    const validTaskIds = new Set([
+      ...weekData.rows.filter((row) => row.contractTaskId).map((row) => row.contractTaskId!),
+      ...pickerOptions.availableTasks.map((task) => task.contractTaskId),
+    ]);
+    const validLeaveTypeIds = new Set([
+      ...weekData.rows.filter((row) => row.leaveTypeId).map((row) => row.leaveTypeId!),
+      ...pickerOptions.availableLeaveTypes.map((leaveType) => leaveType.leaveTypeId),
+    ]);
+
+    const filteredRows = previousWeekData.rows.filter((row) => {
+      if (row.contractTaskId) return validTaskIds.has(row.contractTaskId);
+      if (row.leaveTypeId) return validLeaveTypeIds.has(row.leaveTypeId);
+      return false;
+    });
+
+    if (filteredRows.length === 0) {
+      toast.info('No entries last week.');
+      return;
+    }
+
+    if (gridRef.current?.hasRows()) {
+      setPendingCopyRows(filteredRows);
+    } else {
+      gridRef.current?.loadWeek(filteredRows);
+    }
+  }
+
+  function applyPendingCopy() {
+    if (pendingCopyRows && gridRef.current) {
+      gridRef.current.loadWeek(pendingCopyRows);
+    }
+    setPendingCopyRows(null);
+  }
+
   function getPageTitleSuffix() {
     if (isSubmitted) return 'submitted.';
     return hasRows ? 'logged.' : 'empty.';
@@ -163,6 +216,29 @@ function TimeEntryPage() {
       </div>
 
       <StatusCard isSubmitted={isSubmitted} lastSavedAt={weekData.lastSavedAt ?? null} />
+      <LoggedCard rows={weekData.rows} />
+
+      <AlertDialog
+        open={pendingCopyRows !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingCopyRows(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Overwrite this week?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will replace this week&apos;s hours with last week&apos;s entries.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={applyPendingCopy}>Overwrite</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <LastWeekCard summary={weekData.previousWeekSummary} isSubmitted={isSubmitted} onCopy={handleCopyLastWeek} />
 
       <div key={weekData.weekStart} className="animate-fade-in">
         <WeekGrid

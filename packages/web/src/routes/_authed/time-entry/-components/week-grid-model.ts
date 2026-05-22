@@ -1,4 +1,5 @@
 import type { PickerOptions, WeekCell, WeekRowResponse } from '#/features/time-entries/time-entries.server';
+export type { WeekRowResponse };
 
 export type TaskGridRow = {
   kind: 'task';
@@ -21,6 +22,8 @@ export type GridRow = TaskGridRow | LeaveGridRow;
 export interface WeekGridHandle {
   getCells: () => WeekCell[];
   resetDirty: () => void;
+  hasRows: () => boolean;
+  loadWeek: (rows: WeekRowResponse[]) => void;
 }
 
 export interface WeekGridProps {

@@ -22,9 +22,13 @@ public class TimeEntryService
         if (weekStart.DayOfWeek != DayOfWeek.Monday)
             throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
 
+        var previousWeekStart = weekStart.AddDays(-7);
+
         var weekData = await _repository.GetWeekAsync(userId, weekStart, cancellationToken);
         var entries = await _repository.GetWeekEntriesAsync(userId, weekStart, cancellationToken);
+        var previousWeekEntries = await _repository.GetWeekEntriesAsync(userId, previousWeekStart, cancellationToken);
         var rows = BuildWeekRows(entries, weekStart);
+        var previousWeekSummary = PreviousWeekAggregator.Aggregate(previousWeekEntries);
 
         return new WeekResponse(
             WeekStart: weekStart,
@@ -32,7 +36,7 @@ public class TimeEntryService
             SubmittedAt: weekData.SubmittedAt,
             LastSavedAt: weekData.LastSavedAt,
             Rows: rows,
-            PreviousWeekSummary: new WeekPreviousSummaryResponse([], null));
+            PreviousWeekSummary: previousWeekSummary);
     }
 
     public async Task<WeekResponse> UpdateWeekAsync(Guid userId, DateOnly weekStart, UpdateWeekRequest request, CancellationToken cancellationToken = default)

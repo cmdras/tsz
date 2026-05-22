@@ -2,6 +2,11 @@
 
 ## 2026-05-22
 
+- feat(time-entries): a "Logged this week" card shows total hours vs the 40h target with a progress bar and +/- indicator
+- feat(time-entries): a "Last week" card shows the top 5 customer·contract chips (with overflow count) from the previous week's entries
+- feat(time-entries): "Copy last week" button populates the current week's grid with last week's rows and hours; if the current week already has entries, an overwrite confirmation is shown; archived tasks/leave types are silently skipped
+- feat(time-entries): `GET /api/time-entries/weeks/{weekStart}` now includes a populated `previousWeekSummary` derived from the previous ISO Monday
+
 - feat(time-entries): consultants can now submit a week as final — a "Submit week" button opens a confirmation dialog, locks the week, and switches the grid to read-only; cells show static hours or "—", pickers and Save/Submit buttons are hidden
 - feat(time-entries): submitted weeks cannot be edited via the API (PUT returns 409), and the submit endpoint is also idempotent-safe (second submit returns 409)
 - feat(time-entries): a Status card above the grid shows "Draft" or "Submitted" and the last-saved timestamp ("Not saved yet" when empty)
