@@ -1,0 +1,53 @@
+packages/web/src/api/schema.ts
+  s_3ae154daa7aa6e::t_eeebebb084ae5e 1317-1323
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_3ae154daa7aa6e::t_59d78b3ebb7668 37
+  s_3ae154daa7aa6e::t_41cbfc2b1447ab 97,107-117
+packages/api/Modules/TimeEntries/TimeEntryContracts.cs
+  s_3ae154daa7aa6e::t_f38594e5be03ed 8-13
+packages/web/src/routes/_authed/time-entry/-components/hour-cell.tsx
+  s_3ae154daa7aa6e::t_91085648bb73c5 138-141
+  s_3ae154daa7aa6e::t_ab91f513dc75ba 20
+  s_3ae154daa7aa6e::t_3fe54ed8a9e85c 9
+CHANGELOG.md
+  s_3ae154daa7aa6e::t_f39098bfc3b4b3 5-11
+packages/api.tests/TimeEntries/WeekSchedulerTests.cs
+  s_3ae154daa7aa6e::t_47e4ce97bd70dd 48,59,70,81,92,116,132,143
+  s_3ae154daa7aa6e::t_4e5ceb813a4a1a 104
+  s_3ae154daa7aa6e::t_d7acb65898e3f3 154,160-192
+  s_3ae154daa7aa6e::t_e2dc68e98c86b5 38-39
+packages/api/Modules/TimeEntries/WeekValidator.cs
+  s_3ae154daa7aa6e::t_ed349a5eaf7f2b 2,18-19,28-29,62-69
+packages/api.tests/TimeEntries/WeekValidatorTests.cs
+  s_3ae154daa7aa6e::t_66304c337df895 255-306
+  s_3ae154daa7aa6e::t_ef29c4c75a60a3 3,5
+  s_3ae154daa7aa6e::t_dc6a5ca5496dd9 36-38,42-43
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_3ae154daa7aa6e::t_30663ab33e6db6 19-20
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_3ae154daa7aa6e::t_a026feaf603606 9
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_3ae154daa7aa6e::t_3e570061bb81c4 9,20-22,27-36,51-75,79-83,136-182,204-222,257-262,279,283-292,295-296,306,308-309,311-315,318-327,330-331,335,338,340-341,344-345,355-364,377-397,399,401,406-411,422,435-440,461,463-466,469-470,480,482-483,528,530-531
+packages/api/Modules/TimeEntries/WeekScheduler.cs
+  s_3ae154daa7aa6e::t_e88071fc2971a7 13-14,17-18,27,36
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_3ae154daa7aa6e::t_c463d5d7040bdc 65
+  s_3ae154daa7aa6e::t_f7e4e12d70518b 47-48
+  s_3ae154daa7aa6e::t_755d543c8f1fa5 70,90-91,93-119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "7dbe3318a4498a0c042bdc4fb5614f513932c544",
+  "prompts": {},
+  "sessions": {
+    "s_3ae154daa7aa6e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6261cbe2-dfc2-4308-b4e3-7e7449defe23",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
