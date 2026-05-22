@@ -2,6 +2,8 @@
 
 ## 2026-05-23
 
+- fix: the progress bar on the "Logged this week" card now correctly reflects the current value in accessibility attributes (`aria-valuenow`) and Radix data attributes
+- fix(time-entries): "Copy last week" now shows a distinct message when last week had entries but all were archived/unavailable, instead of the misleading "No entries last week."
 - style(time-entries): Logged, Last week, and Status summary cards now sit side-by-side above the grid with refreshed styling — large hours display, chips with primary-color dots, and a corner-bracketed status card
 
 ## 2026-05-22

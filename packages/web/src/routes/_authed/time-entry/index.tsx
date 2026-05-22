@@ -169,7 +169,7 @@ function TimeEntryPage() {
     });
 
     if (filteredRows.length === 0) {
-      toast.info('No entries last week.');
+      toast.info("All last week's entries are no longer available.");
       return;
     }
 
