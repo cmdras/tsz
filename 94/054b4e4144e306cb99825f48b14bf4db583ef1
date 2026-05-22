@@ -1,0 +1,56 @@
+packages/api.tests/TimeEntries/PreviousWeekAggregatorShould.cs
+  s_7213d7dc7d1bf4::t_58343134f8ccc2 115-127
+  s_7213d7dc7d1bf4::t_221c3cb92e4c84 1-57,128
+  s_7213d7dc7d1bf4::t_0a31aafd9b9db7 58-70
+  s_7213d7dc7d1bf4::t_ab84280bc55246 95-114
+  s_7213d7dc7d1bf4::t_fd7a4748588cc4 71-81
+  s_7213d7dc7d1bf4::t_c9bc2c32711e3d 82-94
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_7213d7dc7d1bf4::t_192b00d55beebd 6
+CHANGELOG.md
+  s_7213d7dc7d1bf4::t_5f501bcc2bd967 5-9
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_7213d7dc7d1bf4::t_9717effed82ab3 25-26,29,31,39
+packages/web/src/routes/_authed/time-entry/-components/last-week-card.tsx
+  s_7213d7dc7d1bf4::t_c51da7b84571ba 1-41
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_7213d7dc7d1bf4::t_76ecfa6d95fcda 155-159
+  s_7213d7dc7d1bf4::t_fda8da495aad26 20-21,23-24,68,125-154,160-173,219-241
+bun.lock
+  ai_agent 625,629,631,633,635,639,647,649,653,655,657,1371-1374,1377-1380,1385,1387,1389-1391,1443-1444,1486-1487
+packages/web/src/components/ui/progress.tsx
+  s_7213d7dc7d1bf4::t_ebd27e236d4640 3,5,7-9,11-18,20-21
+  s_7213d7dc7d1bf4::t_f3b6358c400850 1-2,4,6,10,19,22
+packages/api/Modules/TimeEntries/PreviousWeekAggregator.cs
+  s_7213d7dc7d1bf4::t_4f59e8b3efe899 29
+  s_7213d7dc7d1bf4::t_3d83e478a9b187 1-6,26,30
+  s_7213d7dc7d1bf4::t_3c5724402cb0e2 7,15-25,27-28
+  s_7213d7dc7d1bf4::t_4fc4153410b064 8-14
+packages/web/src/routes/_authed/time-entry/-components/logged-card.tsx
+  s_7213d7dc7d1bf4::t_e74ffec6adf90f 11-16
+  s_7213d7dc7d1bf4::t_2130740cb8dfad 1-6,17-21,26-42
+  s_7213d7dc7d1bf4::t_0c47560f388b47 7-10
+  s_7213d7dc7d1bf4::t_2fdbd44b0bfbed 22-25
+packages/web/src/routes/_authed/time-entry/-components/week-grid-model.ts
+  s_7213d7dc7d1bf4::t_71efbd1946557f 25-26
+  s_7213d7dc7d1bf4::t_dd3bb2e1b67815 2
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_7213d7dc7d1bf4::t_d02382530f1a6f 7
+  s_7213d7dc7d1bf4::t_32bcc83d5a60b2 60-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "94054b4e4144e306cb99825f48b14bf4db583ef1",
+  "prompts": {},
+  "sessions": {
+    "s_7213d7dc7d1bf4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f52bbcb9-3c33-4922-aa23-2d4c1e7a1cfc",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
