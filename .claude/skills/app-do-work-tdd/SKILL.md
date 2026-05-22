@@ -49,6 +49,7 @@ Run the validation loops again and fix any issues. Repeat until all pass cleanly
 
 ```bash
 bun run check     # static analysis of Typescript code with linting, typechecking, and formatting
+bun run fallow    # identify issues like dead code, duplication, and complexity.
 bun run test:web  # runs frontend unit tests
 bun run test:api  # runs backend unit tests
 bun run test:api:int # runs integration tests
@@ -61,6 +62,19 @@ Once static analysis and tests pass
 - commit the work. Run `Skill('git-commit')` to commit the work.
 - push the feature branch and create a PR. Link the current issue to the PR
 
-### 6. Report QA
+### 6. Reporting
 
-Write a list of items the user should test to verify the work.
+**QA checklist** — concrete, user-facing items the user should manually verify. One bullet per behavior, phrased as an action the user takes:
+
+- ✅ "Log in as admin → open Users page → click Add → submit form → new user appears in list"
+- ❌ "Verify UserService works"
+
+**Lessons for CLAUDE.md** — surprises, gotchas, or conventions discovered during the work that future runs should know. Keep each point tight and rule-shaped:
+
+- A missing convention you had to infer (e.g. "API error responses use `{ code, message }`, not RFC 7807")
+- A pattern that wasted time and shouldn't next time
+- A non-obvious constraint in the codebase
+- Adjustments or simplifications performed with `/code-review`
+  Make each item brief and precise. Focus on guidance a future agent should apply to prevent repeated errors or wasted time.
+
+  For each point write a suggestion of where you'd recommend to put it, rules or skills
