@@ -1,0 +1,23 @@
+CHANGELOG.md
+  s_3ae154daa7aa6e::t_7f2c2b730291db 5
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_3ae154daa7aa6e::t_0215285315eb29 209
+docs/agents/c-sharp-conventions.md
+  s_3ae154daa7aa6e::t_8867ea1137db29 6-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "61a6d7124c4ee71a97f61ef7c065b7bd4620e229",
+  "prompts": {},
+  "sessions": {
+    "s_3ae154daa7aa6e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6261cbe2-dfc2-4308-b4e3-7e7449defe23",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
