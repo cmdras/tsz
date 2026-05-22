@@ -1,0 +1,19 @@
+packages/api.tests.integration/Users/UserEndpointsTests.cs
+  s_322e4dd29f16cd::t_3765cfdcd918af 290,293,296
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "8b190fdb49c0c5df7c79f680af41f157d54fca26",
+  "prompts": {},
+  "sessions": {
+    "s_322e4dd29f16cd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "96e564a6-3230-4bdb-9790-24e5f31790be",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
