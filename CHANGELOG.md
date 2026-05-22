@@ -2,6 +2,8 @@
 
 ## 2026-05-22
 
+- fix(time-entries): keyboard navigation shortcuts (d, h, Enter, Del) now work on rows that were loaded from a saved draft, not only on rows added in the current session
+- fix(time-entries): typing a value greater than 24 in a single cell is now flagged with a red border and rejected on blur, reverting to the previously saved value
 - fix(time-entries): "Save draft" no longer sends an empty payload when the grid ref is unexpectedly null, which would have silently deleted all week entries
 - fix(tests): all 96 integration tests now pass — JIT user provisioning no longer creates a ghost user mid-test, breaking user list count assertions
 - feat(time-entries): time entries are now persisted — clicking "Save draft" on the week grid writes changes to the server and the data survives a page reload

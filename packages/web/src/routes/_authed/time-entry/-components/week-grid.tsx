@@ -152,7 +152,14 @@ export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekG
   const [rows, setRows] = useState<GridRow[]>(() => rowsFromSaved(savedRows));
   const [hours, setHours] = useState<Record<string, (number | null)[]>>(() => hoursFromSaved(savedRows));
   const [pendingFocusId, setPendingFocusId] = useState<string | null>(null);
-  const cellRefsMap = useRef(new Map<string, React.RefObject<HourCellHandle | null>[]>());
+  const cellRefsMap = useRef(
+    new Map<string, React.RefObject<HourCellHandle | null>[]>(
+      savedRows.map((row) => [
+        row.contractTaskId,
+        Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
+      ]),
+    ),
+  );
   const isDirtyRef = useRef(false);
 
   useEffect(() => {

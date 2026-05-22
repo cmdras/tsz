@@ -31,7 +31,7 @@ function TimeEntryPage() {
   const gridRef = useRef<WeekGridHandle>(null);
 
   useBlocker({
-    blockerFn: () => window.confirm('You have unsaved changes. Leave anyway?'),
+    blockerFn: () => !window.confirm('You have unsaved changes. Leave anyway?'),
     condition: isDirty,
   });
 
@@ -70,7 +70,7 @@ function TimeEntryPage() {
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">
-          Time entry <em className="font-normal text-muted-foreground">{hasRows ? 'logged.' : 'empty.'}</em>
+          Time entry <em className="font-normal text-primary">{hasRows ? 'logged.' : 'empty.'}</em>
         </h1>
         <div className="flex items-center gap-3">
           {isDirty && (

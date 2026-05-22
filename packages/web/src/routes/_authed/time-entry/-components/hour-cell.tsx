@@ -102,8 +102,8 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
     // Only allow digits, decimal dot, and comma (comma is normalized to dot below)
     const filtered = event.target.value.replace(/[^\d.,]/g, '');
     const newRaw = filtered.replaceAll(',', '.');
-    const parsed = parseHourInput(newRaw);
-    const exceeds = parsed !== null && dailyOtherTotal + parsed > 24;
+    const numericValue = Number(newRaw);
+    const exceeds = !Number.isNaN(numericValue) && dailyOtherTotal + numericValue > 24;
     setIsOver24(exceeds);
     setRawInput(newRaw);
   }
