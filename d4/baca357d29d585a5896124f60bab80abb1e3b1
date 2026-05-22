@@ -1,0 +1,41 @@
+packages/web/src/routes/_authed/admin/leave-types/$id.tsx
+  s_b29febfee80315::t_458566c3ddc4af 1-4,7-15,18-19,21,24-33
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-detail-panel.tsx
+  s_b29febfee80315::t_026689479a07b1 1-99
+packages/web/src/features/leave-types/leave-types.schemas.ts
+  s_b29febfee80315::t_67da15fb25ca7e 34-35
+packages/web/src/routeTree.gen.ts
+  s_b29febfee80315::t_bbf1c804b9e4b9 34,38,156-161,179-184,211,221,225,246,250,268,278,282,310,314,335,339,366,370,536-542,564-570,620-635,655,671
+packages/web/src/routes/_authed/admin/leave-types/$id/edit.tsx
+  s_b29febfee80315::t_7ae9a90f74a049 1-39
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-empty-panel.tsx
+  s_b29febfee80315::t_98c1fb2d08f77c 1-7
+packages/web/src/routes/_authed/admin/leave-types/-components/form.tsx
+  s_b29febfee80315::t_19bd076e86c86e 17,20,23-30,44
+  s_b29febfee80315::t_8928a18ad21014 116
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-types-page-layout.tsx
+  s_b29febfee80315::t_0e48c82dfd11e4 1-50
+packages/web/src/routes/_authed/admin/leave-types/$id/index.tsx
+  s_b29febfee80315::t_5520722474f1b1 1-25
+packages/web/src/routes/_authed/admin/leave-types/index.tsx
+  s_b29febfee80315::t_261d68cc36525f 1-2,4-5,15,21,24-26
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-list-panel.tsx
+  s_b29febfee80315::t_e3ac861dad9dae 1-94,96-135
+  ai_agent 95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "d4baca357d29d585a5896124f60bab80abb1e3b1",
+  "prompts": {},
+  "sessions": {
+    "s_b29febfee80315": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3f0b77e9-3af4-495e-9983-ed9231c09f4a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
