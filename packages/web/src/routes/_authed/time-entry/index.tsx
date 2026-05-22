@@ -12,13 +12,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '#/components/ui/alert-dialog';
-import { Badge } from '#/components/ui/badge';
 import { Button } from '#/components/ui/button';
 import { Card, CardContent } from '#/components/ui/card';
 import { fetchPickerOptions, fetchWeek, saveDraft, submitWeekFn } from '#/features/time-entries/time-entries.functions';
 import { weekSearchSchema } from '#/features/time-entries/time-entries.schemas';
-import { getIsoMonday, toIsoDateString } from '#/lib/date-utils';
+import type { WeekRowResponse } from '#/features/time-entries/time-entries.server';
+import { addDays, fromIsoDateString, getIsoMonday, toIsoDateString } from '#/lib/date-utils';
 import { WeekGrid, type WeekGridHandle } from './-components/week-grid';
+import { LastWeekCard } from './-components/last-week-card';
+import { LoggedCard } from './-components/logged-card';
 import { WeekNav } from './-components/week-nav';
 
 export const Route = createFileRoute('/_authed/time-entry/')({
@@ -45,11 +47,28 @@ function formatTime(isoString: string): string {
 
 function StatusCard({ isSubmitted, lastSavedAt }: { isSubmitted: boolean; lastSavedAt: string | null }) {
   return (
-    <Card>
-      <CardContent className="flex items-center gap-3 py-3">
-        <Badge variant={isSubmitted ? 'default' : 'secondary'}>{isSubmitted ? 'Submitted' : 'Draft'}</Badge>
-        <span className="text-sm text-muted-foreground">
-          {lastSavedAt ? `Last saved at ${formatTime(lastSavedAt)}` : 'Not saved yet'}
+    <Card className="relative h-full py-4">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1.5 top-1.5 h-3 w-3 border-l-2 border-t-2 border-primary"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-1.5 top-1.5 h-3 w-3 border-r-2 border-t-2 border-primary"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-1.5 left-1.5 h-3 w-3 border-b-2 border-l-2 border-primary"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-1.5 right-1.5 h-3 w-3 border-b-2 border-r-2 border-primary"
+      />
+      <CardContent className="flex h-full flex-col gap-2">
+        <span className="text-xs font-medium uppercase tracking-wider text-primary">Status</span>
+        <span className="text-lg font-semibold">{isSubmitted ? 'Submitted.' : 'Draft — not submitted.'}</span>
+        <span className="text-xs text-muted-foreground">
+          {lastSavedAt ? `Auto-saved at ${formatTime(lastSavedAt)}.` : 'Not saved yet.'}
         </span>
       </CardContent>
     </Card>
@@ -62,6 +81,7 @@ function TimeEntryPage() {
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingCopyRows, setPendingCopyRows] = useState<WeekRowResponse[] | null>(null);
   const gridRef = useRef<WeekGridHandle>(null);
 
   useBlocker({
@@ -118,6 +138,55 @@ function TimeEntryPage() {
     }
   }
 
+  async function handleCopyLastWeek() {
+    const previousWeekStart = toIsoDateString(addDays(fromIsoDateString(weekData.weekStart), -7));
+    let previousWeekData;
+    try {
+      previousWeekData = await fetchWeek({ data: { week: previousWeekStart } });
+    } catch {
+      toast.error('Failed to fetch last week.');
+      return;
+    }
+
+    if (previousWeekData.rows.length === 0) {
+      toast.info('No entries last week.');
+      return;
+    }
+
+    const validTaskIds = new Set([
+      ...weekData.rows.filter((row) => row.contractTaskId).map((row) => row.contractTaskId!),
+      ...pickerOptions.availableTasks.map((task) => task.contractTaskId),
+    ]);
+    const validLeaveTypeIds = new Set([
+      ...weekData.rows.filter((row) => row.leaveTypeId).map((row) => row.leaveTypeId!),
+      ...pickerOptions.availableLeaveTypes.map((leaveType) => leaveType.leaveTypeId),
+    ]);
+
+    const filteredRows = previousWeekData.rows.filter((row) => {
+      if (row.contractTaskId) return validTaskIds.has(row.contractTaskId);
+      if (row.leaveTypeId) return validLeaveTypeIds.has(row.leaveTypeId);
+      return false;
+    });
+
+    if (filteredRows.length === 0) {
+      toast.info("All last week's entries are no longer available.");
+      return;
+    }
+
+    if (gridRef.current?.hasRows()) {
+      setPendingCopyRows(filteredRows);
+    } else {
+      gridRef.current?.loadWeek(filteredRows);
+    }
+  }
+
+  function applyPendingCopy() {
+    if (pendingCopyRows && gridRef.current) {
+      gridRef.current.loadWeek(pendingCopyRows);
+    }
+    setPendingCopyRows(null);
+  }
+
   function getPageTitleSuffix() {
     if (isSubmitted) return 'submitted.';
     return hasRows ? 'logged.' : 'empty.';
@@ -162,7 +231,31 @@ function TimeEntryPage() {
         </div>
       </div>
 
-      <StatusCard isSubmitted={isSubmitted} lastSavedAt={weekData.lastSavedAt ?? null} />
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.8fr_1.2fr]">
+        <LoggedCard rows={weekData.rows} />
+        <LastWeekCard summary={weekData.previousWeekSummary} isSubmitted={isSubmitted} onCopy={handleCopyLastWeek} />
+        <StatusCard isSubmitted={isSubmitted} lastSavedAt={weekData.lastSavedAt ?? null} />
+      </div>
+
+      <AlertDialog
+        open={pendingCopyRows !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingCopyRows(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Overwrite this week?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will replace this week&apos;s hours with last week&apos;s entries.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={applyPendingCopy}>Overwrite</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div key={weekData.weekStart} className="animate-fade-in">
         <WeekGrid
