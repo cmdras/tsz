@@ -53,11 +53,11 @@ public class UserRepository : IUserRepository
         query = (sort, isDescending) switch
         {
             (UserSort.Email, true) => query.OrderByDescending(user => user.Email),
-            (UserSort.Email, false) => query.OrderBy(user => user.Email),
+            (UserSort.Email, _) => query.OrderBy(user => user.Email),
             (UserSort.Role, true) => query.OrderByDescending(RoleSortKey),
-            (UserSort.Role, false) => query.OrderBy(RoleSortKey),
+            (UserSort.Role, _) => query.OrderBy(RoleSortKey),
             (_, true) => query.OrderByDescending(user => user.Name),
-            (_, false) => query.OrderBy(user => user.Name),
+            _ => query.OrderBy(user => user.Name),
         };
 
         var total = await query.CountAsync(cancellationToken);
@@ -114,21 +114,11 @@ public class UserRepository : IUserRepository
     }
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, true, cancellationToken);
+        => _dbContext.SetArchivedAsync<User>(id, true, cancellationToken);
 
     public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, false, cancellationToken);
+        => _dbContext.SetArchivedAsync<User>(id, false, cancellationToken);
 
     public Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default)
         => _dbContext.Database.BeginTransactionAsync(isolationLevel, cancellationToken);
-
-    private async Task<bool> SetArchivedAsync(Guid id, bool isArchived, CancellationToken cancellationToken)
-    {
-        var user = await _dbContext.Users.FindAsync([id], cancellationToken);
-        if (user is null) return false;
-
-        user.IsArchived = isArchived;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
 }

@@ -43,17 +43,17 @@ public class ContractRepository : IContractRepository
         query = (sort, isDescending) switch
         {
             (ContractSort.Customer, true) => query.OrderByDescending(contract => contract.Customer.Name),
-            (ContractSort.Customer, false) => query.OrderBy(contract => contract.Customer.Name),
+            (ContractSort.Customer, _) => query.OrderBy(contract => contract.Customer.Name),
             (ContractSort.Subject, true) => query.OrderByDescending(contract => contract.Subject),
-            (ContractSort.Subject, false) => query.OrderBy(contract => contract.Subject),
+            (ContractSort.Subject, _) => query.OrderBy(contract => contract.Subject),
             (ContractSort.Consultant, true) => query.OrderByDescending(contract => contract.Consultant.Name),
-            (ContractSort.Consultant, false) => query.OrderBy(contract => contract.Consultant.Name),
+            (ContractSort.Consultant, _) => query.OrderBy(contract => contract.Consultant.Name),
             (ContractSort.StartDate, true) => query.OrderByDescending(contract => contract.StartDate),
-            (ContractSort.StartDate, false) => query.OrderBy(contract => contract.StartDate),
+            (ContractSort.StartDate, _) => query.OrderBy(contract => contract.StartDate),
             (ContractSort.EndDate, true) => query.OrderByDescending(contract => contract.EndDate),
-            (ContractSort.EndDate, false) => query.OrderBy(contract => contract.EndDate),
+            (ContractSort.EndDate, _) => query.OrderBy(contract => contract.EndDate),
             (_, true) => query.OrderByDescending(contract => contract.Number),
-            (_, false) => query.OrderBy(contract => contract.Number),
+            _ => query.OrderBy(contract => contract.Number),
         };
 
         var total = await query.CountAsync(cancellationToken);
@@ -154,20 +154,10 @@ public class ContractRepository : IContractRepository
     }
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, true, cancellationToken);
+        => _dbContext.SetArchivedAsync<Contract>(id, true, cancellationToken);
 
     public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, false, cancellationToken);
-
-    private async Task<bool> SetArchivedAsync(Guid id, bool isArchived, CancellationToken cancellationToken)
-    {
-        var contract = await _dbContext.Contracts.FindAsync([id], cancellationToken);
-        if (contract is null) return false;
-
-        contract.IsArchived = isArchived;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+        => _dbContext.SetArchivedAsync<Contract>(id, false, cancellationToken);
 
     private static ContractTask BuildTask(ContractTaskRequest taskRequest, int order, Guid contractId) =>
         new()

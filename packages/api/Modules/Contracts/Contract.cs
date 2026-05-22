@@ -1,8 +1,9 @@
+using Api.Common;
 using Api.Modules.Users;
 
 namespace Api.Modules.Contracts;
 
-public class Contract
+public class Contract : IArchivable
 {
     public Guid Id { get; set; }
     public int Number { get; set; }
