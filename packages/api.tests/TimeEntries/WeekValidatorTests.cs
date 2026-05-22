@@ -1,6 +1,8 @@
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
+using Api.Modules.LeaveTypes;
 using Api.Modules.TimeEntries;
+using Api.Modules.UserLeaveAllowances;
 using Api.Modules.Users;
 
 namespace Api.Tests.TimeEntries;
@@ -31,8 +33,14 @@ public class WeekValidatorShould
         Consultant = new User { Id = userId, Name = "User" },
     };
 
+    private static LeaveType MakeLeaveType(bool isArchived = false) =>
+        new() { Id = Guid.NewGuid(), Name = "Annual Leave", DefaultDays = 20, DefaultMode = AllowanceMode.Limited, IsArchived = isArchived };
+
     private static WeekCell MakeCell(DateOnly date, Guid taskId, decimal hours) =>
         new(ContractTaskId: taskId, LeaveTypeId: null, Date: date, Hours: hours);
+
+    private static WeekCell MakeLeaveCell(DateOnly date, Guid leaveTypeId, decimal hours) =>
+        new(ContractTaskId: null, LeaveTypeId: leaveTypeId, Date: date, Hours: hours);
 
     // --- Valid inputs ---
 
@@ -243,5 +251,57 @@ public class WeekValidatorShould
         var result = WeekValidator.Validate(cells, Monday, UserId, contracts);
 
         Assert.False(result.IsValid);
+    }
+
+    // --- Leave type FK ---
+
+    [Fact]
+    public void Return_Valid_For_Leave_Cell()
+    {
+        var leaveType = MakeLeaveType();
+        var cells = new[] { MakeLeaveCell(Monday, leaveType.Id, 8m) };
+
+        var result = WeekValidator.Validate(cells, Monday, UserId, [], [leaveType]);
+
+        Assert.True(result.IsValid);
+    }
+
+    [Fact]
+    public void Reject_Leave_Cell_With_Unknown_LeaveTypeId()
+    {
+        var unknownId = Guid.NewGuid();
+        var cells = new[] { MakeLeaveCell(Monday, unknownId, 8m) };
+
+        var result = WeekValidator.Validate(cells, Monday, UserId, [], []);
+
+        Assert.False(result.IsValid);
+    }
+
+    [Fact]
+    public void Reject_Leave_Cell_With_Archived_LeaveType()
+    {
+        var leaveType = MakeLeaveType(isArchived: true);
+        var cells = new[] { MakeLeaveCell(Monday, leaveType.Id, 8m) };
+
+        var result = WeekValidator.Validate(cells, Monday, UserId, [], [leaveType]);
+
+        Assert.False(result.IsValid);
+    }
+
+    [Fact]
+    public void Accept_Mixed_Task_And_Leave_Cells_In_Same_Week()
+    {
+        var taskId = Guid.NewGuid();
+        var leaveType = MakeLeaveType();
+        var contracts = new[] { MakeContract(UserId, taskId) };
+        var cells = new[]
+        {
+            MakeCell(Monday, taskId, 8m),
+            MakeLeaveCell(Tuesday, leaveType.Id, 8m),
+        };
+
+        var result = WeekValidator.Validate(cells, Monday, UserId, contracts, [leaveType]);
+
+        Assert.True(result.IsValid);
     }
 }

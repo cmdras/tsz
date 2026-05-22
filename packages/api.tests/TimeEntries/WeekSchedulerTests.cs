@@ -35,8 +35,8 @@ public class WeekSchedulerShould
     private static ContractTask MakeTask(string name = "Development", bool isArchived = false) =>
         new() { Id = Guid.NewGuid(), Name = name, IsArchived = isArchived };
 
-    private static LeaveType MakeLeaveType(string name = "Annual Leave") =>
-        new() { Id = Guid.NewGuid(), Name = name, DefaultDays = 20, DefaultMode = AllowanceMode.Limited };
+    private static LeaveType MakeLeaveType(string name = "Annual Leave", bool isArchived = false) =>
+        new() { Id = Guid.NewGuid(), Name = name, DefaultDays = 20, DefaultMode = AllowanceMode.Limited, IsArchived = isArchived };
 
     [Fact]
     public void Exclude_Contract_Belonging_To_Different_Consultant()
@@ -45,7 +45,7 @@ public class WeekSchedulerShould
         var otherUserId = Guid.NewGuid();
         var contracts = new[] { MakeContract(otherUserId) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -56,7 +56,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, isArchived: true) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -67,7 +67,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, endDate: new DateOnly(2026, 5, 10)) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -78,7 +78,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, startDate: new DateOnly(2026, 5, 25)) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -89,7 +89,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, tasks: [MakeTask(isArchived: true)]) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -101,7 +101,7 @@ public class WeekSchedulerShould
         var task = MakeTask();
         var contracts = new[] { MakeContract(userId, tasks: [task]) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [task.Id]);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [task.Id], []);
 
         Assert.Empty(result.AvailableTasks);
     }
@@ -113,7 +113,7 @@ public class WeekSchedulerShould
         var task = MakeTask("Analysis");
         var contracts = new[] { MakeContract(userId, customerName: "Globex", subject: "Cloud Migration", tasks: [task]) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Single(result.AvailableTasks);
         var option = result.AvailableTasks[0];
@@ -129,7 +129,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, endDate: null) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Single(result.AvailableTasks);
     }
@@ -140,7 +140,7 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var contracts = new[] { MakeContract(userId, endDate: new DateOnly(2026, 5, 20)) };
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, contracts, [], [], []);
 
         Assert.Single(result.AvailableTasks);
     }
@@ -151,10 +151,44 @@ public class WeekSchedulerShould
         var userId = Guid.NewGuid();
         var leaveType = MakeLeaveType("Sick Leave");
 
-        var result = WeekScheduler.BuildPickerOptions(userId, Week, [], [leaveType], []);
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, [], [leaveType], [], []);
 
         Assert.Single(result.AvailableLeaveTypes);
         Assert.Equal(leaveType.Id, result.AvailableLeaveTypes[0].LeaveTypeId);
         Assert.Equal("Sick Leave", result.AvailableLeaveTypes[0].Name);
+    }
+
+    [Fact]
+    public void Exclude_Archived_Leave_Type()
+    {
+        var userId = Guid.NewGuid();
+        var leaveType = MakeLeaveType("Old Leave", isArchived: true);
+
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, [], [leaveType], [], []);
+
+        Assert.Empty(result.AvailableLeaveTypes);
+    }
+
+    [Fact]
+    public void Exclude_Leave_Type_Already_On_Grid()
+    {
+        var userId = Guid.NewGuid();
+        var leaveType = MakeLeaveType("Annual Leave");
+
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, [], [leaveType], [], [leaveType.Id]);
+
+        Assert.Empty(result.AvailableLeaveTypes);
+    }
+
+    [Fact]
+    public void Include_Leave_Type_Not_Already_On_Grid()
+    {
+        var userId = Guid.NewGuid();
+        var leaveType = MakeLeaveType("Annual Leave");
+        var otherId = Guid.NewGuid();
+
+        var result = WeekScheduler.BuildPickerOptions(userId, Week, [], [leaveType], [], [otherId]);
+
+        Assert.Single(result.AvailableLeaveTypes);
     }
 }

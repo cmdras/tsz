@@ -34,6 +34,7 @@ public class TimeEntryRepository : ITimeEntryRepository
             .Include(entry => entry.ContractTask)
                 .ThenInclude(task => task!.Contract)
                     .ThenInclude(contract => contract.Customer)
+            .Include(entry => entry.LeaveType)
             .Where(entry => entry.UserId == userId && entry.Date >= weekStart && entry.Date < weekEnd)
             .ToListAsync(cancellationToken);
     }
@@ -93,7 +94,7 @@ public class TimeEntryRepository : ITimeEntryRepository
         var leaveTypes = await _dbContext.LeaveTypes
             .ToListAsync(cancellationToken);
 
-        var alreadyOnGrid = await _dbContext.TimeEntries
+        var alreadyOnGridTaskIds = await _dbContext.TimeEntries
             .Where(entry =>
                 entry.UserId == userId
                 && entry.Date >= weekStart
@@ -103,6 +104,16 @@ public class TimeEntryRepository : ITimeEntryRepository
             .Distinct()
             .ToListAsync(cancellationToken);
 
-        return new PickerRawData(contracts, leaveTypes, alreadyOnGrid);
+        var alreadyOnGridLeaveTypeIds = await _dbContext.TimeEntries
+            .Where(entry =>
+                entry.UserId == userId
+                && entry.Date >= weekStart
+                && entry.Date <= weekEnd
+                && entry.LeaveTypeId != null)
+            .Select(entry => entry.LeaveTypeId!.Value)
+            .Distinct()
+            .ToListAsync(cancellationToken);
+
+        return new PickerRawData(contracts, leaveTypes, alreadyOnGridTaskIds, alreadyOnGridLeaveTypeIds);
     }
 }

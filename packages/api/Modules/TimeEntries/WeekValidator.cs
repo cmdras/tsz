@@ -1,4 +1,5 @@
 using Api.Modules.Contracts;
+using Api.Modules.LeaveTypes;
 
 namespace Api.Modules.TimeEntries;
 
@@ -14,7 +15,8 @@ public static class WeekValidator
         IEnumerable<WeekCell> cells,
         DateOnly weekStart,
         Guid userId,
-        IEnumerable<Contract> contracts)
+        IEnumerable<Contract> contracts,
+        IEnumerable<LeaveType>? leaveTypes = null)
     {
         var cellList = cells.ToList();
         var weekEnd = weekStart.AddDays(6);
@@ -22,6 +24,8 @@ public static class WeekValidator
         var taskMap = contracts
             .SelectMany(contract => contract.Tasks.Select(task => (Task: task, Contract: contract)))
             .ToDictionary(pair => pair.Task.Id);
+
+        var leaveTypeMap = (leaveTypes ?? []).ToDictionary(leaveType => leaveType.Id);
 
         foreach (var cell in cellList)
         {
@@ -54,6 +58,15 @@ public static class WeekValidator
 
                 if (pair.Task.IsArchived)
                     return WeekValidationResult.Failure($"ContractTask {cell.ContractTaskId} is archived.");
+            }
+
+            if (cell.LeaveTypeId.HasValue)
+            {
+                if (!leaveTypeMap.TryGetValue(cell.LeaveTypeId.Value, out var leaveType))
+                    return WeekValidationResult.Failure($"LeaveType {cell.LeaveTypeId} not found.");
+
+                if (leaveType.IsArchived)
+                    return WeekValidationResult.Failure($"LeaveType {cell.LeaveTypeId} is archived.");
             }
         }
 
