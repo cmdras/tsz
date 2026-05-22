@@ -1,4 +1,4 @@
-import { createRef, useRef, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { PlusIcon, XIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
@@ -45,7 +45,7 @@ function TaskPickerPopover({
           Add task
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="start">
+      <PopoverContent className="w-80 p-0" align="start" onCloseAutoFocus={(event) => event.preventDefault()}>
         <Command>
           <CommandInput placeholder="Search customer, contract or task…" />
           <CommandList>
@@ -124,7 +124,14 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
 
   const [rows, setRows] = useState<GridRow[]>([]);
   const [hours, setHours] = useState<Record<string, (number | null)[]>>({});
+  const [pendingFocusId, setPendingFocusId] = useState<string | null>(null);
   const cellRefsMap = useRef(new Map<string, React.RefObject<HourCellHandle | null>[]>());
+
+  useEffect(() => {
+    if (pendingFocusId === null) return;
+    cellRefsMap.current.get(pendingFocusId)?.[0]?.current?.triggerFocus();
+    setPendingFocusId(null);
+  }, [pendingFocusId]);
 
   const pickedIds = new Set(rows.map((row) => row.contractTaskId));
   const availableTasks = pickerOptions.availableTasks.filter((task) => !pickedIds.has(task.contractTaskId));
@@ -163,6 +170,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       task.contractTaskId,
       Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
     );
+    setPendingFocusId(task.contractTaskId);
   }
 
   function handleHourCommit(contractTaskId: string, dayIndex: number, value: number | null) {
@@ -183,7 +191,6 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
           const dateIso = toIsoDateString(date);
           const isWeekend = WEEKEND_INDICES.has(index);
           const isToday = dateIso === todayIso;
-          const dailyTotal = getDailyTotal(index);
 
           return (
             <div
@@ -196,12 +203,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
               <div className="flex items-center justify-center gap-1">
                 <span>{day}</span>
                 {isToday && (
-                  <span
-                    className={cn(
-                      'rounded px-1 py-0.5 text-xs font-semibold',
-                      dailyTotal > 0 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
-                    )}
-                  >
+                  <span className="rounded bg-primary px-1 py-0.5 text-xs font-semibold text-primary-foreground">
                     TODAY
                   </span>
                 )}
