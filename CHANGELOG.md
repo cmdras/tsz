@@ -2,6 +2,7 @@
 
 ## 2026-05-22
 
+- fix(time-entries): leave row initials chip is now amber instead of a random color
 - feat(time-entries): consultants can now log leave alongside project work — an "Add leave" button opens a searchable popover showing non-archived leave types not already on the grid
 - feat(time-entries): leave rows display with an amber initials chip and amber hour values to distinguish them from project task rows
 - feat(time-entries): project rows always appear above leave rows; within each group rows are sorted alphabetically

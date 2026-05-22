@@ -203,14 +203,10 @@ function TaskRowLabel({ row }: { row: TaskGridRow }) {
 
 function LeaveRowLabel({ row }: { row: LeaveGridRow }) {
   const initials = row.leaveTypeName.slice(0, 2).toUpperCase();
-  const avatarColor = getAvatarColor(row.leaveTypeName);
 
   return (
     <div className="flex items-center gap-2 p-3">
-      <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white"
-        style={{ backgroundColor: avatarColor }}
-      >
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-xs font-semibold text-white">
         {initials}
       </span>
       <div className="min-w-0">
