@@ -13,7 +13,7 @@ interface UserListPanelProps {
 }
 
 export function UserListPanel({ users, selectedId, search }: UserListPanelProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/admin/users/' });
 
   const handleSearch = useDebouncedCallback((value: string) => {
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined }) });

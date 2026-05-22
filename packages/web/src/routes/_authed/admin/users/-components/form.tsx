@@ -33,12 +33,20 @@ interface UserFormProps {
   title: string;
   leaveTypes?: LeaveType[];
   leaveSummaries?: LeaveSummary[];
+  onDone?: () => void;
 }
 
 const PICKER_PLACEHOLDER = '__pick__';
 
-export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries }: UserFormProps) {
+export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries, onDone }: UserFormProps) {
   const router = useRouter();
+  const navigateOnDone = () => {
+    if (onDone) {
+      onDone();
+      return;
+    }
+    router.navigate({ to: '/admin/users' });
+  };
 
   const form = useForm({
     defaultValues: {
@@ -54,7 +62,7 @@ export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries 
       try {
         await onSubmit(value);
         toast.success('User saved');
-        router.navigate({ to: '/admin/users' });
+        navigateOnDone();
       } catch (error) {
         if (error instanceof Error && error.message === 'EMAIL_ALREADY_IN_USE') {
           toast.error('Email address is already in use');
@@ -274,12 +282,7 @@ export function UserForm({ initial, onSubmit, title, leaveTypes, leaveSummaries 
             <Button type="submit" disabled={!canSubmit}>
               {isSubmitting ? 'Saving…' : 'Save'}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.navigate({ to: '/admin/users' })}
-              disabled={isSubmitting}
-            >
+            <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
               Cancel
             </Button>
           </div>

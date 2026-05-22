@@ -33,7 +33,7 @@ export function WeekNav({ weekStart }: WeekNavProps) {
   return (
     <div className="flex items-center gap-2">
       <Button variant="outline" size="icon" asChild>
-        <Link search={{ week: prevWeek }}>
+        <Link to="/time-entry" search={{ week: prevWeek }}>
           <ChevronLeft className="h-4 w-4" />
           <span className="sr-only">Previous week</span>
         </Link>
@@ -46,25 +46,21 @@ export function WeekNav({ weekStart }: WeekNavProps) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="center">
-          <Calendar
-            mode="single"
-            selected={currentDate}
-            onSelect={handleCalendarSelect}
-            weekStartsOn={1}
-            initialFocus
-          />
+          <Calendar mode="single" selected={currentDate} onSelect={handleCalendarSelect} weekStartsOn={1} autoFocus />
         </PopoverContent>
       </Popover>
 
       <Button variant="outline" size="icon" asChild>
-        <Link search={{ week: nextWeek }}>
+        <Link to="/time-entry" search={{ week: nextWeek }}>
           <ChevronRight className="h-4 w-4" />
           <span className="sr-only">Next week</span>
         </Link>
       </Button>
 
       <Button variant="outline" asChild>
-        <Link search={{ week: todayMonday }}>Today</Link>
+        <Link to="/time-entry" search={{ week: todayMonday }}>
+          Today
+        </Link>
       </Button>
     </div>
   );

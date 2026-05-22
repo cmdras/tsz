@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { UserForm } from '../-components/form';
 import { UserNotFound } from '../-components/user-not-found';
 import { fetchUserById, listLeaveTypesForPickerFn, updateUserFn } from '#/features/users/users.functions';
@@ -14,6 +14,7 @@ export const Route = createFileRoute('/_authed/admin/users/$id/edit')({
 function EditUser() {
   const { user, leaveTypes } = Route.useLoaderData();
   const { id } = Route.useParams();
+  const navigate = useNavigate();
 
   if (!user) return <UserNotFound />;
 
@@ -40,6 +41,7 @@ function EditUser() {
           balance: leave.balance,
         }))}
         onSubmit={(values) => updateUserFn({ data: { id, data: values } })}
+        onDone={() => navigate({ to: '/admin/users/$id', params: { id } })}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { archiveCustomerFn, unarchiveCustomerFn } from '#/features/customers/customers.functions';
 import type { Customer } from '#/features/customers/customers.server';
 import { formatEntityNumber, getAvatarColor } from '#/lib/utils';
+import { FieldValue } from '#/components/field-value';
 import { Button } from '#/components/ui/button';
 import { Badge } from '#/components/ui/badge';
 import {
@@ -112,15 +113,6 @@ export function CustomerDetailPanel({ customer, onArchiveSuccess }: CustomerDeta
         <FieldValue label="City" value={customer.city} />
         <FieldValue label="Country" value={customer.country} />
       </div>
-    </div>
-  );
-}
-
-function FieldValue({ label, value, className }: { label: string; value: string; className?: string }) {
-  return (
-    <div className={className}>
-      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
-      <p className="text-sm mt-0.5">{value || '—'}</p>
     </div>
   );
 }
