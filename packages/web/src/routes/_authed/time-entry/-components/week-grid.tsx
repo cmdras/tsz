@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 import { PlusIcon, XIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '#/components/ui/popover
 import { addDays, fromIsoDateString, toIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
 import { cn, getAvatarColor } from '#/lib/utils';
 import type { PickerOptions, PickerTaskOption } from '#/features/time-entries/time-entries.server';
-import { HourCell } from './hour-cell';
+import { HourCell, type HourCellHandle } from './hour-cell';
 
 const WEEKEND_INDICES = new Set([5, 6]);
 const DAYS_COUNT = 7;
@@ -109,12 +109,22 @@ function formatTotal(total: number): string {
   return total > 0 ? `${total}h` : '—';
 }
 
+function getNextWeekdayIndex(dayIndex: number): number | null {
+  // Weekday indices are 0–4 (Mon–Fri); 5–6 are weekend
+  return dayIndex < 4 ? dayIndex + 1 : null;
+}
+
+function getPrevWeekdayIndex(dayIndex: number): number | null {
+  return dayIndex > 0 ? dayIndex - 1 : null;
+}
+
 export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
   const monday = fromIsoDateString(weekStart);
   const todayIso = toIsoDateString(new Date());
 
   const [rows, setRows] = useState<GridRow[]>([]);
   const [hours, setHours] = useState<Record<string, (number | null)[]>>({});
+  const cellRefsMap = useRef(new Map<string, React.RefObject<HourCellHandle | null>[]>());
 
   const pickedIds = new Set(rows.map((row) => row.contractTaskId));
   const availableTasks = pickerOptions.availableTasks.filter((task) => !pickedIds.has(task.contractTaskId));
@@ -149,6 +159,10 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       ...previousHours,
       [task.contractTaskId]: Array(DAYS_COUNT).fill(null),
     }));
+    cellRefsMap.current.set(
+      task.contractTaskId,
+      Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
+    );
   }
 
   function handleHourCommit(contractTaskId: string, dayIndex: number, value: number | null) {
@@ -212,6 +226,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       {sortedRows.map((row) => {
         const weeklyTotal = getWeeklyRowTotal(row.contractTaskId);
         const rowHours = getRowHours(row.contractTaskId);
+        const rowCellRefs = cellRefsMap.current.get(row.contractTaskId);
 
         return (
           <div key={row.contractTaskId} className="grid grid-cols-[12rem_repeat(7,1fr)_4rem] border-b last:border-b-0">
@@ -223,10 +238,19 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
               ) : (
                 <HourCell
                   key={day}
+                  ref={rowCellRefs?.[index]}
                   value={rowHours[index] ?? null}
                   dailyOtherTotal={getDailyOtherTotal(row.contractTaskId, index)}
                   isWeekend={false}
                   onCommit={(value) => handleHourCommit(row.contractTaskId, index, value)}
+                  onFocusNext={() => {
+                    const nextIndex = getNextWeekdayIndex(index);
+                    if (nextIndex !== null) rowCellRefs?.[nextIndex]?.current?.triggerFocus();
+                  }}
+                  onFocusPrev={() => {
+                    const prevIndex = getPrevWeekdayIndex(index);
+                    if (prevIndex !== null) rowCellRefs?.[prevIndex]?.current?.triggerFocus();
+                  }}
                 />
               );
             })}

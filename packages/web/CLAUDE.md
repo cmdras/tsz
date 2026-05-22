@@ -24,6 +24,12 @@ Files and directories prefixed with `-` are excluded from TanStack Router's file
 
 Regenerate the OpenAPI-typed client (`src/api/schema.ts`) via `bun run gen:api`, then run `bun run check:fix`.
 
+## Custom inputs
+
+For inputs that need custom parsing (e.g. hour cells with comma→period normalization), use `type="text" inputMode="decimal"` rather than `type="number"`. Number inputs don't support reliable comma key interception or cursor manipulation — text inputs with `inputMode` give the same mobile keyboard while keeping full control over the raw string.
+
+When a blurred cell rejects an invalid value, call `onCommit(value)` (the saved prop) to revert, not `onCommit(null)`. Committing null erases data the user didn't ask to delete.
+
 ## Testing
 
 - Skip creating tests for components

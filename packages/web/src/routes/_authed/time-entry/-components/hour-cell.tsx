@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { cn } from '#/lib/utils';
 import { parseHourInput } from '#/features/time-entries/parse-hour-input';
 
@@ -7,14 +7,32 @@ interface HourCellProps {
   dailyOtherTotal: number;
   isWeekend: boolean;
   onCommit: (value: number | null) => void;
+  onFocusNext?: () => void;
+  onFocusPrev?: () => void;
 }
 
-export function HourCell({ value, dailyOtherTotal, isWeekend, onCommit }: HourCellProps) {
+export interface HourCellHandle {
+  triggerFocus: () => void;
+}
+
+export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourCell(
+  { value, dailyOtherTotal, isWeekend, onCommit, onFocusNext, onFocusPrev },
+  ref,
+) {
   const [rawInput, setRawInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isOver24, setIsOver24] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const hotkeyCommittedRef = useRef(false);
+
+  function triggerFocus() {
+    setRawInput(value != null ? String(value) : '');
+    setIsOver24(false);
+    setIsFocused(true);
+  }
+
+  // Expose triggerFocus so WeekGrid can programmatically focus a specific cell.
+  useImperativeHandle(ref, () => ({ triggerFocus }));
 
   useEffect(() => {
     if (isFocused) {
@@ -30,10 +48,12 @@ export function HourCell({ value, dailyOtherTotal, isWeekend, onCommit }: HourCe
     );
   }
 
-  function triggerFocus() {
-    setRawInput(value != null ? String(value) : '');
-    setIsOver24(false);
-    setIsFocused(true);
+  function commitAndAdvance(newValue: number | null, direction: 'next' | 'prev' | 'none') {
+    hotkeyCommittedRef.current = true;
+    onCommit(newValue);
+    if (direction === 'next') onFocusNext?.();
+    else if (direction === 'prev') onFocusPrev?.();
+    inputRef.current?.blur();
   }
 
   function handleBlur() {
@@ -65,19 +85,23 @@ export function HourCell({ value, dailyOtherTotal, isWeekend, onCommit }: HourCe
         setIsOver24(true);
         return;
       }
-      hotkeyCommittedRef.current = true;
-      onCommit(hotkeyValue);
-      inputRef.current?.blur();
-    } else if (key === 'delete' || key === 'backspace') {
+      commitAndAdvance(hotkeyValue, 'next');
+    } else if (key === 'enter') {
       event.preventDefault();
-      hotkeyCommittedRef.current = true;
-      onCommit(null);
-      inputRef.current?.blur();
+      const parsed = parseHourInput(rawInput);
+      const committed = isOver24 ? value : parsed === null || parsed === 0 ? null : parsed;
+      commitAndAdvance(committed, 'next');
+    } else if (key === 'delete') {
+      event.preventDefault();
+      commitAndAdvance(null, 'prev');
     }
+    // Backspace: default browser behavior (delete character before cursor)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const newRaw = event.target.value.replaceAll(',', '.');
+    // Only allow digits, decimal dot, and comma (comma is normalized to dot below)
+    const filtered = event.target.value.replace(/[^\d.,]/g, '');
+    const newRaw = filtered.replaceAll(',', '.');
     const parsed = parseHourInput(newRaw);
     const exceeds = parsed !== null && dailyOtherTotal + parsed > 24;
     setIsOver24(exceeds);
@@ -110,7 +134,7 @@ export function HourCell({ value, dailyOtherTotal, isWeekend, onCommit }: HourCe
         <button
           type="button"
           onClick={triggerFocus}
-          className="flex h-8 w-full items-center justify-center rounded text-sm font-bold hover:bg-accent"
+          className="flex h-8 w-full items-center justify-center rounded text-sm font-bold text-primary hover:bg-accent"
         >
           {value}h
         </button>
@@ -125,4 +149,4 @@ export function HourCell({ value, dailyOtherTotal, isWeekend, onCommit }: HourCe
       )}
     </div>
   );
-}
+});

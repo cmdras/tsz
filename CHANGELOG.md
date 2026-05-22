@@ -6,6 +6,9 @@
 - feat(time-entries): daily column totals and per-row weekly totals update live as you type
 - feat(time-entries): today's column header shows a TODAY badge that changes color when hours are logged
 - fix(time-entries): typing a value that pushes the day total above 24h is flagged with a red border and rejected on blur, reverting to the previously saved value
+- feat(time-entries): pressing Enter, `d`, or `h` in a cell moves focus to the next weekday cell; Del clears and moves focus left; Backspace now deletes a single character as expected
+- fix(time-entries): logged-hour values are shown in primary color when blurred
+- fix(time-entries): cell input now rejects non-numeric characters (only digits, `.`, and `,` are accepted)
 
 ## 2026-05-21
 
