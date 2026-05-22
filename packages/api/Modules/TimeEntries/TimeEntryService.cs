@@ -56,6 +56,27 @@ public class TimeEntryService
         return await GetWeekAsync(userId, weekStart, cancellationToken);
     }
 
+    public async Task<WeekResponse> SubmitWeekAsync(Guid userId, DateOnly weekStart, UpdateWeekRequest request, CancellationToken cancellationToken = default)
+    {
+        if (weekStart.DayOfWeek != DayOfWeek.Monday)
+            throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
+
+        var weekData = await _repository.GetWeekAsync(userId, weekStart, cancellationToken);
+        if (weekData.IsSubmitted)
+            throw new WeekAlreadySubmittedException();
+
+        var rawData = await _repository.GetPickerDataAsync(userId, weekStart, cancellationToken);
+        var validation = WeekValidator.Validate(request.Cells, weekStart, userId, rawData.Contracts, rawData.LeaveTypes);
+        if (!validation.IsValid)
+            throw new InvalidTimeEntryRequestException(validation.ErrorMessage!);
+
+        var existing = await _repository.GetWeekEntriesAsync(userId, weekStart, cancellationToken);
+        var (toUpsert, toDeleteIds) = WeekDiffer.Diff(existing, request.Cells);
+        await _repository.SubmitWeekAsync(userId, weekStart, toUpsert, toDeleteIds, _clock.UtcNow, cancellationToken);
+
+        return await GetWeekAsync(userId, weekStart, cancellationToken);
+    }
+
     public async Task<PickerOptions> GetPickerOptionsAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
     {
         if (weekStart.DayOfWeek != DayOfWeek.Monday)

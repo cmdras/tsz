@@ -81,6 +81,77 @@ public class TimeEntryRepository : ITimeEntryRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task SubmitWeekAsync(Guid userId, DateOnly weekStart, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime submittedAt, CancellationToken cancellationToken = default)
+    {
+        var alreadySubmitted = await _dbContext.WeekSubmissions
+            .AnyAsync(submission => submission.UserId == userId && submission.WeekStart == weekStart, cancellationToken);
+        if (alreadySubmitted)
+            throw new WeekAlreadySubmittedException();
+
+        await ApplyDiffWithoutSavingAsync(userId, toUpsert, toDeleteIds, submittedAt, cancellationToken);
+
+        _dbContext.WeekSubmissions.Add(new WeekSubmission
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            WeekStart = weekStart,
+            SubmittedAt = submittedAt,
+        });
+
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException)
+        {
+            var isDuplicate = await _dbContext.WeekSubmissions
+                .AnyAsync(submission => submission.UserId == userId && submission.WeekStart == weekStart, cancellationToken);
+            if (isDuplicate)
+                throw new WeekAlreadySubmittedException();
+            throw;
+        }
+    }
+
+    private async Task ApplyDiffWithoutSavingAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken)
+    {
+        if (toDeleteIds.Count > 0)
+        {
+            var toDelete = await _dbContext.TimeEntries
+                .Where(entry => toDeleteIds.Contains(entry.Id))
+                .ToListAsync(cancellationToken);
+            _dbContext.TimeEntries.RemoveRange(toDelete);
+        }
+
+        foreach (var cell in toUpsert)
+        {
+            var existing = await _dbContext.TimeEntries.FirstOrDefaultAsync(
+                entry => entry.UserId == userId
+                    && entry.Date == cell.Date
+                    && entry.ContractTaskId == cell.ContractTaskId
+                    && entry.LeaveTypeId == cell.LeaveTypeId,
+                cancellationToken);
+
+            if (existing is not null)
+            {
+                existing.Hours = cell.Hours;
+                existing.UpdatedAt = updatedAt;
+            }
+            else
+            {
+                _dbContext.TimeEntries.Add(new TimeEntry
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    Date = cell.Date,
+                    ContractTaskId = cell.ContractTaskId,
+                    LeaveTypeId = cell.LeaveTypeId,
+                    Hours = cell.Hours,
+                    UpdatedAt = updatedAt,
+                });
+            }
+        }
+    }
+
     public async Task<PickerRawData> GetPickerDataAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
     {
         var weekEnd = weekStart.AddDays(6);

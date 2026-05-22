@@ -26,7 +26,7 @@ function getPrevWeekdayIndex(dayIndex: number): number | null {
 }
 
 export const WeekGrid = forwardRef<import('./week-grid-model').WeekGridHandle, WeekGridProps>(function WeekGrid(
-  { weekStart, savedRows, pickerOptions, onDirtyChange },
+  { weekStart, savedRows, pickerOptions, isSubmitted, onDirtyChange },
   ref,
 ) {
   const monday = fromIsoDateString(weekStart);
@@ -237,9 +237,19 @@ export const WeekGrid = forwardRef<import('./week-grid-model').WeekGridHandle, W
             {isLeave ? <LeaveRowLabel row={row as LeaveGridRow} /> : <TaskRowLabel row={row as TaskGridRow} />}
             {DAYS_OF_WEEK.map((day, index) => {
               const isWeekend = WEEKEND_INDICES.has(index);
-              return isWeekend ? (
-                <DisabledCell key={day} isWeekend />
-              ) : (
+              if (isWeekend) return <DisabledCell key={day} isWeekend />;
+              if (isSubmitted) {
+                const hourValue = rowHours[index];
+                return (
+                  <div
+                    key={day}
+                    className={cn('border-l p-2 flex items-center justify-center text-sm', isLeave && 'text-amber-600')}
+                  >
+                    {hourValue ? `${hourValue}h` : '—'}
+                  </div>
+                );
+              }
+              return (
                 <HourCell
                   key={day}
                   ref={rowCellRefs?.[index]}
@@ -293,10 +303,12 @@ export const WeekGrid = forwardRef<import('./week-grid-model').WeekGridHandle, W
       )}
 
       {/* Add task / add leave buttons */}
-      <div className="flex items-center gap-2 border-t p-2">
-        <TaskPickerPopover availableTasks={availableTasks} onPick={handlePickTask} />
-        <LeavePickerPopover availableLeaveTypes={availableLeaveTypes} onPick={handlePickLeave} />
-      </div>
+      {!isSubmitted && (
+        <div className="flex items-center gap-2 border-t p-2">
+          <TaskPickerPopover availableTasks={availableTasks} onPick={handlePickTask} />
+          <LeavePickerPopover availableLeaveTypes={availableLeaveTypes} onPick={handlePickLeave} />
+        </div>
+      )}
     </div>
   );
 });

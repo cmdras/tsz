@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getWeek, getPickerOptions, saveWeekDraft } from './time-entries.server';
+import { getWeek, getPickerOptions, saveWeekDraft, submitWeek } from './time-entries.server';
 import type { WeekCell } from './time-entries.server';
 
 export const fetchWeek = createServerFn({ method: 'GET' })
@@ -15,20 +15,31 @@ export const fetchPickerOptions = createServerFn({ method: 'GET' })
     return await getPickerOptions(data.week);
   });
 
+const weekCellSchema = z.object({
+  contractTaskId: z.string().uuid().nullable(),
+  leaveTypeId: z.string().uuid().nullable(),
+  date: z.string(),
+  hours: z.number(),
+});
+
 export const saveDraft = createServerFn({ method: 'POST' })
   .inputValidator(
     z.object({
       week: z.string(),
-      cells: z.array(
-        z.object({
-          contractTaskId: z.string().uuid().nullable(),
-          leaveTypeId: z.string().uuid().nullable(),
-          date: z.string(),
-          hours: z.number(),
-        }),
-      ),
+      cells: z.array(weekCellSchema),
     }),
   )
   .handler(async ({ data }) => {
     return await saveWeekDraft(data.week, data.cells as WeekCell[]);
+  });
+
+export const submitWeekFn = createServerFn({ method: 'POST' })
+  .inputValidator(
+    z.object({
+      week: z.string(),
+      cells: z.array(weekCellSchema),
+    }),
+  )
+  .handler(async ({ data }) => {
+    return await submitWeek(data.week, data.cells as WeekCell[]);
   });
