@@ -1,230 +1,17 @@
 import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { PlusIcon, XIcon } from 'lucide-react';
-import { Button } from '#/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '#/components/ui/popover';
 import { addDays, fromIsoDateString, toIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
-import { cn, getAvatarColor } from '#/lib/utils';
-import type {
-  PickerLeaveTypeOption,
-  PickerOptions,
-  PickerTaskOption,
-  WeekCell,
-  WeekRowResponse,
-} from '#/features/time-entries/time-entries.server';
+import { cn } from '#/lib/utils';
+import type { PickerLeaveTypeOption, PickerTaskOption } from '#/features/time-entries/time-entries.server';
 import { HourCell, type HourCellHandle } from './hour-cell';
+import { type GridRow, type LeaveGridRow, type TaskGridRow, hoursFromSaved, rowsFromSaved } from './week-grid-model';
+import type { WeekGridProps } from './week-grid-model';
+import { LeavePickerPopover, TaskPickerPopover } from './week-grid-pickers';
+import { DisabledCell, LeaveRowLabel, TaskRowLabel } from './week-grid-rows';
+
+export type { WeekGridHandle } from './week-grid-model';
 
 const WEEKEND_INDICES = new Set([5, 6]);
 const DAYS_COUNT = 7;
-
-type TaskGridRow = {
-  kind: 'task';
-  rowId: string;
-  contractTaskId: string;
-  customerName: string;
-  contractSubject: string;
-  taskName: string;
-};
-
-type LeaveGridRow = {
-  kind: 'leave';
-  rowId: string;
-  leaveTypeId: string;
-  leaveTypeName: string;
-};
-
-type GridRow = TaskGridRow | LeaveGridRow;
-
-export interface WeekGridHandle {
-  getCells: () => WeekCell[];
-  resetDirty: () => void;
-}
-
-interface WeekGridProps {
-  weekStart: string;
-  savedRows: WeekRowResponse[];
-  pickerOptions: PickerOptions;
-  onDirtyChange: (dirty: boolean) => void;
-}
-
-function rowsFromSaved(savedRows: WeekRowResponse[]): GridRow[] {
-  return savedRows.flatMap((row): GridRow[] => {
-    if (row.contractTaskId) {
-      return [
-        {
-          kind: 'task',
-          rowId: row.contractTaskId,
-          contractTaskId: row.contractTaskId,
-          customerName: row.customerName ?? '',
-          contractSubject: row.contractSubject ?? '',
-          taskName: row.taskName ?? '',
-        },
-      ];
-    }
-    if (row.leaveTypeId) {
-      return [
-        {
-          kind: 'leave',
-          rowId: row.leaveTypeId,
-          leaveTypeId: row.leaveTypeId,
-          leaveTypeName: row.leaveTypeName ?? '',
-        },
-      ];
-    }
-    return [];
-  });
-}
-
-function hoursFromSaved(savedRows: WeekRowResponse[]): Record<string, (number | null)[]> {
-  return Object.fromEntries(
-    savedRows
-      .filter((row) => row.contractTaskId || row.leaveTypeId)
-      .map((row) => [row.contractTaskId ?? row.leaveTypeId!, row.hours as (number | null)[]]),
-  );
-}
-
-function TaskPickerPopover({
-  availableTasks,
-  onPick,
-}: {
-  availableTasks: PickerTaskOption[];
-  onPick: (task: PickerTaskOption) => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  function handleSelect(task: PickerTaskOption) {
-    onPick(task);
-    setOpen(false);
-  }
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="text-muted-foreground">
-          <PlusIcon className="mr-1 h-4 w-4" />
-          Add task
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="start" onCloseAutoFocus={(event) => event.preventDefault()}>
-        <Command>
-          <CommandInput placeholder="Search customer, contract or task…" />
-          <CommandList>
-            <CommandEmpty>No tasks found.</CommandEmpty>
-            <CommandGroup>
-              {availableTasks.map((task) => (
-                <CommandItem
-                  key={task.contractTaskId}
-                  value={task.contractTaskId}
-                  keywords={[task.customerName, task.contractSubject, task.taskName]}
-                  onSelect={() => handleSelect(task)}
-                >
-                  <span className="font-medium">{task.customerName}</span>
-                  <span className="mx-1 text-muted-foreground">·</span>
-                  <span className="text-muted-foreground">
-                    {task.contractSubject} · {task.taskName}
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function LeavePickerPopover({
-  availableLeaveTypes,
-  onPick,
-}: {
-  availableLeaveTypes: PickerLeaveTypeOption[];
-  onPick: (leaveType: PickerLeaveTypeOption) => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  function handleSelect(leaveType: PickerLeaveTypeOption) {
-    onPick(leaveType);
-    setOpen(false);
-  }
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="text-muted-foreground">
-          <PlusIcon className="mr-1 h-4 w-4" />
-          Add leave
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64 p-0" align="start" onCloseAutoFocus={(event) => event.preventDefault()}>
-        <Command>
-          <CommandInput placeholder="Search leave type…" />
-          <CommandList>
-            <CommandEmpty>No leave types found.</CommandEmpty>
-            <CommandGroup>
-              {availableLeaveTypes.map((leaveType) => (
-                <CommandItem
-                  key={leaveType.leaveTypeId}
-                  value={leaveType.leaveTypeId}
-                  keywords={[leaveType.name]}
-                  onSelect={() => handleSelect(leaveType)}
-                >
-                  {leaveType.name}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function TaskRowLabel({ row }: { row: TaskGridRow }) {
-  const initials = row.customerName.slice(0, 2).toUpperCase();
-  const avatarColor = getAvatarColor(row.customerName);
-
-  return (
-    <div className="flex items-center gap-2 p-3">
-      <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white"
-        style={{ backgroundColor: avatarColor }}
-      >
-        {initials}
-      </span>
-      <div className="min-w-0">
-        <div className="truncate font-semibold text-sm">{row.customerName}</div>
-        <div className="truncate text-xs text-muted-foreground">
-          {row.contractSubject} · {row.taskName}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LeaveRowLabel({ row }: { row: LeaveGridRow }) {
-  const initials = row.leaveTypeName.slice(0, 2).toUpperCase();
-
-  return (
-    <div className="flex items-center gap-2 p-3">
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-xs font-semibold text-white">
-        {initials}
-      </span>
-      <div className="min-w-0">
-        <div className="truncate font-semibold text-sm">{row.leaveTypeName}</div>
-      </div>
-    </div>
-  );
-}
-
-function DisabledCell({ isWeekend }: { isWeekend: boolean }) {
-  return (
-    <div className={cn('border-l p-2', isWeekend && 'bg-muted/40')}>
-      <div className="relative flex h-8 items-center justify-center rounded border border-dashed border-muted-foreground/20 bg-muted/20">
-        {isWeekend && <XIcon className="h-4 w-4 text-primary/40" />}
-      </div>
-    </div>
-  );
-}
 
 function formatTotal(total: number): string {
   return total > 0 ? `${total}h` : '—';
@@ -238,7 +25,7 @@ function getPrevWeekdayIndex(dayIndex: number): number | null {
   return dayIndex > 0 ? dayIndex - 1 : null;
 }
 
-export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekGrid(
+export const WeekGrid = forwardRef<import('./week-grid-model').WeekGridHandle, WeekGridProps>(function WeekGrid(
   { weekStart, savedRows, pickerOptions, onDirtyChange },
   ref,
 ) {
@@ -270,7 +57,7 @@ export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekG
     resetDirty() {
       isDirtyRef.current = false;
     },
-    getCells(): WeekCell[] {
+    getCells() {
       return rows.flatMap((row) => {
         const rowHours = hours[row.rowId] ?? Array(DAYS_COUNT).fill(null);
         return rowHours.flatMap((hourValue, dayIndex) => {
@@ -278,21 +65,11 @@ export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekG
           const date = addDays(monday, dayIndex);
           if (row.kind === 'task') {
             return [
-              {
-                contractTaskId: row.contractTaskId,
-                leaveTypeId: null,
-                date: toIsoDateString(date),
-                hours: hourValue,
-              } satisfies WeekCell,
+              { contractTaskId: row.contractTaskId, leaveTypeId: null, date: toIsoDateString(date), hours: hourValue },
             ];
           }
           return [
-            {
-              contractTaskId: null,
-              leaveTypeId: row.leaveTypeId,
-              date: toIsoDateString(date),
-              hours: hourValue,
-            } satisfies WeekCell,
+            { contractTaskId: null, leaveTypeId: row.leaveTypeId, date: toIsoDateString(date), hours: hourValue },
           ];
         });
       });
@@ -358,10 +135,7 @@ export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekG
       taskName: task.taskName,
     };
     setRows((previousRows) => [...previousRows, newRow]);
-    setHours((previousHours) => ({
-      ...previousHours,
-      [task.contractTaskId]: Array(DAYS_COUNT).fill(null),
-    }));
+    setHours((previousHours) => ({ ...previousHours, [task.contractTaskId]: Array(DAYS_COUNT).fill(null) }));
     cellRefsMap.current.set(
       task.contractTaskId,
       Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
@@ -378,10 +152,7 @@ export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekG
       leaveTypeName: leaveType.name,
     };
     setRows((previousRows) => [...previousRows, newRow]);
-    setHours((previousHours) => ({
-      ...previousHours,
-      [leaveType.leaveTypeId]: Array(DAYS_COUNT).fill(null),
-    }));
+    setHours((previousHours) => ({ ...previousHours, [leaveType.leaveTypeId]: Array(DAYS_COUNT).fill(null) }));
     cellRefsMap.current.set(
       leaveType.leaveTypeId,
       Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
