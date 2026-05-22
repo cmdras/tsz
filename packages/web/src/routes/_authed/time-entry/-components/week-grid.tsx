@@ -3,11 +3,13 @@ import { PlusIcon, XIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '#/components/ui/popover';
-import { addDays, fromIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
+import { addDays, fromIsoDateString, toIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
 import { cn, getAvatarColor } from '#/lib/utils';
 import type { PickerOptions, PickerTaskOption } from '#/features/time-entries/time-entries.server';
+import { HourCell } from './hour-cell';
 
 const WEEKEND_INDICES = new Set([5, 6]);
+const DAYS_COUNT = 7;
 
 interface GridRow {
   contractTaskId: string;
@@ -103,9 +105,16 @@ function DisabledCell({ isWeekend }: { isWeekend: boolean }) {
   );
 }
 
+function formatTotal(total: number): string {
+  return total > 0 ? `${total}h` : '—';
+}
+
 export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
   const monday = fromIsoDateString(weekStart);
+  const todayIso = toIsoDateString(new Date());
+
   const [rows, setRows] = useState<GridRow[]>([]);
+  const [hours, setHours] = useState<Record<string, (number | null)[]>>({});
 
   const pickedIds = new Set(rows.map((row) => row.contractTaskId));
   const availableTasks = pickerOptions.availableTasks.filter((task) => !pickedIds.has(task.contractTaskId));
@@ -116,17 +125,52 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
     return rowA.taskName.localeCompare(rowB.taskName);
   });
 
+  function getRowHours(contractTaskId: string): (number | null)[] {
+    return hours[contractTaskId] ?? Array(DAYS_COUNT).fill(null);
+  }
+
+  function getDailyTotal(dayIndex: number): number {
+    return sortedRows.reduce((sum, row) => sum + (getRowHours(row.contractTaskId)[dayIndex] ?? 0), 0);
+  }
+
+  function getDailyOtherTotal(contractTaskId: string, dayIndex: number): number {
+    return sortedRows
+      .filter((row) => row.contractTaskId !== contractTaskId)
+      .reduce((sum, row) => sum + (getRowHours(row.contractTaskId)[dayIndex] ?? 0), 0);
+  }
+
+  function getWeeklyRowTotal(contractTaskId: string): number {
+    return getRowHours(contractTaskId).reduce((sum, hour) => sum + (hour ?? 0), 0);
+  }
+
   function handlePick(task: PickerTaskOption) {
     setRows((previousRows) => [...previousRows, task]);
+    setHours((previousHours) => ({
+      ...previousHours,
+      [task.contractTaskId]: Array(DAYS_COUNT).fill(null),
+    }));
+  }
+
+  function handleHourCommit(contractTaskId: string, dayIndex: number, value: number | null) {
+    setHours((previousHours) => {
+      const rowHours = previousHours[contractTaskId] ?? Array(DAYS_COUNT).fill(null);
+      const updated = rowHours.map((existingHour, index) => (index === dayIndex ? value : existingHour));
+      return { ...previousHours, [contractTaskId]: updated };
+    });
   }
 
   return (
     <div className="rounded-lg border">
-      <div className="grid grid-cols-[12rem_repeat(7,1fr)] border-b">
+      {/* Header row */}
+      <div className="grid grid-cols-[12rem_repeat(7,1fr)_4rem] border-b">
         <div className="p-3" />
         {DAYS_OF_WEEK.map((day, index) => {
           const date = addDays(monday, index);
+          const dateIso = toIsoDateString(date);
           const isWeekend = WEEKEND_INDICES.has(index);
+          const isToday = dateIso === todayIso;
+          const dailyTotal = getDailyTotal(index);
+
           return (
             <div
               key={day}
@@ -135,30 +179,91 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
                 isWeekend && 'bg-muted/40 text-muted-foreground',
               )}
             >
-              <div>{day}</div>
+              <div className="flex items-center justify-center gap-1">
+                <span>{day}</span>
+                {isToday && (
+                  <span
+                    className={cn(
+                      'rounded px-1 py-0.5 text-xs font-semibold',
+                      dailyTotal > 0 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
+                    )}
+                  >
+                    TODAY
+                  </span>
+                )}
+              </div>
               <div className="text-xs text-muted-foreground">
                 {date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
               </div>
             </div>
           );
         })}
+        <div className="border-l p-3 text-center text-xs text-muted-foreground">Total</div>
       </div>
 
+      {/* Empty state */}
       {sortedRows.length === 0 && (
         <div className="p-8 text-center text-sm text-muted-foreground">
           No tasks yet — add a task or leave to get started
         </div>
       )}
 
-      {sortedRows.map((row) => (
-        <div key={row.contractTaskId} className="grid grid-cols-[12rem_repeat(7,1fr)] border-b last:border-b-0">
-          <TaskRowLabel row={row} />
-          {DAYS_OF_WEEK.map((day, index) => (
-            <DisabledCell key={day} isWeekend={WEEKEND_INDICES.has(index)} />
-          ))}
-        </div>
-      ))}
+      {/* Task rows */}
+      {sortedRows.map((row) => {
+        const weeklyTotal = getWeeklyRowTotal(row.contractTaskId);
+        const rowHours = getRowHours(row.contractTaskId);
 
+        return (
+          <div key={row.contractTaskId} className="grid grid-cols-[12rem_repeat(7,1fr)_4rem] border-b last:border-b-0">
+            <TaskRowLabel row={row} />
+            {DAYS_OF_WEEK.map((day, index) => {
+              const isWeekend = WEEKEND_INDICES.has(index);
+              return isWeekend ? (
+                <DisabledCell key={day} isWeekend />
+              ) : (
+                <HourCell
+                  key={day}
+                  value={rowHours[index] ?? null}
+                  dailyOtherTotal={getDailyOtherTotal(row.contractTaskId, index)}
+                  isWeekend={false}
+                  onCommit={(value) => handleHourCommit(row.contractTaskId, index, value)}
+                />
+              );
+            })}
+            <div className="border-l p-2 flex items-center justify-center text-sm font-medium text-muted-foreground">
+              {formatTotal(weeklyTotal)}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Daily totals footer */}
+      {sortedRows.length > 0 && (
+        <div className="grid grid-cols-[12rem_repeat(7,1fr)_4rem] border-t">
+          <div className="p-2 text-xs text-muted-foreground flex items-center pl-3">Daily total</div>
+          {DAYS_OF_WEEK.map((day, index) => {
+            const isWeekend = WEEKEND_INDICES.has(index);
+            const total = getDailyTotal(index);
+            return (
+              <div
+                key={day}
+                className={cn(
+                  'border-l p-2 text-center text-sm font-medium',
+                  isWeekend && 'bg-muted/40 text-muted-foreground',
+                  !isWeekend && total === 0 && 'text-muted-foreground/40',
+                )}
+              >
+                {isWeekend ? '—' : formatTotal(total)}
+              </div>
+            );
+          })}
+          <div className="border-l p-2 text-center text-sm font-medium text-muted-foreground">
+            {formatTotal(DAYS_OF_WEEK.reduce((sum, _, index) => sum + getDailyTotal(index), 0))}
+          </div>
+        </div>
+      )}
+
+      {/* Add task button */}
       <div className="flex items-center gap-2 border-t p-2">
         <TaskPickerPopover availableTasks={availableTasks} onPick={handlePick} />
       </div>

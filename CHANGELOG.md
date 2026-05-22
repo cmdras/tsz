@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-22
+
+- feat(time-entries): week grid cells are now editable — click any weekday cell to type hours (supports `d`=8h, `h`=4h, Del/Backspace=clear hotkeys and comma-as-decimal-separator)
+- feat(time-entries): daily column totals and per-row weekly totals update live as you type
+- feat(time-entries): today's column header shows a TODAY badge that changes color when hours are logged
+- fix(time-entries): typing a value that pushes the day total above 24h is flagged with a red border and rejected on blur, reverting to the previously saved value
+
 ## 2026-05-21
 
 - feat(admin): contracts admin page now uses the same split-panel layout as customers and users — list on the left, detail on the right
