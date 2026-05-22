@@ -31,9 +31,11 @@ import { Route as AuthedAdminCustomersIdRouteImport } from './routes/_authed/adm
 import { Route as AuthedAdminContractsNewRouteImport } from './routes/_authed/admin/contracts/new'
 import { Route as AuthedAdminContractsIdRouteImport } from './routes/_authed/admin/contracts/$id'
 import { Route as AuthedAdminUsersIdIndexRouteImport } from './routes/_authed/admin/users/$id/index'
+import { Route as AuthedAdminLeaveTypesIdIndexRouteImport } from './routes/_authed/admin/leave-types/$id/index'
 import { Route as AuthedAdminCustomersIdIndexRouteImport } from './routes/_authed/admin/customers/$id/index'
 import { Route as AuthedAdminContractsIdIndexRouteImport } from './routes/_authed/admin/contracts/$id/index'
 import { Route as AuthedAdminUsersIdEditRouteImport } from './routes/_authed/admin/users/$id/edit'
+import { Route as AuthedAdminLeaveTypesIdEditRouteImport } from './routes/_authed/admin/leave-types/$id/edit'
 import { Route as AuthedAdminCustomersIdEditRouteImport } from './routes/_authed/admin/customers/$id/edit'
 import { Route as AuthedAdminContractsIdEditRouteImport } from './routes/_authed/admin/contracts/$id/edit'
 
@@ -151,6 +153,12 @@ const AuthedAdminUsersIdIndexRoute = AuthedAdminUsersIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedAdminUsersIdRoute,
 } as any)
+const AuthedAdminLeaveTypesIdIndexRoute =
+  AuthedAdminLeaveTypesIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedAdminLeaveTypesIdRoute,
+  } as any)
 const AuthedAdminCustomersIdIndexRoute =
   AuthedAdminCustomersIdIndexRouteImport.update({
     id: '/',
@@ -168,6 +176,12 @@ const AuthedAdminUsersIdEditRoute = AuthedAdminUsersIdEditRouteImport.update({
   path: '/edit',
   getParentRoute: () => AuthedAdminUsersIdRoute,
 } as any)
+const AuthedAdminLeaveTypesIdEditRoute =
+  AuthedAdminLeaveTypesIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AuthedAdminLeaveTypesIdRoute,
+  } as any)
 const AuthedAdminCustomersIdEditRoute =
   AuthedAdminCustomersIdEditRouteImport.update({
     id: '/edit',
@@ -194,7 +208,7 @@ export interface FileRoutesByFullPath {
   '/admin/contracts/new': typeof AuthedAdminContractsNewRoute
   '/admin/customers/$id': typeof AuthedAdminCustomersIdRouteWithChildren
   '/admin/customers/new': typeof AuthedAdminCustomersNewRoute
-  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
+  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRouteWithChildren
   '/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
   '/admin/users/$id': typeof AuthedAdminUsersIdRouteWithChildren
   '/admin/users/new': typeof AuthedAdminUsersNewRoute
@@ -204,9 +218,11 @@ export interface FileRoutesByFullPath {
   '/admin/users/': typeof AuthedAdminUsersIndexRoute
   '/admin/contracts/$id/edit': typeof AuthedAdminContractsIdEditRoute
   '/admin/customers/$id/edit': typeof AuthedAdminCustomersIdEditRoute
+  '/admin/leave-types/$id/edit': typeof AuthedAdminLeaveTypesIdEditRoute
   '/admin/users/$id/edit': typeof AuthedAdminUsersIdEditRoute
   '/admin/contracts/$id/': typeof AuthedAdminContractsIdIndexRoute
   '/admin/customers/$id/': typeof AuthedAdminCustomersIdIndexRoute
+  '/admin/leave-types/$id/': typeof AuthedAdminLeaveTypesIdIndexRoute
   '/admin/users/$id/': typeof AuthedAdminUsersIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -219,7 +235,6 @@ export interface FileRoutesByTo {
   '/timesheets': typeof AuthedTimesheetsIndexRoute
   '/admin/contracts/new': typeof AuthedAdminContractsNewRoute
   '/admin/customers/new': typeof AuthedAdminCustomersNewRoute
-  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
   '/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
   '/admin/users/new': typeof AuthedAdminUsersNewRoute
   '/admin/contracts': typeof AuthedAdminContractsIndexRoute
@@ -228,9 +243,11 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AuthedAdminUsersIndexRoute
   '/admin/contracts/$id/edit': typeof AuthedAdminContractsIdEditRoute
   '/admin/customers/$id/edit': typeof AuthedAdminCustomersIdEditRoute
+  '/admin/leave-types/$id/edit': typeof AuthedAdminLeaveTypesIdEditRoute
   '/admin/users/$id/edit': typeof AuthedAdminUsersIdEditRoute
   '/admin/contracts/$id': typeof AuthedAdminContractsIdIndexRoute
   '/admin/customers/$id': typeof AuthedAdminCustomersIdIndexRoute
+  '/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdIndexRoute
   '/admin/users/$id': typeof AuthedAdminUsersIdIndexRoute
 }
 export interface FileRoutesById {
@@ -248,7 +265,7 @@ export interface FileRoutesById {
   '/_authed/admin/contracts/new': typeof AuthedAdminContractsNewRoute
   '/_authed/admin/customers/$id': typeof AuthedAdminCustomersIdRouteWithChildren
   '/_authed/admin/customers/new': typeof AuthedAdminCustomersNewRoute
-  '/_authed/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRoute
+  '/_authed/admin/leave-types/$id': typeof AuthedAdminLeaveTypesIdRouteWithChildren
   '/_authed/admin/leave-types/new': typeof AuthedAdminLeaveTypesNewRoute
   '/_authed/admin/users/$id': typeof AuthedAdminUsersIdRouteWithChildren
   '/_authed/admin/users/new': typeof AuthedAdminUsersNewRoute
@@ -258,9 +275,11 @@ export interface FileRoutesById {
   '/_authed/admin/users/': typeof AuthedAdminUsersIndexRoute
   '/_authed/admin/contracts/$id/edit': typeof AuthedAdminContractsIdEditRoute
   '/_authed/admin/customers/$id/edit': typeof AuthedAdminCustomersIdEditRoute
+  '/_authed/admin/leave-types/$id/edit': typeof AuthedAdminLeaveTypesIdEditRoute
   '/_authed/admin/users/$id/edit': typeof AuthedAdminUsersIdEditRoute
   '/_authed/admin/contracts/$id/': typeof AuthedAdminContractsIdIndexRoute
   '/_authed/admin/customers/$id/': typeof AuthedAdminCustomersIdIndexRoute
+  '/_authed/admin/leave-types/$id/': typeof AuthedAdminLeaveTypesIdIndexRoute
   '/_authed/admin/users/$id/': typeof AuthedAdminUsersIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -288,9 +307,11 @@ export interface FileRouteTypes {
     | '/admin/users/'
     | '/admin/contracts/$id/edit'
     | '/admin/customers/$id/edit'
+    | '/admin/leave-types/$id/edit'
     | '/admin/users/$id/edit'
     | '/admin/contracts/$id/'
     | '/admin/customers/$id/'
+    | '/admin/leave-types/$id/'
     | '/admin/users/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -303,7 +324,6 @@ export interface FileRouteTypes {
     | '/timesheets'
     | '/admin/contracts/new'
     | '/admin/customers/new'
-    | '/admin/leave-types/$id'
     | '/admin/leave-types/new'
     | '/admin/users/new'
     | '/admin/contracts'
@@ -312,9 +332,11 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin/contracts/$id/edit'
     | '/admin/customers/$id/edit'
+    | '/admin/leave-types/$id/edit'
     | '/admin/users/$id/edit'
     | '/admin/contracts/$id'
     | '/admin/customers/$id'
+    | '/admin/leave-types/$id'
     | '/admin/users/$id'
   id:
     | '__root__'
@@ -341,9 +363,11 @@ export interface FileRouteTypes {
     | '/_authed/admin/users/'
     | '/_authed/admin/contracts/$id/edit'
     | '/_authed/admin/customers/$id/edit'
+    | '/_authed/admin/leave-types/$id/edit'
     | '/_authed/admin/users/$id/edit'
     | '/_authed/admin/contracts/$id/'
     | '/_authed/admin/customers/$id/'
+    | '/_authed/admin/leave-types/$id/'
     | '/_authed/admin/users/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -509,6 +533,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedAdminUsersIdIndexRouteImport
       parentRoute: typeof AuthedAdminUsersIdRoute
     }
+    '/_authed/admin/leave-types/$id/': {
+      id: '/_authed/admin/leave-types/$id/'
+      path: '/'
+      fullPath: '/admin/leave-types/$id/'
+      preLoaderRoute: typeof AuthedAdminLeaveTypesIdIndexRouteImport
+      parentRoute: typeof AuthedAdminLeaveTypesIdRoute
+    }
     '/_authed/admin/customers/$id/': {
       id: '/_authed/admin/customers/$id/'
       path: '/'
@@ -529,6 +560,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/users/$id/edit'
       preLoaderRoute: typeof AuthedAdminUsersIdEditRouteImport
       parentRoute: typeof AuthedAdminUsersIdRoute
+    }
+    '/_authed/admin/leave-types/$id/edit': {
+      id: '/_authed/admin/leave-types/$id/edit'
+      path: '/edit'
+      fullPath: '/admin/leave-types/$id/edit'
+      preLoaderRoute: typeof AuthedAdminLeaveTypesIdEditRouteImport
+      parentRoute: typeof AuthedAdminLeaveTypesIdRoute
     }
     '/_authed/admin/customers/$id/edit': {
       id: '/_authed/admin/customers/$id/edit'
@@ -579,6 +617,22 @@ const AuthedAdminCustomersIdRouteWithChildren =
     AuthedAdminCustomersIdRouteChildren,
   )
 
+interface AuthedAdminLeaveTypesIdRouteChildren {
+  AuthedAdminLeaveTypesIdEditRoute: typeof AuthedAdminLeaveTypesIdEditRoute
+  AuthedAdminLeaveTypesIdIndexRoute: typeof AuthedAdminLeaveTypesIdIndexRoute
+}
+
+const AuthedAdminLeaveTypesIdRouteChildren: AuthedAdminLeaveTypesIdRouteChildren =
+  {
+    AuthedAdminLeaveTypesIdEditRoute: AuthedAdminLeaveTypesIdEditRoute,
+    AuthedAdminLeaveTypesIdIndexRoute: AuthedAdminLeaveTypesIdIndexRoute,
+  }
+
+const AuthedAdminLeaveTypesIdRouteWithChildren =
+  AuthedAdminLeaveTypesIdRoute._addFileChildren(
+    AuthedAdminLeaveTypesIdRouteChildren,
+  )
+
 interface AuthedAdminUsersIdRouteChildren {
   AuthedAdminUsersIdEditRoute: typeof AuthedAdminUsersIdEditRoute
   AuthedAdminUsersIdIndexRoute: typeof AuthedAdminUsersIdIndexRoute
@@ -598,7 +652,7 @@ interface AuthedAdminRouteChildren {
   AuthedAdminContractsNewRoute: typeof AuthedAdminContractsNewRoute
   AuthedAdminCustomersIdRoute: typeof AuthedAdminCustomersIdRouteWithChildren
   AuthedAdminCustomersNewRoute: typeof AuthedAdminCustomersNewRoute
-  AuthedAdminLeaveTypesIdRoute: typeof AuthedAdminLeaveTypesIdRoute
+  AuthedAdminLeaveTypesIdRoute: typeof AuthedAdminLeaveTypesIdRouteWithChildren
   AuthedAdminLeaveTypesNewRoute: typeof AuthedAdminLeaveTypesNewRoute
   AuthedAdminUsersIdRoute: typeof AuthedAdminUsersIdRouteWithChildren
   AuthedAdminUsersNewRoute: typeof AuthedAdminUsersNewRoute
@@ -614,7 +668,7 @@ const AuthedAdminRouteChildren: AuthedAdminRouteChildren = {
   AuthedAdminContractsNewRoute: AuthedAdminContractsNewRoute,
   AuthedAdminCustomersIdRoute: AuthedAdminCustomersIdRouteWithChildren,
   AuthedAdminCustomersNewRoute: AuthedAdminCustomersNewRoute,
-  AuthedAdminLeaveTypesIdRoute: AuthedAdminLeaveTypesIdRoute,
+  AuthedAdminLeaveTypesIdRoute: AuthedAdminLeaveTypesIdRouteWithChildren,
   AuthedAdminLeaveTypesNewRoute: AuthedAdminLeaveTypesNewRoute,
   AuthedAdminUsersIdRoute: AuthedAdminUsersIdRouteWithChildren,
   AuthedAdminUsersNewRoute: AuthedAdminUsersNewRoute,

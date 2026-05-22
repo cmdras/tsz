@@ -14,10 +14,19 @@ interface LeaveTypeFormProps {
   initial: Partial<LeaveTypeInput>;
   onSubmit: (values: LeaveTypeInput) => Promise<unknown>;
   title: string;
+  onDone?: () => void;
 }
 
-export function LeaveTypeForm({ initial, onSubmit, title }: LeaveTypeFormProps) {
+export function LeaveTypeForm({ initial, onSubmit, title, onDone }: LeaveTypeFormProps) {
   const router = useRouter();
+
+  const navigateOnDone = () => {
+    if (onDone) {
+      onDone();
+      return;
+    }
+    router.navigate({ to: '/admin/leave-types' });
+  };
 
   const form = useForm({
     defaultValues: {
@@ -32,7 +41,7 @@ export function LeaveTypeForm({ initial, onSubmit, title }: LeaveTypeFormProps) 
       try {
         await onSubmit(value);
         toast.success('Leave type saved');
-        router.navigate({ to: '/admin/leave-types' });
+        navigateOnDone();
       } catch (error) {
         toast.error(error instanceof Error ? error.message : 'Failed to save leave type');
       }
@@ -104,12 +113,7 @@ export function LeaveTypeForm({ initial, onSubmit, title }: LeaveTypeFormProps) 
                 <Button type="submit" disabled={!canSubmit}>
                   {isSubmitting ? 'Saving…' : 'Save'}
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.navigate({ to: '/admin/leave-types' })}
-                  disabled={isSubmitting}
-                >
+                <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
                   Cancel
                 </Button>
               </div>

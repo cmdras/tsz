@@ -31,6 +31,8 @@ const sortSlugValues = Object.keys(sortSlugs) as SortSlug[];
 // oxlint-disable-next-line security/detect-non-literal-regexp
 const sortPattern = new RegExp(`^(${sortSlugValues.join('|')})-?$`);
 
+export const PAGE_SIZE = 25;
+
 export const searchSchema = z.object({
   search: z.string().optional(),
   sort: z.string().regex(sortPattern).optional(),

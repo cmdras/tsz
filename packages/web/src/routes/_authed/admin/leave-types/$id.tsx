@@ -1,35 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { LeaveTypeForm } from './-components/form';
-import { fetchLeaveTypeById, updateLeaveTypeFn } from '#/features/leave-types/leave-types.functions';
-import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { fetchLeaveTypes } from '#/features/leave-types/leave-types.functions';
+import { searchSchema } from '#/features/leave-types/leave-types.schemas';
+import { LeaveTypesPageLayout } from './-components/leave-types-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/leave-types/$id')({
-  loader: ({ params }) => fetchLeaveTypeById({ data: params.id }),
-  component: EditLeaveType,
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({
+    search: search.search,
+    page: search.page,
+    archived: search.archived,
+  }),
+  loader: ({ deps }) => fetchLeaveTypes({ data: deps }),
+  staleTime: 30_000,
+  component: LeaveTypeDetailLayout,
 });
 
-function EditLeaveType() {
-  const leaveType = Route.useLoaderData();
+function LeaveTypeDetailLayout() {
+  const { items, total } = Route.useLoaderData();
   const { id } = Route.useParams();
-
-  if (!leaveType) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>Leave type not found</AlertTitle>
-        <AlertDescription>No leave type exists with this ID.</AlertDescription>
-      </Alert>
-    );
-  }
+  const { search, page, archived } = Route.useSearch();
 
   return (
-    <LeaveTypeForm
-      title={`Edit Leave Type — ${leaveType.name}`}
-      initial={{
-        name: leaveType.name,
-        defaultDays: leaveType.defaultDays,
-        defaultMode: leaveType.defaultMode,
-      }}
-      onSubmit={(values) => updateLeaveTypeFn({ data: { id, data: values } })}
-    />
+    <LeaveTypesPageLayout
+      leaveTypes={items}
+      total={total}
+      selectedId={id}
+      search={search}
+      page={page}
+      archived={archived}
+    >
+      <Outlet />
+    </LeaveTypesPageLayout>
   );
 }
