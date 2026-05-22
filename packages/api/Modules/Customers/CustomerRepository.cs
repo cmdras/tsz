@@ -101,18 +101,8 @@ public class CustomerRepository : ICustomerRepository
     }
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, true, cancellationToken);
+        => _dbContext.SetArchivedAsync<Customer>(id, true, cancellationToken);
 
     public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, false, cancellationToken);
-
-    private async Task<bool> SetArchivedAsync(Guid id, bool isArchived, CancellationToken cancellationToken)
-    {
-        var customer = await _dbContext.Customers.FindAsync([id], cancellationToken);
-        if (customer is null) return false;
-
-        customer.IsArchived = isArchived;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+        => _dbContext.SetArchivedAsync<Customer>(id, false, cancellationToken);
 }

@@ -1,6 +1,8 @@
+using Api.Common;
+
 namespace Api.Modules.Customers;
 
-public class Customer
+public class Customer : IArchivable
 {
     public Guid Id { get; set; }
     public int Number { get; set; }

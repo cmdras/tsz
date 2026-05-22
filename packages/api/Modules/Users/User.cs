@@ -1,3 +1,5 @@
+using Api.Common;
+
 namespace Api.Modules.Users;
 
 public enum UserRole
@@ -7,7 +9,7 @@ public enum UserRole
     ClientManager,
 }
 
-public class User
+public class User : IArchivable
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

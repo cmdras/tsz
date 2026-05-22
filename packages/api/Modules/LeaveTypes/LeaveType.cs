@@ -1,8 +1,9 @@
+using Api.Common;
 using Api.Modules.UserLeaveAllowances;
 
 namespace Api.Modules.LeaveTypes;
 
-public class LeaveType
+public class LeaveType : IArchivable
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

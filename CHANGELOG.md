@@ -2,6 +2,9 @@
 
 ## 2026-05-22
 
+- refactor(api): archiving and unarchiving any entity now goes through a single shared helper — future archivable entities get the behavior for free by implementing `IArchivable`
+- fix(admin): archiving or unarchiving a Customer, Contract, Leave Type, or User now navigates back to the list instead of showing "not found"
+
 - chore(web): removed unused components, dead exports, and unreachable code flagged by fallow — zero warnings project-wide
 
 - feat(admin): the Leave Types admin page now uses the same split-panel layout as Customers, Contracts, and Users — list panel on the left with search and archive filter, detail panel on the right with Edit and Archive/Unarchive actions

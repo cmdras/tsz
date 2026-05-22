@@ -106,18 +106,8 @@ public class LeaveTypeRepository : ILeaveTypeRepository
     }
 
     public Task<bool> ArchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, true, cancellationToken);
+        => _dbContext.SetArchivedAsync<LeaveType>(id, true, cancellationToken);
 
     public Task<bool> UnarchiveAsync(Guid id, CancellationToken cancellationToken = default)
-        => SetArchivedAsync(id, false, cancellationToken);
-
-    private async Task<bool> SetArchivedAsync(Guid id, bool isArchived, CancellationToken cancellationToken)
-    {
-        var leaveType = await _dbContext.LeaveTypes.FindAsync([id], cancellationToken);
-        if (leaveType is null) return false;
-
-        leaveType.IsArchived = isArchived;
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+        => _dbContext.SetArchivedAsync<LeaveType>(id, false, cancellationToken);
 }

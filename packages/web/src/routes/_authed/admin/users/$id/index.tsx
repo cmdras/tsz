@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi, useRouter } from '@tanstack/react-router';
+import { createFileRoute, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { UserDetailPanel } from '../-components/user-detail-panel';
 import { UserNotFound } from '../-components/user-not-found';
 
@@ -11,11 +11,11 @@ export const Route = createFileRoute('/_authed/admin/users/$id/')({
 function UserDetail() {
   const { id } = Route.useParams();
   const { items } = parentRoute.useLoaderData();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const user = items.find((candidate) => candidate.id === id);
 
   if (!user) return <UserNotFound />;
 
-  return <UserDetailPanel user={user} onArchiveSuccess={() => router.invalidate()} />;
+  return <UserDetailPanel user={user} onArchiveSuccess={() => navigate({ to: '/admin/users' })} />;
 }
