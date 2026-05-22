@@ -1,0 +1,41 @@
+packages/api/Common/IArchivable.cs
+  s_bcf5c60ca53b81::t_d675a5ab316c0c 1-6
+packages/api/Common/Database/DbContextExtensions.cs
+  s_bcf5c60ca53b81::t_c21b19405b88e2 1-21
+packages/api/Modules/LeaveTypes/LeaveTypeRepository.cs
+  s_bcf5c60ca53b81::t_fdb1bfbf9d5911 109,112
+packages/api/Modules/Users/UserRepository.cs
+  s_bcf5c60ca53b81::t_fcc4fdf1163df0 56,58,60
+  s_bcf5c60ca53b81::t_03a98489fada2f 117,120
+packages/api/Modules/Contracts/Contract.cs
+  s_bcf5c60ca53b81::t_9784a4fbd79317 1,6
+CHANGELOG.md
+  s_bcf5c60ca53b81::t_655e91dfbcd21c 5-6
+packages/api/Modules/Users/User.cs
+  s_bcf5c60ca53b81::t_3863681bf0a31f 1-2,12
+packages/api/Modules/Customers/Customer.cs
+  s_bcf5c60ca53b81::t_985ac216145313 1-2,5
+packages/api/Modules/Customers/CustomerRepository.cs
+  s_bcf5c60ca53b81::t_9d5d7180308140 104,107
+packages/api/Modules/LeaveTypes/LeaveType.cs
+  s_bcf5c60ca53b81::t_3d1102b5a71f67 1,6
+packages/api/Modules/Contracts/ContractRepository.cs
+  s_bcf5c60ca53b81::t_154495b9b09142 46,48,50,52,54,56
+  s_bcf5c60ca53b81::t_e6f0f5b6b9d173 157,160
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "ec1ead9ba8ef1ae0b230670167fbdd1171a16d1f",
+  "prompts": {},
+  "sessions": {
+    "s_bcf5c60ca53b81": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b83e6d9-ef44-4ba5-b55a-b92b8cf7048e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
