@@ -2,6 +2,12 @@
 
 ## 2026-05-22
 
+- feat(time-entries): consultants can now submit a week as final — a "Submit week" button opens a confirmation dialog, locks the week, and switches the grid to read-only; cells show static hours or "—", pickers and Save/Submit buttons are hidden
+- feat(time-entries): submitted weeks cannot be edited via the API (PUT returns 409), and the submit endpoint is also idempotent-safe (second submit returns 409)
+- feat(time-entries): a Status card above the grid shows "Draft" or "Submitted" and the last-saved timestamp ("Not saved yet" when empty)
+- feat(time-entries): the page title reads "Time entry submitted." for locked weeks, in addition to the existing "logged." and "empty." states
+- feat(time-entries): week navigation from a submitted week to an unsubmitted week restores the full editable UI
+
 - refactor(api): archiving and unarchiving any entity now goes through a single shared helper — future archivable entities get the behavior for free by implementing `IArchivable`
 - fix(admin): archiving or unarchiving a Customer, Contract, Leave Type, or User now navigates back to the list instead of showing "not found"
 

@@ -29,3 +29,11 @@ export const saveWeekDraft = async (weekStart: string, cells: WeekCell[]): Promi
   });
   return response.data!;
 };
+
+export const submitWeek = async (weekStart: string, cells: WeekCell[]): Promise<WeekResponse> => {
+  const response = await client.POST('/api/time-entries/weeks/{weekStart}/submit', {
+    params: { path: { weekStart } },
+    body: { cells },
+  });
+  return response.data!;
+};

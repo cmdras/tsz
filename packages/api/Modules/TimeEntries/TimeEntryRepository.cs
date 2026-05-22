@@ -41,6 +41,43 @@ public class TimeEntryRepository : ITimeEntryRepository
 
     public async Task ApplyWeekDiffAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken = default)
     {
+        await ApplyDiffWithoutSavingAsync(userId, toUpsert, toDeleteIds, updatedAt, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SubmitWeekAsync(Guid userId, DateOnly weekStart, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime submittedAt, CancellationToken cancellationToken = default)
+    {
+        var alreadySubmitted = await _dbContext.WeekSubmissions
+            .AnyAsync(submission => submission.UserId == userId && submission.WeekStart == weekStart, cancellationToken);
+        if (alreadySubmitted)
+            throw new WeekAlreadySubmittedException();
+
+        await ApplyDiffWithoutSavingAsync(userId, toUpsert, toDeleteIds, submittedAt, cancellationToken);
+
+        _dbContext.WeekSubmissions.Add(new WeekSubmission
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            WeekStart = weekStart,
+            SubmittedAt = submittedAt,
+        });
+
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException)
+        {
+            var isDuplicate = await _dbContext.WeekSubmissions
+                .AnyAsync(submission => submission.UserId == userId && submission.WeekStart == weekStart, cancellationToken);
+            if (isDuplicate)
+                throw new WeekAlreadySubmittedException();
+            throw;
+        }
+    }
+
+    private async Task ApplyDiffWithoutSavingAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken)
+    {
         if (toDeleteIds.Count > 0)
         {
             var toDelete = await _dbContext.TimeEntries
@@ -77,8 +114,6 @@ public class TimeEntryRepository : ITimeEntryRepository
                 });
             }
         }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<PickerRawData> GetPickerDataAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)

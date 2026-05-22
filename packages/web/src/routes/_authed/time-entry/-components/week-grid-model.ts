@@ -27,6 +27,7 @@ export interface WeekGridProps {
   weekStart: string;
   savedRows: WeekRowResponse[];
   pickerOptions: PickerOptions;
+  isSubmitted: boolean;
   onDirtyChange: (dirty: boolean) => void;
 }
 
