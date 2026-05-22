@@ -41,43 +41,7 @@ public class TimeEntryRepository : ITimeEntryRepository
 
     public async Task ApplyWeekDiffAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken = default)
     {
-        if (toDeleteIds.Count > 0)
-        {
-            var toDelete = await _dbContext.TimeEntries
-                .Where(entry => toDeleteIds.Contains(entry.Id))
-                .ToListAsync(cancellationToken);
-            _dbContext.TimeEntries.RemoveRange(toDelete);
-        }
-
-        foreach (var cell in toUpsert)
-        {
-            var existing = await _dbContext.TimeEntries.FirstOrDefaultAsync(
-                entry => entry.UserId == userId
-                    && entry.Date == cell.Date
-                    && entry.ContractTaskId == cell.ContractTaskId
-                    && entry.LeaveTypeId == cell.LeaveTypeId,
-                cancellationToken);
-
-            if (existing is not null)
-            {
-                existing.Hours = cell.Hours;
-                existing.UpdatedAt = updatedAt;
-            }
-            else
-            {
-                _dbContext.TimeEntries.Add(new TimeEntry
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Date = cell.Date,
-                    ContractTaskId = cell.ContractTaskId,
-                    LeaveTypeId = cell.LeaveTypeId,
-                    Hours = cell.Hours,
-                    UpdatedAt = updatedAt,
-                });
-            }
-        }
-
+        await ApplyDiffWithoutSavingAsync(userId, toUpsert, toDeleteIds, updatedAt, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
