@@ -3,6 +3,7 @@
 ## 2026-05-22
 
 - refactor(api): archiving and unarchiving any entity now goes through a single shared helper — future archivable entities get the behavior for free by implementing `IArchivable`
+- fix(admin): archiving or unarchiving a Customer, Contract, Leave Type, or User now navigates back to the list instead of showing "not found"
 
 - chore(web): removed unused components, dead exports, and unreachable code flagged by fallow — zero warnings project-wide
 

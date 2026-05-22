@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi, useRouter } from '@tanstack/react-router';
+import { createFileRoute, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { ContractDetailPanel } from '../-components/contract-detail-panel';
 
 const parentRoute = getRouteApi('/_authed/admin/contracts/$id');
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authed/admin/contracts/$id/')({
 function ContractDetail() {
   const { id } = Route.useParams();
   const { items } = parentRoute.useLoaderData();
-  const router = useRouter();
+  const navigate = useNavigate();
   const contract = items.find((candidate) => candidate.id === id);
 
   if (!contract) {
@@ -21,5 +21,5 @@ function ContractDetail() {
     );
   }
 
-  return <ContractDetailPanel contract={contract} onArchiveSuccess={() => router.invalidate()} />;
+  return <ContractDetailPanel contract={contract} onArchiveSuccess={() => navigate({ to: '/admin/contracts' })} />;
 }
