@@ -1,0 +1,24 @@
+packages/api.tests.integration/Users/UserEndpointsTests.cs
+  s_322e4dd29f16cd::t_4860879a611000 296
+CHANGELOG.md
+  s_322e4dd29f16cd::t_7c2c21f0901bb6 5
+packages/api.tests.integration/Common/IntegrationFactory.cs
+  s_322e4dd29f16cd::t_9149878f8eb586 96
+  s_322e4dd29f16cd::t_3ee97f1358398b 79-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "d464698b5a03cc90c92393ee31557ae1606ccb39",
+  "prompts": {},
+  "sessions": {
+    "s_322e4dd29f16cd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "96e564a6-3230-4bdb-9790-24e5f31790be",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
