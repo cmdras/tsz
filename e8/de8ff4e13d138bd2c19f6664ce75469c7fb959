@@ -1,0 +1,21 @@
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_36ce8b978ccae3::t_4f4e8b7d5082f1 53-54
+CHANGELOG.md
+  s_36ce8b978ccae3::t_30a43b89a7c19d 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "e8de8ff4e13d138bd2c19f6664ce75469c7fb959",
+  "prompts": {},
+  "sessions": {
+    "s_36ce8b978ccae3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "734994b0-251a-42ab-bf87-b3bed969d1ae",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
