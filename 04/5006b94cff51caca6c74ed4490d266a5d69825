@@ -1,0 +1,32 @@
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_c9ad7cd77b71a9::t_cdb7200301970e 9
+  s_c9ad7cd77b71a9::t_a5f8fbd6d28f74 127
+  s_c9ad7cd77b71a9::t_04631d2e051928 1
+  s_c9ad7cd77b71a9::t_919e5abbe4a266 229,241,246-253
+  s_c9ad7cd77b71a9::t_48a571f9adb9c7 112-120
+  s_c9ad7cd77b71a9::t_b72d82498815d3 162-165
+packages/web/CLAUDE.md
+  s_c9ad7cd77b71a9::t_a9b93590513ff7 27-32
+docs/agents/typescript-conventions.md
+  s_c9ad7cd77b71a9::t_0c4bca38043c8a 7
+CHANGELOG.md
+  s_c9ad7cd77b71a9::t_316881b7a4a6a0 9-11
+packages/web/src/routes/_authed/time-entry/-components/hour-cell.tsx
+  s_c9ad7cd77b71a9::t_eecd8c0e68b950 1,10-11,14-21,28-36,51-56,88-89,91-96,98,102-104,137,152
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "045006b94cff51caca6c74ed4490d266a5d69825",
+  "prompts": {},
+  "sessions": {
+    "s_c9ad7cd77b71a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cc5efb22-3ac8-4c22-b0b7-70b8b5679d37",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
