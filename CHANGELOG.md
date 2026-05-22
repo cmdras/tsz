@@ -2,6 +2,14 @@
 
 ## 2026-05-22
 
+- fix(time-entries): leave row initials chip is now amber instead of a random color
+- feat(time-entries): consultants can now log leave alongside project work — an "Add leave" button opens a searchable popover showing non-archived leave types not already on the grid
+- feat(time-entries): leave rows display with an amber initials chip and amber hour values to distinguish them from project task rows
+- feat(time-entries): project rows always appear above leave rows; within each group rows are sorted alphabetically
+- feat(time-entries): the TODAY badge turns amber when the current day has any logged leave hours
+- feat(time-entries): the server now validates leave type foreign keys on save — unknown or archived leave types are rejected
+- feat(time-entries): leave types already on the grid for the current week are excluded from the "Add leave" picker
+
 - fix(time-entries): keyboard navigation shortcuts (d, h, Enter, Del) now work on rows that were loaded from a saved draft, not only on rows added in the current session
 - fix(time-entries): typing a value greater than 24 in a single cell is now flagged with a red border and rejected on blur, reverting to the previously saved value
 - fix(time-entries): "Save draft" no longer sends an empty payload when the grid ref is unexpectedly null, which would have silently deleted all week entries

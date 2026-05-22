@@ -44,8 +44,8 @@ public class TimeEntryService
         if (weekData.IsSubmitted)
             throw new WeekAlreadySubmittedException();
 
-        var contracts = (await _repository.GetPickerDataAsync(userId, weekStart, cancellationToken)).Contracts;
-        var validation = WeekValidator.Validate(request.Cells, weekStart, userId, contracts);
+        var rawData = await _repository.GetPickerDataAsync(userId, weekStart, cancellationToken);
+        var validation = WeekValidator.Validate(request.Cells, weekStart, userId, rawData.Contracts, rawData.LeaveTypes);
         if (!validation.IsValid)
             throw new InvalidTimeEntryRequestException(validation.ErrorMessage!);
 
@@ -62,12 +62,12 @@ public class TimeEntryService
             throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
 
         var rawData = await _repository.GetPickerDataAsync(userId, weekStart, cancellationToken);
-        return WeekScheduler.BuildPickerOptions(userId, weekStart, rawData.Contracts, rawData.LeaveTypes, rawData.AlreadyOnGrid);
+        return WeekScheduler.BuildPickerOptions(userId, weekStart, rawData.Contracts, rawData.LeaveTypes, rawData.AlreadyOnGridTaskIds, rawData.AlreadyOnGridLeaveTypeIds);
     }
 
     private static IReadOnlyList<WeekRowResponse> BuildWeekRows(IReadOnlyList<TimeEntry> entries, DateOnly weekStart)
     {
-        return entries
+        var taskRows = entries
             .Where(entry => entry.ContractTaskId.HasValue && entry.ContractTask is not null)
             .GroupBy(entry => entry.ContractTaskId!.Value)
             .Select(group =>
@@ -87,8 +87,35 @@ public class TimeEntryService
                     CustomerName: contract.Customer.Name,
                     ContractSubject: contract.Subject,
                     TaskName: task.Name,
+                    LeaveTypeId: null,
+                    LeaveTypeName: null,
                     Hours: hours);
-            })
-            .ToList();
+            });
+
+        var leaveRows = entries
+            .Where(entry => entry.LeaveTypeId.HasValue && entry.LeaveType is not null)
+            .GroupBy(entry => entry.LeaveTypeId!.Value)
+            .Select(group =>
+            {
+                var firstEntry = group.First();
+                var leaveType = firstEntry.LeaveType!;
+                var hours = new decimal?[7];
+                foreach (var entry in group)
+                {
+                    var dayIndex = entry.Date.DayNumber - weekStart.DayNumber;
+                    if (dayIndex >= 0 && dayIndex < 7)
+                        hours[dayIndex] = entry.Hours;
+                }
+                return new WeekRowResponse(
+                    ContractTaskId: null,
+                    CustomerName: null,
+                    ContractSubject: null,
+                    TaskName: null,
+                    LeaveTypeId: leaveType.Id,
+                    LeaveTypeName: leaveType.Name,
+                    Hours: hours);
+            });
+
+        return taskRows.Concat(leaveRows).ToList();
     }
 }

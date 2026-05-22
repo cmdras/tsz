@@ -1314,10 +1314,13 @@ export interface components {
     };
     WeekRowResponse: {
       /** Format: uuid */
-      contractTaskId: string;
-      customerName: string;
-      contractSubject: string;
-      taskName: string;
+      contractTaskId: null | string;
+      customerName: null | string;
+      contractSubject: null | string;
+      taskName: null | string;
+      /** Format: uuid */
+      leaveTypeId: null | string;
+      leaveTypeName: null | string;
       hours: (null | number)[];
     };
   };

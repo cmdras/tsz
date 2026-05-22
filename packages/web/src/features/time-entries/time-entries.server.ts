@@ -6,6 +6,7 @@ export type WeekRowResponse = components['schemas']['WeekRowResponse'];
 export type WeekCell = components['schemas']['WeekCell'];
 export type PickerOptions = components['schemas']['PickerOptions'];
 export type PickerTaskOption = components['schemas']['PickerTaskOption'];
+export type PickerLeaveTypeOption = components['schemas']['PickerLeaveTypeOption'];
 
 export const getWeek = async (weekStart: string): Promise<WeekResponse> => {
   const response = await client.GET('/api/time-entries/weeks/{weekStart}', {

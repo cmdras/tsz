@@ -16,4 +16,5 @@ public record WeekData(bool IsSubmitted, DateTime? SubmittedAt, DateTime? LastSa
 public record PickerRawData(
     IReadOnlyList<Contract> Contracts,
     IReadOnlyList<LeaveType> LeaveTypes,
-    IReadOnlyList<Guid> AlreadyOnGrid);
+    IReadOnlyList<Guid> AlreadyOnGridTaskIds,
+    IReadOnlyList<Guid> AlreadyOnGridLeaveTypeIds);

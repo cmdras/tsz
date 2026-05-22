@@ -6,6 +6,7 @@ interface HourCellProps {
   value: number | null;
   dailyOtherTotal: number;
   isWeekend: boolean;
+  isLeave?: boolean;
   onCommit: (value: number | null) => void;
   onFocusNext?: () => void;
   onFocusPrev?: () => void;
@@ -16,7 +17,7 @@ export interface HourCellHandle {
 }
 
 export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourCell(
-  { value, dailyOtherTotal, isWeekend, onCommit, onFocusNext, onFocusPrev },
+  { value, dailyOtherTotal, isWeekend, isLeave = false, onCommit, onFocusNext, onFocusPrev },
   ref,
 ) {
   const [rawInput, setRawInput] = useState('');
@@ -134,7 +135,10 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
         <button
           type="button"
           onClick={triggerFocus}
-          className="flex h-8 w-full items-center justify-center rounded text-sm font-bold text-primary hover:bg-accent"
+          className={cn(
+            'flex h-8 w-full items-center justify-center rounded text-sm font-bold hover:bg-accent',
+            isLeave ? 'text-amber-500' : 'text-primary',
+          )}
         >
           {value}h
         </button>

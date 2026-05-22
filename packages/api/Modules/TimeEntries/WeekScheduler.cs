@@ -10,10 +10,12 @@ public static class WeekScheduler
         DateOnly weekStart,
         IEnumerable<Contract> contracts,
         IEnumerable<LeaveType> leaveTypes,
-        IEnumerable<Guid> alreadyOnGrid)
+        IEnumerable<Guid> alreadyOnGridTaskIds,
+        IEnumerable<Guid> alreadyOnGridLeaveTypeIds)
     {
         var weekEnd = weekStart.AddDays(6);
-        var alreadyOnGridSet = alreadyOnGrid.ToHashSet();
+        var alreadyOnGridTaskSet = alreadyOnGridTaskIds.ToHashSet();
+        var alreadyOnGridLeaveTypeSet = alreadyOnGridLeaveTypeIds.ToHashSet();
 
         var availableTasks = contracts
             .Where(contract =>
@@ -22,7 +24,7 @@ public static class WeekScheduler
                 && contract.StartDate <= weekEnd
                 && (contract.EndDate == null || contract.EndDate >= weekStart))
             .SelectMany(contract => contract.Tasks
-                .Where(task => !task.IsArchived && !alreadyOnGridSet.Contains(task.Id))
+                .Where(task => !task.IsArchived && !alreadyOnGridTaskSet.Contains(task.Id))
                 .Select(task => new PickerTaskOption(
                     ContractTaskId: task.Id,
                     CustomerName: contract.Customer.Name,
@@ -31,6 +33,7 @@ public static class WeekScheduler
             .ToList();
 
         var availableLeaveTypes = leaveTypes
+            .Where(leaveType => !leaveType.IsArchived && !alreadyOnGridLeaveTypeSet.Contains(leaveType.Id))
             .Select(leaveType => new PickerLeaveTypeOption(leaveType.Id, leaveType.Name))
             .ToList();
 

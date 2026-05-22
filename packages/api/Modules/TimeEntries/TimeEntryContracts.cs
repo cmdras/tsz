@@ -5,10 +5,12 @@ public record WeekChipResponse(string Label, decimal Hours);
 public record WeekPreviousSummaryResponse(IReadOnlyList<WeekChipResponse> Chips, string? Overflow);
 
 public record WeekRowResponse(
-    Guid ContractTaskId,
-    string CustomerName,
-    string ContractSubject,
-    string TaskName,
+    Guid? ContractTaskId,
+    string? CustomerName,
+    string? ContractSubject,
+    string? TaskName,
+    Guid? LeaveTypeId,
+    string? LeaveTypeName,
     IReadOnlyList<decimal?> Hours);
 
 public record WeekResponse(
