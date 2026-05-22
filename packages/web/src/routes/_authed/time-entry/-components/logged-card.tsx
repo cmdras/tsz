@@ -10,8 +10,8 @@ function roundHours(hours: number): number {
 
 function formatDelta(value: number): string {
   if (value === 0) return 'on target';
-  const sign = value > 0 ? '+' : '−';
-  return `${sign}${Math.abs(value)}h`;
+  if (value < 0) return `${Math.abs(value)}h to target`;
+  return `+${value}h over target`;
 }
 
 interface LoggedCardProps {
@@ -26,16 +26,15 @@ export function LoggedCard({ rows }: LoggedCardProps) {
   const progressPercent = Math.min((totalHours / TARGET_HOURS) * 100, 100);
 
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-2 py-3">
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-medium">Logged this week</span>
-          <span className="text-muted-foreground">
-            {totalHours}h / {TARGET_HOURS}h{' '}
-            <span className={delta < 0 ? 'text-destructive' : 'text-green-600'}>{formatDelta(delta)}</span>
-          </span>
+    <Card className="h-full py-4">
+      <CardContent className="flex h-full flex-col gap-3">
+        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Logged this week</span>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-4xl font-bold text-primary leading-none">{totalHours}h</span>
+          <span className="text-sm text-muted-foreground">/ {TARGET_HOURS}h</span>
         </div>
-        <Progress value={progressPercent} className="h-2" />
+        <Progress value={progressPercent} className="h-1.5" />
+        <span className={`text-xs ${delta < 0 ? 'text-muted-foreground' : 'text-primary'}`}>{formatDelta(delta)}</span>
       </CardContent>
     </Card>
   );

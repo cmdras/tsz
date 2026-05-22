@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-23
+
+- style(time-entries): Logged, Last week, and Status summary cards now sit side-by-side above the grid with refreshed styling — large hours display, chips with primary-color dots, and a corner-bracketed status card
+
 ## 2026-05-22
 
 - feat(time-entries): a "Logged this week" card shows total hours vs the 40h target with a progress bar and +/- indicator
