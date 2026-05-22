@@ -1,0 +1,35 @@
+packages/web/src/features/time-entries/parse-hour-input.test.ts
+  s_c9ad7cd77b71a9::t_5f3cf01e87b4ba 1-80
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_c9ad7cd77b71a9::t_44fe59dde26f28 6,9,12,108-111,114-115,117,128-145,148-159,164-165,169,171-173,182-194,201,204,211-262,264,266
+packages/web/src/routes/_authed/time-entry/-components/hour-cell.tsx
+  s_c9ad7cd77b71a9::t_768901ad181b50 46-48
+  s_c9ad7cd77b71a9::t_4c1193bf36c4c2 58-61,63-64,69
+  s_c9ad7cd77b71a9::t_2ab6c475f25512 71
+  s_c9ad7cd77b71a9::t_b3bac46ddc09c0 80
+  s_c9ad7cd77b71a9::t_aac646aca939a7 1-45,49-56,62,65-68,70,72-79,81-128
+  s_c9ad7cd77b71a9::t_711099f6f69940 57
+CHANGELOG.md
+  s_c9ad7cd77b71a9::t_16a4e578bc6327 3-9
+packages/web/src/features/time-entries/parse-hour-input.ts
+  s_c9ad7cd77b71a9::t_aaa5916aa05226 5,11
+  s_c9ad7cd77b71a9::t_78028ab4ec08e0 7,9-10,12
+  s_c9ad7cd77b71a9::t_764a1ecdb16225 1-4,6,13-17
+  ai_agent 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "c344bb500b050e8a168b9d005553c9399927a901",
+  "prompts": {},
+  "sessions": {
+    "s_c9ad7cd77b71a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cc5efb22-3ac8-4c22-b0b7-70b8b5679d37",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
