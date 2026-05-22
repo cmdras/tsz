@@ -45,7 +45,7 @@ public class ContractConfiguration : IEntityTypeConfiguration<Contract>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(contract => contract.Tasks)
-            .WithOne()
+            .WithOne(task => task.Contract)
             .HasForeignKey(task => task.ContractId)
             .OnDelete(DeleteBehavior.Restrict);
     }

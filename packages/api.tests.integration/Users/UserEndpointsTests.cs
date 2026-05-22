@@ -287,10 +287,10 @@ public class UserEndpointsShould(IntegrationFactory factory) : IClassFixture<Int
             await SeedUserAsync($"User {index:D2}", $"user{index:D2}@test.com");
 
         var page1 = await factory.Client.GetFromJsonAsync<PagedUsers>(
-            "/api/users?sort=Name&sortDirection=Asc&page=1&pageSize=2",
+            "/api/users?search=User+0&sort=Name&sortDirection=Asc&page=1&pageSize=2",
             IntegrationFactory.JsonOptions);
         var page2 = await factory.Client.GetFromJsonAsync<PagedUsers>(
-            "/api/users?sort=Name&sortDirection=Asc&page=2&pageSize=2",
+            "/api/users?search=User+0&sort=Name&sortDirection=Asc&page=2&pageSize=2",
             IntegrationFactory.JsonOptions);
 
         Assert.Equal(4, page1!.Total);

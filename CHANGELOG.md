@@ -2,6 +2,13 @@
 
 ## 2026-05-22
 
+- fix(time-entries): "Save draft" no longer sends an empty payload when the grid ref is unexpectedly null, which would have silently deleted all week entries
+- fix(tests): all 96 integration tests now pass — JIT user provisioning no longer creates a ghost user mid-test, breaking user list count assertions
+- feat(time-entries): time entries are now persisted — clicking "Save draft" on the week grid writes changes to the server and the data survives a page reload
+- feat(time-entries): the page title changes to "logged." once at least one task row is saved
+- feat(time-entries): navigating away with unsaved changes now triggers a confirmation dialog (both in-app navigation and browser close/reload)
+- fix(time-entries): "Save draft" button correctly reappears after editing a previously saved week
+- fix(time-entries): dirty indicator is cleared when navigating to a different week
 - feat(time-entries): week grid cells are now editable — click any weekday cell to type hours (supports `d`=8h, `h`=4h, Del/Backspace=clear hotkeys and comma-as-decimal-separator)
 - feat(time-entries): daily column totals and per-row weekly totals update live as you type
 - feat(time-entries): today's column header always shows a TODAY badge in primary color

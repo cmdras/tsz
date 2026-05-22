@@ -27,6 +27,18 @@ public static class TimeEntryEndpoints
             var userId = GetUserIdFromClaims(httpContext);
             return TypedResults.Ok(await service.GetPickerOptionsAsync(userId, weekStart, cancellationToken));
         });
+
+        group.MapPut("/weeks/{weekStart}", async (
+            DateOnly weekStart,
+            UpdateWeekRequest request,
+            HttpContext httpContext,
+            TimeEntryService service,
+            CancellationToken cancellationToken) =>
+        {
+            var userId = GetUserIdFromClaims(httpContext);
+            return TypedResults.Ok(await service.UpdateWeekAsync(userId, weekStart, request, cancellationToken));
+        })
+            .ProducesProblem(StatusCodes.Status409Conflict);
     }
 
     private static Guid GetUserIdFromClaims(HttpContext httpContext)

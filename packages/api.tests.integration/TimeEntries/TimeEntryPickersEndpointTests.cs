@@ -76,7 +76,7 @@ public class TimeEntryPickersEndpointShould(IntegrationFactory factory) : IClass
     public async Task Return_Task_For_Active_Contract_Belonging_To_Current_User()
     {
         await SeedContractAsync(
-            consultantId: Guid.Empty,
+            consultantId: TestAuthHandler.CurrentUserId,
             customerName: "Acme",
             subject: "Cloud Migration",
             startDate: new DateOnly(2026, 1, 1));

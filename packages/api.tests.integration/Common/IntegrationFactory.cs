@@ -1,6 +1,9 @@
 using Api.Common.Database;
+using Api.Modules.Contracts;
+using Api.Modules.Customers;
 using Api.Modules.LeaveTypes;
 using Api.Modules.UserLeaveAllowances;
+using Api.Modules.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -73,6 +76,40 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
         context.Customers.RemoveRange(context.Customers);
         context.LeaveTypes.RemoveRange(context.LeaveTypes);
         await context.SaveChangesAsync();
+
+        context.Users.Add(new User
+        {
+            Id = TestAuthHandler.CurrentUserId,
+            Name = "System Test User",
+            Email = "system-test@test.com",
+            Role = UserRole.User,
+            IsArchived = false,
+        });
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<(User User, Guid ContractTaskId)> SeedUserWithContractTaskAsync(DateOnly weekStart)
+    {
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var user = context.Users.Find(TestAuthHandler.CurrentUserId)!;
+
+        var customer = new Customer { Id = Guid.NewGuid(), Number = 1, Name = "Test Customer" };
+        context.Customers.Add(customer);
+
+        var contract = new Contract
+        {
+            Id = Guid.NewGuid(), Number = 1, CustomerId = customer.Id, ConsultantId = user.Id,
+            Subject = "Test Contract", StartDate = weekStart,
+        };
+        context.Contracts.Add(contract);
+
+        var task = new ContractTask { Id = Guid.NewGuid(), ContractId = contract.Id, Name = "Test Task" };
+        context.ContractTasks.Add(task);
+
+        await context.SaveChangesAsync();
+        return (user, task.Id);
     }
 
     public async Task<LeaveType> SeedLeaveTypeAsync(string name, decimal defaultDays = 20m, AllowanceMode defaultMode = AllowanceMode.Limited)

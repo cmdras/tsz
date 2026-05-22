@@ -1,9 +1,12 @@
+using Api.Common;
+
 namespace Api.Modules.TimeEntries;
 
 public static class TimeEntriesModule
 {
     public static IServiceCollection AddTimeEntriesModule(this IServiceCollection services)
     {
+        services.AddSingleton<IClock, SystemClock>();
         services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
         services.AddScoped<TimeEntryService>();
         return services;
