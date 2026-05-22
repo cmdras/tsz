@@ -1,0 +1,74 @@
+packages/web/src/routes/_authed/admin/customers/index.tsx
+  s_d11ed1e2f9feac::t_70c7932bc4410f 8
+  s_d11ed1e2f9feac::t_b564eb66d3ee23 3
+packages/web/src/features/leave-types/leave-types.functions.ts
+  s_d11ed1e2f9feac::t_74d3f8d9e336a6 15
+  s_d11ed1e2f9feac::t_fe531f2d809512 12
+packages/web/src/features/users/users.server.ts
+  s_d11ed1e2f9feac::t_0132ecea496c63 11
+packages/web/.fallowrc.json
+  s_d11ed1e2f9feac::t_3ac690f0008bda 3
+  s_d11ed1e2f9feac::t_abbddee8d111ee 12-15
+packages/web/src/features/users/users.schemas.ts
+  s_d11ed1e2f9feac::t_50a88881d78423 13
+  s_d11ed1e2f9feac::t_8ab64d15aa3e09 31,35
+packages/web/src/features/users/users.functions.ts
+  s_d11ed1e2f9feac::t_eb5271c21e4c7d 9
+  s_d11ed1e2f9feac::t_f0f1e958dc6373 6
+packages/web/src/features/customers/customers.functions.ts
+  s_d11ed1e2f9feac::t_5f4c348e2b409c 12
+  s_d11ed1e2f9feac::t_ccb4e9e0b63544 15
+packages/web/src/routes/_authed/admin/customers/$id.tsx
+  s_d11ed1e2f9feac::t_9c4cbc264327c7 7
+  s_d11ed1e2f9feac::t_952592ddd74708 3
+packages/web/src/features/contracts/contracts.server.ts
+  s_d11ed1e2f9feac::t_b297877de5c656 10
+packages/web/src/routes/_authed/admin/leave-types/index.tsx
+  s_d11ed1e2f9feac::t_959a40a3e5e7be 3,8
+CHANGELOG.md
+  s_d11ed1e2f9feac::t_bcb68144ffd9bd 5-6
+packages/web/src/routes/_authed/admin/users/index.tsx
+  s_d11ed1e2f9feac::t_959a40a3e5e7be 3,8
+packages/web/src/features/leave-types/leave-types.schemas.ts
+  s_d11ed1e2f9feac::t_be909e71b74897 36,43
+packages/web/src/routes/_authed/admin/leave-types/$id.tsx
+  s_d11ed1e2f9feac::t_959a40a3e5e7be 3,7
+packages/web/src/routes/_authed/admin/contracts/$id.tsx
+  s_d11ed1e2f9feac::t_d2b0551384f254 3
+  s_d11ed1e2f9feac::t_644fcb9e5c4869 7
+packages/web/src/lib/auth.server.ts
+  s_d11ed1e2f9feac::t_8eec4413c3d20a 51
+packages/web/src/routes/_authed/admin/users/$id.tsx
+  s_d11ed1e2f9feac::t_959a40a3e5e7be 3,7
+packages/web/src/features/contracts/contracts.schemas.ts
+  s_d11ed1e2f9feac::t_8129eee06b4411 29,35
+  s_d11ed1e2f9feac::t_5d5d98c8effce1 3
+packages/web/src/features/contracts/contracts.functions.ts
+  s_d11ed1e2f9feac::t_c9933a6dc4a918 14
+  s_d11ed1e2f9feac::t_47aa8985fca130 32
+packages/web/src/features/customers/customers.server.ts
+  s_d11ed1e2f9feac::t_2190896d5cdb05 8
+packages/web/src/features/customers/customers.schemas.ts
+  s_d11ed1e2f9feac::t_d58cf6aac46439 25,31
+packages/web/src/routes/_authed/admin/contracts/index.tsx
+  s_d11ed1e2f9feac::t_a0dbdc4a81c4ff 3
+  s_d11ed1e2f9feac::t_ec1179042e6fba 8
+packages/web/src/features/leave-types/leave-types.server.ts
+  s_d11ed1e2f9feac::t_5e36163ba4ab00 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "7d2519877161063710e5d813797adfcfcf171fac",
+  "prompts": {},
+  "sessions": {
+    "s_d11ed1e2f9feac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3422d965-d1a3-49d5-af9b-75504a4f9ff0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
