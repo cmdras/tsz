@@ -1,0 +1,26 @@
+packages/web/src/routes/_authed/time-entry/-components/week-grid-pickers.tsx
+  s_3ae154daa7aa6e::t_22ee8af8061b13 1-102
+packages/web/src/routes/_authed/time-entry/-components/week-grid-rows.tsx
+  s_3ae154daa7aa6e::t_111ff07be7ffa8 1-50
+packages/web/src/routes/_authed/time-entry/-components/week-grid-model.ts
+  s_3ae154daa7aa6e::t_d0c2b98ef37ae9 1-67
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  ai_agent 6,68,72
+  s_3ae154daa7aa6e::t_f418d00057194e 3-4,7-11,28,60,138,155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "bd309f44a0af6f418f10ca802919030c25b63bb7",
+  "prompts": {},
+  "sessions": {
+    "s_3ae154daa7aa6e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6261cbe2-dfc2-4308-b4e3-7e7449defe23",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
