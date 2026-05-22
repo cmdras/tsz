@@ -1,0 +1,16 @@
+AGENTS.md
+  h_f5e73ed3339dc5 8
+.claude/skills/app-do-work-tdd/SKILL.md
+  h_f5e73ed3339dc5 52,65,67-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "0ee1365a0379051ca97e18d450d33ddfa8fd526b",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
