@@ -2,6 +2,7 @@
 
 ## 2026-05-22
 
+- fix(tests): all 96 integration tests now pass — JIT user provisioning no longer creates a ghost user mid-test, breaking user list count assertions
 - feat(time-entries): time entries are now persisted — clicking "Save draft" on the week grid writes changes to the server and the data survives a page reload
 - feat(time-entries): the page title changes to "logged." once at least one task row is saved
 - feat(time-entries): navigating away with unsaved changes now triggers a confirmation dialog (both in-app navigation and browser close/reload)

@@ -76,6 +76,16 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
         context.Customers.RemoveRange(context.Customers);
         context.LeaveTypes.RemoveRange(context.LeaveTypes);
         await context.SaveChangesAsync();
+
+        context.Users.Add(new User
+        {
+            Id = TestAuthHandler.CurrentUserId,
+            Name = "System Test User",
+            Email = "system-test@test.com",
+            Role = UserRole.User,
+            IsArchived = false,
+        });
+        await context.SaveChangesAsync();
     }
 
     public async Task<(User User, Guid ContractTaskId)> SeedUserWithContractTaskAsync(DateOnly weekStart)
@@ -83,14 +93,7 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        var user = new User
-        {
-            Id = TestAuthHandler.CurrentUserId,
-            Name = "Test User",
-            Email = "test@example.com",
-            Role = UserRole.User,
-        };
-        context.Users.Add(user);
+        var user = context.Users.Find(TestAuthHandler.CurrentUserId)!;
 
         var customer = new Customer { Id = Guid.NewGuid(), Number = 1, Name = "Test Customer" };
         context.Customers.Add(customer);

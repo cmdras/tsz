@@ -293,7 +293,7 @@ public class UserEndpointsShould(IntegrationFactory factory) : IClassFixture<Int
             "/api/users?sort=Name&sortDirection=Asc&page=2&pageSize=2",
             IntegrationFactory.JsonOptions);
 
-        Assert.Equal(4, page1!.Total);
+        Assert.Equal(5, page1!.Total);
         Assert.Equal(2, page1.Items.Count);
         Assert.Equal(2, page2!.Items.Count);
         Assert.True(string.Compare(page1.Items[0].Name, page1.Items[1].Name, StringComparison.Ordinal) < 0);
