@@ -50,7 +50,8 @@ function TimeEntryPage() {
   const hasRows = weekData.rows.length > 0;
 
   async function handleSaveDraft() {
-    const cells = gridRef.current?.getCells() ?? [];
+    if (!gridRef.current) return;
+    const cells = gridRef.current.getCells();
     setIsSaving(true);
     try {
       await saveDraft({ data: { week: weekData.weekStart, cells } });
