@@ -1,0 +1,50 @@
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_eeafdf35a7417b::t_fdd954f9ce0500 4-15,17-18,39-58,64,85,104-109,111-125,130,133-134,138-160,165-166,173
+  s_eeafdf35a7417b::t_a41b015fdab308 110
+packages/api.tests.integration/TimeEntries/TimeEntrySubmitEndpointTests.cs
+  s_eeafdf35a7417b::t_a59a237e6c257c 1-104
+packages/web/src/routes/_authed/time-entry/-components/week-grid-model.ts
+  s_eeafdf35a7417b::t_224b1b623793ca 30
+packages/api.tests/TimeEntries/WeekSubmitRepositoryTests.cs
+  s_eeafdf35a7417b::t_41c240da243c88 1-38,40,42-105,107-114
+  s_eeafdf35a7417b::t_30d7fdcdc8ef77 39,41
+  s_eeafdf35a7417b::t_4139ebf8ba9d89 106
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_eeafdf35a7417b::t_31921c912f4756 12
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_eeafdf35a7417b::t_0f06c4f67f3db7 32-39
+packages/web/src/api/schema.ts
+  s_eeafdf35a7417b::t_5431dd69e1d8ea 1070-1119
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_eeafdf35a7417b::t_1f608495e04bd0 240-252
+  s_eeafdf35a7417b::t_f2db64ffd799c0 306-311
+  s_eeafdf35a7417b::t_1ea5deacd21342 29
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_eeafdf35a7417b::t_dc4e6100367522 59-79
+packages/api/Modules/TimeEntries/TimeEntryEndpoints.cs
+  s_eeafdf35a7417b::t_c164376dea177e 42-53
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_eeafdf35a7417b::t_8a08fb03e16571 3
+  s_eeafdf35a7417b::t_5e350aeeb97982 18-24,29,35-44
+CHANGELOG.md
+  s_eeafdf35a7417b::t_3f8c105b26d579 5-10
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_eeafdf35a7417b::t_b64ca9fe6d0091 84-106,112-154
+  s_eeafdf35a7417b::t_63f822380117e7 107-111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "ea3fda67e8e72708ff075781e30c683e8feec344",
+  "prompts": {},
+  "sessions": {
+    "s_eeafdf35a7417b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "55edd25f-d22e-4902-aefb-1d48d6639e41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
