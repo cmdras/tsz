@@ -4,13 +4,28 @@ public record WeekChipResponse(string Label, decimal Hours);
 
 public record WeekPreviousSummaryResponse(IReadOnlyList<WeekChipResponse> Chips, string? Overflow);
 
+public record WeekRowResponse(
+    Guid ContractTaskId,
+    string CustomerName,
+    string ContractSubject,
+    string TaskName,
+    IReadOnlyList<decimal?> Hours);
+
 public record WeekResponse(
     DateOnly WeekStart,
     bool IsSubmitted,
     DateTime? SubmittedAt,
     DateTime? LastSavedAt,
-    IReadOnlyList<object> Rows,
+    IReadOnlyList<WeekRowResponse> Rows,
     WeekPreviousSummaryResponse PreviousWeekSummary);
+
+public record WeekCell(
+    Guid? ContractTaskId,
+    Guid? LeaveTypeId,
+    DateOnly Date,
+    decimal Hours);
+
+public record UpdateWeekRequest(IReadOnlyList<WeekCell> Cells);
 
 public record PickerTaskOption(Guid ContractTaskId, string CustomerName, string ContractSubject, string TaskName);
 

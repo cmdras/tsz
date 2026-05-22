@@ -11,9 +11,12 @@ internal sealed class TestAuthHandler(
     ILoggerFactory logger,
     UrlEncoder encoder) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
+    public static Guid CurrentUserId { get; set; } = Guid.NewGuid();
+
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var identity = new ClaimsIdentity("Test");
+        identity.AddClaim(new Claim("oid", CurrentUserId.ToString()));
         var principal = new ClaimsPrincipal(identity);
         return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(principal, "Test")));
     }

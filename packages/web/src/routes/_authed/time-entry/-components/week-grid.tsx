@@ -1,11 +1,16 @@
-import { createRef, useEffect, useRef, useState } from 'react';
+import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { PlusIcon, XIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '#/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '#/components/ui/popover';
 import { addDays, fromIsoDateString, toIsoDateString, DAYS_OF_WEEK } from '#/lib/date-utils';
 import { cn, getAvatarColor } from '#/lib/utils';
-import type { PickerOptions, PickerTaskOption } from '#/features/time-entries/time-entries.server';
+import type {
+  PickerOptions,
+  PickerTaskOption,
+  WeekCell,
+  WeekRowResponse,
+} from '#/features/time-entries/time-entries.server';
 import { HourCell, type HourCellHandle } from './hour-cell';
 
 const WEEKEND_INDICES = new Set([5, 6]);
@@ -18,9 +23,29 @@ interface GridRow {
   taskName: string;
 }
 
+export interface WeekGridHandle {
+  getCells: () => WeekCell[];
+  resetDirty: () => void;
+}
+
 interface WeekGridProps {
   weekStart: string;
+  savedRows: WeekRowResponse[];
   pickerOptions: PickerOptions;
+  onDirtyChange: (dirty: boolean) => void;
+}
+
+function rowsFromSaved(savedRows: WeekRowResponse[]): GridRow[] {
+  return savedRows.map((row) => ({
+    contractTaskId: row.contractTaskId,
+    customerName: row.customerName,
+    contractSubject: row.contractSubject,
+    taskName: row.taskName,
+  }));
+}
+
+function hoursFromSaved(savedRows: WeekRowResponse[]): Record<string, (number | null)[]> {
+  return Object.fromEntries(savedRows.map((row) => [row.contractTaskId, row.hours as (number | null)[]]));
 }
 
 function TaskPickerPopover({
@@ -110,7 +135,6 @@ function formatTotal(total: number): string {
 }
 
 function getNextWeekdayIndex(dayIndex: number): number | null {
-  // Weekday indices are 0–4 (Mon–Fri); 5–6 are weekend
   return dayIndex < 4 ? dayIndex + 1 : null;
 }
 
@@ -118,20 +142,47 @@ function getPrevWeekdayIndex(dayIndex: number): number | null {
   return dayIndex > 0 ? dayIndex - 1 : null;
 }
 
-export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
+export const WeekGrid = forwardRef<WeekGridHandle, WeekGridProps>(function WeekGrid(
+  { weekStart, savedRows, pickerOptions, onDirtyChange },
+  ref,
+) {
   const monday = fromIsoDateString(weekStart);
   const todayIso = toIsoDateString(new Date());
 
-  const [rows, setRows] = useState<GridRow[]>([]);
-  const [hours, setHours] = useState<Record<string, (number | null)[]>>({});
+  const [rows, setRows] = useState<GridRow[]>(() => rowsFromSaved(savedRows));
+  const [hours, setHours] = useState<Record<string, (number | null)[]>>(() => hoursFromSaved(savedRows));
   const [pendingFocusId, setPendingFocusId] = useState<string | null>(null);
   const cellRefsMap = useRef(new Map<string, React.RefObject<HourCellHandle | null>[]>());
+  const isDirtyRef = useRef(false);
 
   useEffect(() => {
     if (pendingFocusId === null) return;
     cellRefsMap.current.get(pendingFocusId)?.[0]?.current?.triggerFocus();
     setPendingFocusId(null);
   }, [pendingFocusId]);
+
+  useImperativeHandle(ref, () => ({
+    resetDirty() {
+      isDirtyRef.current = false;
+    },
+    getCells(): WeekCell[] {
+      return rows.flatMap((row) => {
+        const rowHours = hours[row.contractTaskId] ?? Array(DAYS_COUNT).fill(null);
+        return rowHours.flatMap((hourValue, dayIndex) => {
+          if (hourValue === null || hourValue <= 0) return [];
+          const date = addDays(monday, dayIndex);
+          return [
+            {
+              contractTaskId: row.contractTaskId,
+              leaveTypeId: null,
+              date: toIsoDateString(date),
+              hours: hourValue,
+            } satisfies WeekCell,
+          ];
+        });
+      });
+    },
+  }));
 
   const pickedIds = new Set(rows.map((row) => row.contractTaskId));
   const availableTasks = pickerOptions.availableTasks.filter((task) => !pickedIds.has(task.contractTaskId));
@@ -160,6 +211,13 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
     return getRowHours(contractTaskId).reduce((sum, hour) => sum + (hour ?? 0), 0);
   }
 
+  function markDirty() {
+    if (!isDirtyRef.current) {
+      isDirtyRef.current = true;
+      onDirtyChange(true);
+    }
+  }
+
   function handlePick(task: PickerTaskOption) {
     setRows((previousRows) => [...previousRows, task]);
     setHours((previousHours) => ({
@@ -171,6 +229,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       Array.from({ length: DAYS_COUNT }, () => createRef<HourCellHandle | null>()),
     );
     setPendingFocusId(task.contractTaskId);
+    markDirty();
   }
 
   function handleHourCommit(contractTaskId: string, dayIndex: number, value: number | null) {
@@ -179,6 +238,7 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       const updated = rowHours.map((existingHour, index) => (index === dayIndex ? value : existingHour));
       return { ...previousHours, [contractTaskId]: updated };
     });
+    markDirty();
   }
 
   return (
@@ -295,4 +355,4 @@ export function WeekGrid({ weekStart, pickerOptions }: WeekGridProps) {
       </div>
     </div>
   );
-}
+});

@@ -988,7 +988,41 @@ export interface paths {
         };
       };
     };
-    put?: never;
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          weekStart: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['UpdateWeekRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['WeekResponse'];
+          };
+        };
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/problem+json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
     post?: never;
     delete?: never;
     options?: never;
@@ -1193,6 +1227,9 @@ export interface components {
     };
     /** @enum {unknown} */
     SortDirection: 'Asc' | 'Desc' | null;
+    UpdateWeekRequest: {
+      cells: components['schemas']['WeekCell'][];
+    };
     User: {
       /** Format: uuid */
       id: string;
@@ -1245,6 +1282,16 @@ export interface components {
     UserRole: 'Admin' | 'User' | 'ClientManager';
     /** @enum {unknown} */
     UserSort: 'Name' | 'Email' | 'Role' | null;
+    WeekCell: {
+      /** Format: uuid */
+      contractTaskId: null | string;
+      /** Format: uuid */
+      leaveTypeId: null | string;
+      /** Format: date */
+      date: string;
+      /** Format: double */
+      hours: number;
+    };
     WeekChipResponse: {
       label: string;
       /** Format: double */
@@ -1262,8 +1309,16 @@ export interface components {
       submittedAt: null | string;
       /** Format: date-time */
       lastSavedAt: null | string;
-      rows: unknown[];
+      rows: components['schemas']['WeekRowResponse'][];
       previousWeekSummary: components['schemas']['WeekPreviousSummaryResponse'];
+    };
+    WeekRowResponse: {
+      /** Format: uuid */
+      contractTaskId: string;
+      customerName: string;
+      contractSubject: string;
+      taskName: string;
+      hours: (null | number)[];
     };
   };
   responses: never;
