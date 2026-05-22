@@ -1,0 +1,26 @@
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_0b2c890e04ded3::t_203df1fdefc8cd 234-238
+  s_0b2c890e04ded3::t_7c99080039e943 50-71
+packages/web/src/routes/_authed/time-entry/-components/last-week-card.tsx
+  s_0b2c890e04ded3::t_9dacabae121d8e 1,17-27,32-33
+CHANGELOG.md
+  s_0b2c890e04ded3::t_207293318182d0 3-6
+packages/web/src/routes/_authed/time-entry/-components/logged-card.tsx
+  s_0b2c890e04ded3::t_19f6d92c8b84e9 13-14,29-34,36-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "9274e942c73e07aa6af5ff053c1ae21330f2a08b",
+  "prompts": {},
+  "sessions": {
+    "s_0b2c890e04ded3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e33a49c5-ab38-47c3-88e4-0702a47e867f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
