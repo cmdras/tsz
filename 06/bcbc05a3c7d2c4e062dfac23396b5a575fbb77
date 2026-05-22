@@ -1,0 +1,25 @@
+docs/agents/typescript-conventions.md
+  s_eeafdf35a7417b::t_9ad91df353f3cf 8
+docs/agents/c-sharp-conventions.md
+  s_eeafdf35a7417b::t_097e5d088dfd59 8
+AGENTS.md
+  s_eeafdf35a7417b::t_6917cefa104300 9-10
+packages/api.tests/CLAUDE.md
+  s_eeafdf35a7417b::t_18b22791f848a9 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "06bcbc05a3c7d2c4e062dfac23396b5a575fbb77",
+  "prompts": {},
+  "sessions": {
+    "s_eeafdf35a7417b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "55edd25f-d22e-4902-aefb-1d48d6639e41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
