@@ -1,0 +1,158 @@
+packages/web/src/features/customers/customers.functions.ts
+  s_df720816c1888e::t_d01df2a66d6312 19
+  s_354d39898e5f92::t_9d1eecf2eafc76 12-13
+packages/web/src/routes/_authed/admin/contracts/index.tsx
+  s_354d39898e5f92::t_c70902d8e1d552 12,21,24
+packages/web/src/features/contracts/contracts.functions.ts
+  s_354d39898e5f92::t_5a663cc46f5ece 35
+  s_df720816c1888e::t_20f762a0fad60f 36
+  s_354d39898e5f92::t_f5d2b147d33c9a 15
+packages/web/src/routes/_authed/admin/contracts/$id.tsx
+  s_354d39898e5f92::t_6a0ea367c56ea4 11,21,24
+packages/web/src/features/users/users.schemas.ts
+  s_354d39898e5f92::t_f285c56c01d1e9 31-32,35
+packages/web/src/routes/_authed/admin/users/-components/users-page-layout.tsx
+  s_354d39898e5f92::t_cf54cb1668c56f 6,13,17,26
+packages/web/src/routes/_authed/admin/users/$id.tsx
+  s_354d39898e5f92::t_a19f89767dccea 8-9
+  s_354d39898e5f92::t_c418a01e488b2b 17,20
+packages/web/src/features/users/users.server.ts
+  s_354d39898e5f92::t_4f62f933329575 14,21
+  s_354d39898e5f92::t_0720cfb34c2715 13
+packages/web/src/features/customers/customers.server.ts
+  s_354d39898e5f92::t_8a1df1bcc02a99 9
+packages/api/Modules/LeaveTypes/LeaveTypeEndpoints.cs
+  s_354d39898e5f92::t_6a0fcb75f71a57 20,32
+packages/web/src/features/leave-types/leave-types.server.ts
+  s_354d39898e5f92::t_156b7caf9f394d 10
+  s_354d39898e5f92::t_0e466a98d6378b 11,18
+packages/api/Modules/LeaveTypes/ILeaveTypeRepository.cs
+  s_354d39898e5f92::t_8738a65f8b0ce7 13
+packages/web/src/routes/_authed/admin/users/index.tsx
+  s_354d39898e5f92::t_44a1f484b0faae 9-10
+  s_354d39898e5f92::t_8f24e728133905 17,20
+packages/api.tests/Contracts/ContractRepositoryTests.cs
+  s_354d39898e5f92::t_230b1b82242d81 117
+  s_354d39898e5f92::t_f6e69964c84afd 132
+  s_354d39898e5f92::t_ad5f9d0d4657df 195
+  s_354d39898e5f92::t_1ca456d8c04fe9 102
+  s_354d39898e5f92::t_c6bc09e30fe27c 148
+  s_354d39898e5f92::t_46fbf4bf3996c4 180
+  s_354d39898e5f92::t_b2b54595c8b826 164
+packages/web/src/features/customers/customers.schemas.ts
+  s_354d39898e5f92::t_39671085d353f3 4,21
+  s_354d39898e5f92::t_2b8b17bed74c36 2
+packages/api/Common/ArchivedFilter.cs
+  s_354d39898e5f92::t_ab5fe07c3ee8b2 1-8
+packages/web/src/routes/_authed/admin/customers/-components/customers-page-layout.tsx
+  s_354d39898e5f92::t_842b3f2063c02b 13
+  s_354d39898e5f92::t_be9258695a5d80 6
+packages/web/src/routes/_authed/admin/contracts/-components/contracts-page-layout.tsx
+  s_354d39898e5f92::t_1e75c3c1fbbb61 6
+  s_354d39898e5f92::t_23aee694bf17c0 15,25,43
+packages/api/Modules/Contracts/ContractRepository.cs
+  s_354d39898e5f92::t_66267e323faa5d 23,30-35
+packages/web/src/features/users/users.functions.ts
+  s_354d39898e5f92::t_f87acca74c0138 11-12,14
+  s_354d39898e5f92::t_d7b5e1c8c3ed2d 7
+  s_df720816c1888e::t_f2322c455013db 68
+  s_df720816c1888e::t_6fa3a19dec1aa7 13
+packages/web/src/features/contracts/contracts.server.ts
+  s_354d39898e5f92::t_6458637bea6508 12
+  s_354d39898e5f92::t_211289aecd4d1d 13,20
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-list-panel.tsx
+  s_354d39898e5f92::t_d0dd0175302a89 5,9,18,36-37,54
+packages/api/Modules/LeaveTypes/LeaveTypeService.cs
+  s_354d39898e5f92::t_98d54579184dad 19,22
+packages/web/src/api/schema.ts
+  s_354d39898e5f92::t_5870dcd926cce0 289,513,728
+packages/web/src/features/leave-types/leave-types.schemas.ts
+  s_354d39898e5f92::t_7e98883813637d 3
+  s_354d39898e5f92::t_2b88c75cfd7ec8 41
+packages/api.tests/LeaveTypes/LeaveTypeRepositoryTests.cs
+  s_354d39898e5f92::t_3feb26ad88dd6b 59,85,99,113,126
+  s_354d39898e5f92::t_e5819e92d2ab90 72
+packages/web/src/routes/_authed/admin/customers/-components/customer-list-panel.tsx
+  s_354d39898e5f92::t_4c46d4f175a700 14,24-25,36
+  s_354d39898e5f92::t_ac3058804d7abc 4,8
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_73989949a1fd99::t_213058f9186f66 71
+packages/api/Modules/Contracts/ContractService.cs
+  s_354d39898e5f92::t_995f5a9173111a 22,25
+packages/web/src/lib/archive-filter.ts
+  s_354d39898e5f92::t_688ef0c17d3976 1-2,4-11
+  s_354d39898e5f92::t_e629bf49129441 3
+packages/api.tests.integration/LeaveTypes/LeaveTypeEndpointsTests.cs
+  s_df720816c1888e::t_e5a8b57d8146bc 199
+packages/web/src/routes/_authed/admin/leave-types/$id.tsx
+  s_354d39898e5f92::t_b937b7160f46ff 11,21,24
+packages/api/Modules/Contracts/IContractRepository.cs
+  s_354d39898e5f92::t_5dde17d6be6dc8 13
+packages/web/src/features/contracts/contracts.schemas.ts
+  s_354d39898e5f92::t_b84919e9245498 33
+  s_354d39898e5f92::t_8059b974ea21ab 2
+packages/api.tests.integration/Contracts/ContractEndpointsTests.cs
+  s_df720816c1888e::t_e6f15450865835 335
+packages/web/src/features/leave-types/leave-types.functions.ts
+  s_354d39898e5f92::t_e4cea8c98a552e 13
+  s_354d39898e5f92::t_113b78c2417301 18,20,27
+  s_df720816c1888e::t_c8105f9430e0bd 19
+packages/web/src/components/archive-filter-tabs.tsx
+  s_354d39898e5f92::t_d3857743f4b126 1-10,12-25
+  s_df720816c1888e::t_d08b3d020be808 11
+packages/api/Modules/Users/IUserRepository.cs
+  s_354d39898e5f92::t_72aa0a2bf318a9 15
+packages/api/Modules/LeaveTypes/LeaveTypeRepository.cs
+  s_354d39898e5f92::t_59a39ece72462e 22,25-30
+packages/api/Modules/Users/UserEndpoints.cs
+  s_354d39898e5f92::t_612c3aecae7a63 39,51
+CHANGELOG.md
+  s_df720816c1888e::t_7721e1f24b7c47 5-6
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-types-page-layout.tsx
+  s_354d39898e5f92::t_ed7a32527f6278 15,25,43
+  s_354d39898e5f92::t_4fad1fe5e453d5 6
+packages/api/Modules/Users/UserRepository.cs
+  s_354d39898e5f92::t_a75636a5f839de 35,38-43
+packages/web/src/routes/_authed/admin/leave-types/index.tsx
+  s_354d39898e5f92::t_54d97b4dd80d04 12,21,24
+packages/api/Modules/Users/UserService.cs
+  s_354d39898e5f92::t_b4bb968a211811 20,23
+packages/api/Modules/Contracts/ContractEndpoints.cs
+  s_354d39898e5f92::t_0fa7e019e2c8f8 20,32
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_354d39898e5f92::t_4cba9510fc4b3e 5,9,18,21,29-30,47
+packages/web/src/routes/_authed/admin/users/-components/user-list-panel.tsx
+  s_354d39898e5f92::t_e07e8769d9631d 4,8,15,18,25-28,31,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "6acacb8368c943e4715232912a42938200afcb1c",
+  "prompts": {},
+  "sessions": {
+    "s_354d39898e5f92": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dbf1cad4-aeae-461d-aa0e-768bd020a640",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_73989949a1fd99": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a27317cd-d787-4dfe-9b04-f0c45808e3cf",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_df720816c1888e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e978ac66-c442-421e-97bc-fc547e63b414",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
