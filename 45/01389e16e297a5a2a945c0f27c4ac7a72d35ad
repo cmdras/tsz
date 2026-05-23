@@ -1,0 +1,22 @@
+packages/api/Common/Database/QueryExtensions.cs
+  s_630e02a8b89a33::t_91c429fb878179 13-15
+packages/api.tests/Common/QueryExtensionsTests.cs
+  s_630e02a8b89a33::t_488bc462ea1b9c 40
+  s_630e02a8b89a33::t_831963f304fe0d 55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "4501389e16e297a5a2a945c0f27c4ac7a72d35ad",
+  "prompts": {},
+  "sessions": {
+    "s_630e02a8b89a33": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b22379e-0461-4a66-bbd1-d52d0b15737f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
