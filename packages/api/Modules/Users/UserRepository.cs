@@ -60,9 +60,7 @@ public class UserRepository : IUserRepository
             _ => query.OrderBy(user => user.Name),
         };
 
-        var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return (items, total);
+        return await query.ToPagedResultAsync(page, pageSize, cancellationToken);
     }
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
