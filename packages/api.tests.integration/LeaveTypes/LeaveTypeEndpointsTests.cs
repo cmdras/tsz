@@ -196,7 +196,7 @@ public class LeaveTypeEndpointsShould(IntegrationFactory factory) : IClassFixtur
         var seeded = await SeedLeaveTypeAsync("Archived Type", 0m);
         await factory.Client.PatchAsync($"/api/leave-types/{seeded.Id}/archive", null);
 
-        var response = await factory.Client.GetAsync("/api/leave-types?showArchived=true&search=Archived+Type");
+        var response = await factory.Client.GetAsync("/api/leave-types?archived=Archived&search=Archived+Type");
         var result = await response.Content.ReadFromJsonAsync<PagedLeaveTypes>(IntegrationFactory.JsonOptions);
 
         Assert.Equal(1, result!.Total);

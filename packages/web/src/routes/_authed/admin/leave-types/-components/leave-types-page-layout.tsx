@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { AdminSplitPageLayout } from '#/components/admin-split-page-layout';
 import { Button } from '#/components/ui/button';
 import type { LeaveType } from '#/features/leave-types/leave-types.server';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 import { LeaveTypeListPanel } from './leave-type-list-panel';
 
 interface LeaveTypesPageLayoutProps {
@@ -11,7 +12,7 @@ interface LeaveTypesPageLayoutProps {
   selectedId?: string;
   search?: string;
   page?: number;
-  archived?: boolean;
+  filter?: ArchiveFilter;
   children: ReactNode;
 }
 
@@ -21,7 +22,7 @@ export function LeaveTypesPageLayout({
   selectedId,
   search,
   page,
-  archived,
+  filter,
   children,
 }: LeaveTypesPageLayoutProps) {
   return (
@@ -39,7 +40,7 @@ export function LeaveTypesPageLayout({
           selectedId={selectedId}
           search={search}
           page={page}
-          archived={archived}
+          filter={filter}
         />
       }
       detailKey={selectedId}

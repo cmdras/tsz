@@ -28,8 +28,11 @@ export const userSchema = z.object({
 
 export type UserInput = z.infer<typeof userSchema>;
 
+import { archiveFilterSchema } from '#/lib/archive-filter';
+
 export const userSearchSchema = z.object({
   search: z.string().optional(),
+  filter: archiveFilterSchema.optional(),
 });
 
 export type UserSearchInput = z.infer<typeof userSearchSchema>;

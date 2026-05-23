@@ -17,9 +17,10 @@ public class UserService(IUserRepository userRepository, IUserLeaveAllowanceRepo
         SortDirection sortDirection,
         int page,
         int pageSize,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
-        var (items, total) = await _userRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, cancellationToken);
+        var (items, total) = await _userRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, archivedFilter, cancellationToken);
         return new PagedUsers(items, total);
     }
 

@@ -1,4 +1,4 @@
-namespace Api.Modules.Customers;
+namespace Api.Common;
 
 public enum ArchivedFilter
 {

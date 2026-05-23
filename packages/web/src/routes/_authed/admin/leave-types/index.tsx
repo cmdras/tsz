@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authed/admin/leave-types/')({
   loaderDeps: ({ search }) => ({
     search: search.search,
     page: search.page,
-    archived: search.archived,
+    filter: search.filter,
   }),
   loader: ({ deps }) => fetchLeaveTypes({ data: deps }),
   staleTime: 30_000,
@@ -18,10 +18,10 @@ export const Route = createFileRoute('/_authed/admin/leave-types/')({
 
 function LeaveTypeList() {
   const { items, total } = Route.useLoaderData();
-  const { search, page, archived } = Route.useSearch();
+  const { search, page, filter } = Route.useSearch();
 
   return (
-    <LeaveTypesPageLayout leaveTypes={items} total={total} search={search} page={page} archived={archived}>
+    <LeaveTypesPageLayout leaveTypes={items} total={total} search={search} page={page} filter={filter}>
       <LeaveTypeEmptyPanel />
     </LeaveTypesPageLayout>
   );

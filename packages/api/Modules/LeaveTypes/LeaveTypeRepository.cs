@@ -19,13 +19,15 @@ public class LeaveTypeRepository : ILeaveTypeRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool showArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.LeaveTypes.AsQueryable();
-
-        if (!showArchived)
-            query = query.Where(leaveType => !leaveType.IsArchived);
+        var query = archivedFilter switch
+        {
+            ArchivedFilter.All => _dbContext.LeaveTypes.AsQueryable(),
+            ArchivedFilter.Archived => _dbContext.LeaveTypes.Where(leaveType => leaveType.IsArchived),
+            _ => _dbContext.LeaveTypes.Where(leaveType => !leaveType.IsArchived),
+        };
 
         if (!string.IsNullOrWhiteSpace(search))
         {

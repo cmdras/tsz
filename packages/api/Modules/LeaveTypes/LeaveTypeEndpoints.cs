@@ -17,7 +17,7 @@ public static class LeaveTypeEndpoints
             SortDirection? sortDirection,
             int? page,
             int? pageSize,
-            bool? showArchived,
+            ArchivedFilter? archived,
             LeaveTypeService service,
             CancellationToken cancellationToken) =>
         {
@@ -29,7 +29,7 @@ public static class LeaveTypeEndpoints
                 sortDirection ?? SortDirection.Asc,
                 pageNumber,
                 size,
-                showArchived ?? false,
+                archived ?? ArchivedFilter.Active,
                 cancellationToken));
         });
 

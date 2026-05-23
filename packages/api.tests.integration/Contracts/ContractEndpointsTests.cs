@@ -332,7 +332,7 @@ public class ContractEndpointsShould(IntegrationFactory factory) : IClassFixture
         var seeded = await SeedContractAsync("Archived Contract");
         await factory.Client.PatchAsync($"/api/contracts/{seeded.Id}/archive", null);
 
-        var response = await factory.Client.GetAsync("/api/contracts?archived=true&search=Archived+Contract");
+        var response = await factory.Client.GetAsync("/api/contracts?archived=Archived&search=Archived+Contract");
         var result = await response.Content.ReadFromJsonAsync<PagedContracts>(IntegrationFactory.JsonOptions);
 
         Assert.Contains(result!.Items, contract => contract.Subject == "Archived Contract");

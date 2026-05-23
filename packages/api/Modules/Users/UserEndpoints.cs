@@ -36,6 +36,7 @@ public static class UserEndpoints
             SortDirection? sortDirection,
             int? page,
             int? pageSize,
+            ArchivedFilter? archived,
             UserService service,
             CancellationToken cancellationToken) =>
         {
@@ -47,6 +48,7 @@ public static class UserEndpoints
                 sortDirection ?? SortDirection.Asc,
                 pageNumber,
                 size,
+                archived ?? ArchivedFilter.Active,
                 cancellationToken));
         });
 

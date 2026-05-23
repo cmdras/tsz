@@ -20,15 +20,19 @@ public class ContractRepository : IContractRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool includeArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
         IQueryable<Contract> query = _dbContext.Contracts
             .Include(contract => contract.Customer)
             .Include(contract => contract.Consultant);
 
-        if (!includeArchived)
-            query = query.Where(contract => !contract.IsArchived);
+        query = archivedFilter switch
+        {
+            ArchivedFilter.All => query,
+            ArchivedFilter.Archived => query.Where(contract => contract.IsArchived),
+            _ => query.Where(contract => !contract.IsArchived),
+        };
 
         if (!string.IsNullOrWhiteSpace(search))
         {

@@ -12,6 +12,7 @@ import { getCustomers } from '#/features/customers/customers.server';
 import { getUsers } from '#/features/users/users.server';
 import { ApiRequestError } from '#/api/client';
 import { contractSchema, contractSearchSchema, PAGE_SIZE, type ContractInput } from './contracts.schemas';
+import { archiveFilterApiMap } from '#/lib/archive-filter';
 
 function toContractRequest(data: ContractInput) {
   return {
@@ -31,7 +32,8 @@ function toContractRequest(data: ContractInput) {
 export const fetchContracts = createServerFn({ method: 'GET' })
   .inputValidator(contractSearchSchema)
   .handler(async ({ data }) => {
-    return await getContracts({ ...data, pageSize: PAGE_SIZE });
+    const { filter, ...rest } = data;
+    return await getContracts({ ...rest, pageSize: PAGE_SIZE, archived: archiveFilterApiMap[filter ?? 'all'] });
   });
 
 export const fetchContractById = createServerFn({ method: 'GET' })

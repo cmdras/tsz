@@ -4,10 +4,14 @@ import { getUsers, getUserById, createUser, updateUser, archiveUser } from './us
 import { getLeaveTypes } from '#/features/leave-types/leave-types.server';
 import { ApiRequestError } from '#/api/client';
 import { userSchema, userSearchSchema } from './users.schemas';
+import { archiveFilterApiMap } from '#/lib/archive-filter';
 
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator(userSearchSchema)
-  .handler(({ data }) => getUsers(data));
+  .handler(({ data }) => {
+    const { filter, ...rest } = data;
+    return getUsers({ ...rest, archived: archiveFilterApiMap[filter ?? 'all'] });
+  });
 
 export const fetchUserById = createServerFn({ method: 'GET' })
   .inputValidator(z.string().uuid())
@@ -61,6 +65,6 @@ export const archiveUserFn = createServerFn({ method: 'POST' })
   });
 
 export const listLeaveTypesForPickerFn = createServerFn({ method: 'GET' }).handler(async () => {
-  const result = await getLeaveTypes({ pageSize: 100, showArchived: false });
+  const result = await getLeaveTypes({ pageSize: 100, archived: 'Active' });
   return result.items;
 });

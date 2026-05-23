@@ -16,10 +16,10 @@ public class LeaveTypeService(ILeaveTypeRepository leaveTypeRepository)
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool showArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
-        var (entities, total) = await _leaveTypeRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, showArchived, cancellationToken);
+        var (entities, total) = await _leaveTypeRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, archivedFilter, cancellationToken);
         return new PagedLeaveTypes(entities.Select(ToResponse).ToList(), total);
     }
 

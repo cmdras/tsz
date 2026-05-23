@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { archiveFilterSchema } from '#/lib/archive-filter';
 
 const contractTaskSchema = z.object({
   id: z.string().uuid().optional(),
@@ -29,7 +30,7 @@ export const PAGE_SIZE = 25;
 export const contractSearchSchema = z.object({
   search: z.string().optional(),
   page: z.coerce.number().int().positive().optional(),
-  archived: z.boolean().optional(),
+  filter: archiveFilterSchema.optional(),
 });
 
 export type ContractSearchInput = z.infer<typeof contractSearchSchema>;

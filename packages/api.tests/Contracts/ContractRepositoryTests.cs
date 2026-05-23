@@ -99,7 +99,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, customerId, consultantId, number: 100001);
         await AddContractAsync(context, customerId, consultantId, number: 100002, isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 1, 25, false);
+        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Single(items);
@@ -114,7 +114,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, customerId, consultantId, number: 100001);
         await AddContractAsync(context, customerId, consultantId, number: 100002, isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 1, 25, true);
+        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.All);
 
         Assert.Equal(2, total);
         Assert.Equal(2, items.Count);
@@ -129,7 +129,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, customerId, consultantId, subject: "Cloud Migration", number: 100001);
         await AddContractAsync(context, customerId, consultantId, subject: "Frontend Redesign", number: 100002);
 
-        var (items, total) = await repository.GetAllAsync("cloud", ContractSort.Number, SortDirection.Asc, 1, 25, false);
+        var (items, total) = await repository.GetAllAsync("cloud", ContractSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Equal("Cloud Migration", items[0].Subject);
@@ -145,7 +145,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, acmeId, consultantId, number: 100001);
         await AddContractAsync(context, initechId, consultantId, number: 100002);
 
-        var (items, total) = await repository.GetAllAsync("acme", ContractSort.Number, SortDirection.Asc, 1, 25, false);
+        var (items, total) = await repository.GetAllAsync("acme", ContractSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Equal(acmeId, items[0].CustomerId);
@@ -161,7 +161,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, customerId, aliceId, number: 100001);
         await AddContractAsync(context, customerId, bobId, number: 100002);
 
-        var (items, total) = await repository.GetAllAsync("alice", ContractSort.Number, SortDirection.Asc, 1, 25, false);
+        var (items, total) = await repository.GetAllAsync("alice", ContractSort.Number, SortDirection.Asc, 1, 25, ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Equal(aliceId, items[0].ConsultantId);
@@ -177,7 +177,7 @@ public class ContractRepositoryShould
         await AddContractAsync(context, customerId, consultantId, number: 100002);
         await AddContractAsync(context, customerId, consultantId, number: 100003);
 
-        var (items, _) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Desc, 1, 25, false);
+        var (items, _) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Desc, 1, 25, ArchivedFilter.Active);
 
         Assert.Equal(100003, items[0].Number);
         Assert.Equal(100001, items[2].Number);
@@ -192,7 +192,7 @@ public class ContractRepositoryShould
         for (var index = 1; index <= 5; index++)
             await AddContractAsync(context, customerId, consultantId, number: 100000 + index);
 
-        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 2, 2, false);
+        var (items, total) = await repository.GetAllAsync(null, ContractSort.Number, SortDirection.Asc, 2, 2, ArchivedFilter.Active);
 
         Assert.Equal(5, total);
         Assert.Equal(2, items.Count);

@@ -9,13 +9,15 @@ export type ContractTask = components['schemas']['ContractTaskResponse'];
 export type ContractTaskRequest = components['schemas']['ContractTaskRequest'];
 type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
+type ArchivedFilter = NonNullable<components['schemas']['ArchivedFilter']>;
+
 export interface ListContractsParams {
   search?: string;
   sort?: ContractSort;
   sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
-  archived?: boolean;
+  archived?: ArchivedFilter;
 }
 
 export const getContracts = async (params: ListContractsParams = {}): Promise<PagedContracts> => {

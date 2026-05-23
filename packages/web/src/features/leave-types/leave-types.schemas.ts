@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { LeaveTypeSort } from './leave-types.server';
+import { archiveFilterSchema } from '#/lib/archive-filter';
 
 export const allowanceModes = ['Unlimited', 'Limited'] as const;
 export type AllowanceMode = (typeof allowanceModes)[number];
@@ -37,7 +38,7 @@ export const leaveTypeSearchSchema = z.object({
   search: z.string().optional(),
   sort: z.string().regex(sortPattern).optional(),
   page: z.coerce.number().int().positive().optional(),
-  archived: z.boolean().optional(),
+  filter: archiveFilterSchema.optional(),
 });
 
 export type LeaveTypeSearchInput = z.infer<typeof leaveTypeSearchSchema>;

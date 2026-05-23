@@ -5,8 +5,8 @@ import { UsersPageLayout } from './-components/users-page-layout';
 
 export const Route = createFileRoute('/_authed/admin/users/$id')({
   validateSearch: userSearchSchema,
-  loaderDeps: ({ search }) => ({ search: search.search }),
-  loader: ({ deps }) => fetchUsers({ data: { search: deps.search } }),
+  loaderDeps: ({ search }) => ({ search: search.search, filter: search.filter }),
+  loader: ({ deps }) => fetchUsers({ data: { search: deps.search, filter: deps.filter } }),
   staleTime: 30_000,
   component: UserDetailLayout,
 });
@@ -14,10 +14,10 @@ export const Route = createFileRoute('/_authed/admin/users/$id')({
 function UserDetailLayout() {
   const { items } = Route.useLoaderData();
   const { id } = Route.useParams();
-  const { search } = Route.useSearch();
+  const { search, filter } = Route.useSearch();
 
   return (
-    <UsersPageLayout users={items} selectedId={id} search={search}>
+    <UsersPageLayout users={items} selectedId={id} search={search} filter={filter}>
       <Outlet />
     </UsersPageLayout>
   );
