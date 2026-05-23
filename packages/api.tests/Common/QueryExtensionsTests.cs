@@ -37,7 +37,7 @@ public class QueryExtensionsShould
             context.Customers.Add(BuildCustomer(index));
         await context.SaveChangesAsync();
 
-        var (_, total) = await context.Customers.AsQueryable()
+        var (_, total) = await context.Customers
             .OrderBy(customer => customer.Number)
             .ToPagedResultAsync(page: 1, pageSize: 2);
 
@@ -52,7 +52,7 @@ public class QueryExtensionsShould
             context.Customers.Add(BuildCustomer(index));
         await context.SaveChangesAsync();
 
-        var (items, _) = await context.Customers.AsQueryable()
+        var (items, _) = await context.Customers
             .OrderBy(customer => customer.Number)
             .ToPagedResultAsync(page: 2, pageSize: 2);
 

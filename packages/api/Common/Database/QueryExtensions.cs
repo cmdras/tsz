@@ -9,8 +9,10 @@ public static class QueryExtensions
         int page,
         int pageSize,
         CancellationToken cancellationToken = default)
-        where T : class
     {
+        ArgumentOutOfRangeException.ThrowIfLessThan(page, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 1);
+
         var total = await source.CountAsync(cancellationToken);
         var items = await source.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
         return (items, total);
