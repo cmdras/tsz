@@ -56,9 +56,7 @@ public class ContractRepository : IContractRepository
             _ => query.OrderBy(contract => contract.Number),
         };
 
-        var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-        return (items, total);
+        return await query.ToPagedResultAsync(page, pageSize, cancellationToken);
     }
 
     public async Task<Contract?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
