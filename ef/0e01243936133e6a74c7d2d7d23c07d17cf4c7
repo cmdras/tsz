@@ -1,0 +1,32 @@
+packages/api.tests/Common/QueryExtensionsTests.cs
+  s_d4b7dd30dadc01::t_c4170af92bb636 1-45,63
+  s_d4b7dd30dadc01::t_2ec0bc645e9329 46-62
+packages/api/Common/Database/QueryExtensions.cs
+  s_d4b7dd30dadc01::t_fcddce9a90e78e 1-18
+packages/api/Modules/Customers/CustomerRepository.cs
+  s_d4b7dd30dadc01::t_1d7182835cfae8 50
+packages/api/Modules/Users/UserRepository.cs
+  s_d4b7dd30dadc01::t_c95996a6da0caa 63
+packages/api/Modules/Contracts/ContractRepository.cs
+  s_d4b7dd30dadc01::t_7060e6d57c9bb1 59
+CHANGELOG.md
+  s_d4b7dd30dadc01::t_92c8c555046ce8 5-6
+packages/api/Modules/LeaveTypes/LeaveTypeRepository.cs
+  s_d4b7dd30dadc01::t_a73377900bc8c3 47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "ef0e01243936133e6a74c7d2d7d23c07d17cf4c7",
+  "prompts": {},
+  "sessions": {
+    "s_d4b7dd30dadc01": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a5e80c7-c279-461e-93ce-fa081748735f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
