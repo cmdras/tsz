@@ -2,9 +2,11 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { Badge } from '#/components/ui/badge';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
+import { ArchiveFilterTabs } from '#/components/archive-filter-tabs';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
 import { cn, formatEntityNumber } from '#/lib/utils';
 import type { Contract } from '#/features/contracts/contracts.server';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 import { PAGE_SIZE } from '#/features/contracts/contracts.schemas';
 
 interface ContractListPanelProps {
@@ -13,17 +15,10 @@ interface ContractListPanelProps {
   selectedId?: string;
   search?: string;
   page?: number;
-  archived?: boolean;
+  filter?: ArchiveFilter;
 }
 
-export function ContractListPanel({
-  contracts,
-  total,
-  selectedId,
-  search,
-  page = 1,
-  archived,
-}: ContractListPanelProps) {
+export function ContractListPanel({ contracts, total, selectedId, search, page = 1, filter }: ContractListPanelProps) {
   const navigate = useNavigate({ from: '/admin/contracts/' });
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -31,14 +26,8 @@ export function ContractListPanel({
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined, page: undefined }) });
   }, 300);
 
-  const toggleArchived = () => {
-    void navigate({
-      search: (previous) => ({
-        ...previous,
-        archived: previous.archived ? undefined : true,
-        page: undefined,
-      }),
-    });
+  const handleFilterChange = (value: ArchiveFilter) => {
+    void navigate({ search: (previous) => ({ ...previous, filter: value, page: undefined }) });
   };
 
   const goToPage = (targetPage: number) => {
@@ -55,9 +44,7 @@ export function ContractListPanel({
           defaultValue={search ?? ''}
           onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
         />
-        <Button variant={archived ? 'secondary' : 'outline'} size="sm" className="w-full" onClick={toggleArchived}>
-          {archived ? 'Showing archived' : 'Show archived'}
-        </Button>
+        <ArchiveFilterTabs value={filter} onValueChange={handleFilterChange} />
       </div>
 
       <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">

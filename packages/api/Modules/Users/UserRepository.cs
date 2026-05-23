@@ -32,9 +32,15 @@ public class UserRepository : IUserRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Users.Where(user => !user.IsArchived);
+        var query = archivedFilter switch
+        {
+            ArchivedFilter.All => _dbContext.Users.AsQueryable(),
+            ArchivedFilter.Archived => _dbContext.Users.Where(user => user.IsArchived),
+            _ => _dbContext.Users.Where(user => !user.IsArchived),
+        };
 
         if (!string.IsNullOrWhiteSpace(search))
         {

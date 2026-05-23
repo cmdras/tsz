@@ -286,6 +286,7 @@ export interface paths {
           sortDirection?: components['schemas']['SortDirection'];
           page?: number;
           pageSize?: number;
+          archived?: components['schemas']['ArchivedFilter'];
         };
         header?: never;
         path?: never;
@@ -509,7 +510,7 @@ export interface paths {
           sortDirection?: components['schemas']['SortDirection'];
           page?: number;
           pageSize?: number;
-          archived?: boolean;
+          archived?: components['schemas']['ArchivedFilter'];
         };
         header?: never;
         path?: never;
@@ -724,7 +725,7 @@ export interface paths {
           sortDirection?: components['schemas']['SortDirection'];
           page?: number;
           pageSize?: number;
-          showArchived?: boolean;
+          archived?: components['schemas']['ArchivedFilter'];
         };
         header?: never;
         path?: never;

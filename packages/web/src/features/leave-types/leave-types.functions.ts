@@ -10,19 +10,21 @@ import {
 } from './leave-types.server';
 import { ApiRequestError } from '#/api/client';
 import { leaveTypeSchema, leaveTypeSearchSchema, sortSlugs, type SortSlug } from './leave-types.schemas';
+import { archiveFilterApiMap } from '#/lib/archive-filter';
 
 export const fetchLeaveTypes = createServerFn({ method: 'GET' })
   .inputValidator(leaveTypeSearchSchema)
   .handler(async ({ data }) => {
-    const { sort, archived, ...rest } = data;
-    if (!sort) return await getLeaveTypes({ ...rest, showArchived: archived });
+    const { sort, filter, ...rest } = data;
+    const archived = archiveFilterApiMap[filter ?? 'all'];
+    if (!sort) return await getLeaveTypes({ ...rest, archived });
     const isDesc = sort.endsWith('-');
     const slug = (isDesc ? sort.slice(0, -1) : sort) as SortSlug;
     return await getLeaveTypes({
       ...rest,
       sort: sortSlugs[slug],
       sortDirection: isDesc ? 'Desc' : 'Asc',
-      showArchived: archived,
+      archived,
     });
   });
 

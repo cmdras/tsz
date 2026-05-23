@@ -10,12 +10,15 @@ export type PagedUsers = components['schemas']['PagedUsers'];
 export type UserSort = NonNullable<components['schemas']['UserSort']>;
 type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
+type ArchivedFilter = NonNullable<components['schemas']['ArchivedFilter']>;
+
 export interface ListUsersParams {
   search?: string;
   sort?: UserSort;
   sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
+  archived?: ArchivedFilter;
 }
 
 export const getUsers = async (params: ListUsersParams = {}): Promise<PagedUsers> => {

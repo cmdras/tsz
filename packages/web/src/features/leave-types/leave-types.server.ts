@@ -7,13 +7,15 @@ export type PagedLeaveTypes = components['schemas']['PagedLeaveTypes'];
 export type LeaveTypeSort = NonNullable<components['schemas']['LeaveTypeSort']>;
 type SortDirection = NonNullable<components['schemas']['SortDirection']>;
 
+type ArchivedFilter = NonNullable<components['schemas']['ArchivedFilter']>;
+
 export interface ListLeaveTypesParams {
   search?: string;
   sort?: LeaveTypeSort;
   sortDirection?: SortDirection;
   page?: number;
   pageSize?: number;
-  showArchived?: boolean;
+  archived?: ArchivedFilter;
 }
 
 export const getLeaveTypes = async (params: ListLeaveTypesParams = {}): Promise<PagedLeaveTypes> => {

@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { AdminSplitPageLayout } from '#/components/admin-split-page-layout';
 import { Button } from '#/components/ui/button';
 import type { Contract } from '#/features/contracts/contracts.server';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 import { ContractListPanel } from './contract-list-panel';
 
 interface ContractsPageLayoutProps {
@@ -11,7 +12,7 @@ interface ContractsPageLayoutProps {
   selectedId?: string;
   search?: string;
   page?: number;
-  archived?: boolean;
+  filter?: ArchiveFilter;
   children: ReactNode;
 }
 
@@ -21,7 +22,7 @@ export function ContractsPageLayout({
   selectedId,
   search,
   page,
-  archived,
+  filter,
   children,
 }: ContractsPageLayoutProps) {
   return (
@@ -39,7 +40,7 @@ export function ContractsPageLayout({
           selectedId={selectedId}
           search={search}
           page={page}
-          archived={archived}
+          filter={filter}
         />
       }
       detailKey={selectedId}

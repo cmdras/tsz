@@ -2,6 +2,8 @@
 
 ## 2026-05-23
 
+- feat(admin): the archive filter on Customers, Contracts, Leave Types, and Users list panels is now a unified three-tab control — All / Active / Archived — replacing the old per-page boolean toggles; all pages default to showing all records
+
 - refactor(repositories): pagination logic extracted into a shared `ToPagedResultAsync` helper; the offset formula is now enforced in one place across all list endpoints
 
 - fix: the progress bar on the "Logged this week" card now correctly reflects the current value in accessibility attributes (`aria-valuenow`) and Radix data attributes

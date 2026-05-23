@@ -1,17 +1,17 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Input } from '#/components/ui/input';
 import { Badge } from '#/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger } from '#/components/ui/tabs';
+import { ArchiveFilterTabs } from '#/components/archive-filter-tabs';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
 import { cn, formatEntityNumber, getAvatarColor } from '#/lib/utils';
 import type { Customer } from '#/features/customers/customers.server';
-import { customerFilterValues, type CustomerFilter } from '#/features/customers/customers.schemas';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 
 interface CustomerListPanelProps {
   customers: Customer[];
   selectedId?: string;
   search?: string;
-  filter?: CustomerFilter;
+  filter?: ArchiveFilter;
 }
 
 export function CustomerListPanel({ customers, selectedId, search, filter }: CustomerListPanelProps) {
@@ -21,8 +21,8 @@ export function CustomerListPanel({ customers, selectedId, search, filter }: Cus
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined }) });
   }, 300);
 
-  const handleFilterChange = (value: string) => {
-    void navigate({ search: (previous) => ({ ...previous, filter: value as CustomerFilter }) });
+  const handleFilterChange = (value: ArchiveFilter) => {
+    void navigate({ search: (previous) => ({ ...previous, filter: value }) });
   };
 
   return (
@@ -33,19 +33,7 @@ export function CustomerListPanel({ customers, selectedId, search, filter }: Cus
           defaultValue={search ?? ''}
           onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
         />
-        <Tabs value={filter ?? customerFilterValues[0]} onValueChange={handleFilterChange}>
-          <TabsList className="w-full">
-            <TabsTrigger value="all" className="flex-1">
-              All
-            </TabsTrigger>
-            <TabsTrigger value="active" className="flex-1">
-              Active
-            </TabsTrigger>
-            <TabsTrigger value="archived" className="flex-1">
-              Archived
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <ArchiveFilterTabs value={filter} onValueChange={handleFilterChange} />
       </div>
 
       <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">

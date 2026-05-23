@@ -10,7 +10,7 @@ public interface ILeaveTypeRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool showArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default);
 
     Task<LeaveType?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

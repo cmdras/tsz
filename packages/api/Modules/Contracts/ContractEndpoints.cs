@@ -17,7 +17,7 @@ public static class ContractEndpoints
             SortDirection? sortDirection,
             int? page,
             int? pageSize,
-            bool? archived,
+            ArchivedFilter? archived,
             ContractService service,
             CancellationToken cancellationToken) =>
         {
@@ -29,7 +29,7 @@ public static class ContractEndpoints
                 sortDirection ?? SortDirection.Asc,
                 pageNumber,
                 size,
-                archived ?? false,
+                archived ?? ArchivedFilter.Active,
                 cancellationToken));
         });
 

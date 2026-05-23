@@ -9,13 +9,14 @@ import {
   unarchiveCustomer,
 } from './customers.server';
 import { ApiRequestError } from '#/api/client';
-import { customerSchema, customerSearchSchema, archivedFilterMap } from './customers.schemas';
+import { customerSchema, customerSearchSchema } from './customers.schemas';
+import { archiveFilterApiMap } from '#/lib/archive-filter';
 
 export const fetchCustomers = createServerFn({ method: 'GET' })
   .inputValidator(customerSearchSchema)
   .handler(async ({ data }) => {
     const { filter, ...rest } = data;
-    return await getCustomers({ ...rest, archived: archivedFilterMap[filter ?? 'all'] });
+    return await getCustomers({ ...rest, archived: archiveFilterApiMap[filter ?? 'all'] });
   });
 
 export const fetchCustomerById = createServerFn({ method: 'GET' })

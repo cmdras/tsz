@@ -19,10 +19,10 @@ public class ContractService(IContractRepository contractRepository, ICustomerRe
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool includeArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default)
     {
-        var (entities, total) = await _contractRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, includeArchived, cancellationToken);
+        var (entities, total) = await _contractRepository.GetAllAsync(search, sort, sortDirection, page, pageSize, archivedFilter, cancellationToken);
         return new PagedContracts(entities.Select(ToResponse).ToList(), total);
     }
 

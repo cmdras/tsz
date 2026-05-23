@@ -68,7 +68,7 @@ function StatusCard({ isSubmitted, lastSavedAt }: { isSubmitted: boolean; lastSa
         <span className="text-xs font-medium uppercase tracking-wider text-primary">Status</span>
         <span className="text-lg font-semibold">{isSubmitted ? 'Submitted.' : 'Draft — not submitted.'}</span>
         <span className="text-xs text-muted-foreground">
-          {lastSavedAt ? `Auto-saved at ${formatTime(lastSavedAt)}.` : 'Not saved yet.'}
+          {lastSavedAt ? `Saved at ${formatTime(lastSavedAt)}.` : 'Not saved yet.'}
         </span>
       </CardContent>
     </Card>

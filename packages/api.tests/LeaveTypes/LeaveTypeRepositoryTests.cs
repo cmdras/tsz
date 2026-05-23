@@ -56,7 +56,7 @@ public class LeaveTypeRepositoryShould
         await AddLeaveTypeAsync(context, "Holiday");
         await AddLeaveTypeAsync(context, "Sick Leave", isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, showArchived: false);
+        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, archivedFilter: ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Equal("Holiday", items[0].Name);
@@ -69,7 +69,7 @@ public class LeaveTypeRepositoryShould
         await AddLeaveTypeAsync(context, "Holiday");
         await AddLeaveTypeAsync(context, "Sick Leave", isArchived: true);
 
-        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, showArchived: true);
+        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, archivedFilter: ArchivedFilter.All);
 
         Assert.Equal(2, total);
         Assert.Equal(2, items.Count);
@@ -82,7 +82,7 @@ public class LeaveTypeRepositoryShould
         await AddLeaveTypeAsync(context, "Holiday");
         await AddLeaveTypeAsync(context, "ADV");
 
-        var (items, total) = await repository.GetAllAsync("holi", LeaveTypeSort.Name, SortDirection.Asc, 1, 25, showArchived: false);
+        var (items, total) = await repository.GetAllAsync("holi", LeaveTypeSort.Name, SortDirection.Asc, 1, 25, archivedFilter: ArchivedFilter.Active);
 
         Assert.Equal(1, total);
         Assert.Equal("Holiday", items[0].Name);
@@ -96,7 +96,7 @@ public class LeaveTypeRepositoryShould
         await AddLeaveTypeAsync(context, "ADV");
         await AddLeaveTypeAsync(context, "Holiday");
 
-        var (items, _) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, showArchived: false);
+        var (items, _) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 1, 25, archivedFilter: ArchivedFilter.Active);
 
         Assert.Equal("ADV", items[0].Name);
         Assert.Equal("Holiday", items[1].Name);
@@ -110,7 +110,7 @@ public class LeaveTypeRepositoryShould
         await AddLeaveTypeAsync(context, "Holiday", defaultDays: 20m);
         await AddLeaveTypeAsync(context, "ADV", defaultDays: 5m);
 
-        var (items, _) = await repository.GetAllAsync(null, LeaveTypeSort.DefaultDays, SortDirection.Desc, 1, 25, showArchived: false);
+        var (items, _) = await repository.GetAllAsync(null, LeaveTypeSort.DefaultDays, SortDirection.Desc, 1, 25, archivedFilter: ArchivedFilter.Active);
 
         Assert.Equal(20m, items[0].DefaultDays);
         Assert.Equal(5m, items[1].DefaultDays);
@@ -123,7 +123,7 @@ public class LeaveTypeRepositoryShould
         for (var index = 1; index <= 5; index++)
             await AddLeaveTypeAsync(context, $"Leave Type {index}");
 
-        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 2, 2, showArchived: false);
+        var (items, total) = await repository.GetAllAsync(null, LeaveTypeSort.Name, SortDirection.Asc, 2, 2, archivedFilter: ArchivedFilter.Active);
 
         Assert.Equal(5, total);
         Assert.Equal(2, items.Count);

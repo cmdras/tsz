@@ -3,14 +3,14 @@ import { Link } from '@tanstack/react-router';
 import { AdminSplitPageLayout } from '#/components/admin-split-page-layout';
 import { Button } from '#/components/ui/button';
 import type { Customer } from '#/features/customers/customers.server';
-import type { CustomerFilter } from '#/features/customers/customers.schemas';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 import { CustomerListPanel } from './customer-list-panel';
 
 interface CustomersPageLayoutProps {
   customers: Customer[];
   selectedId?: string;
   search?: string;
-  filter?: CustomerFilter;
+  filter?: ArchiveFilter;
   children: ReactNode;
 }
 

@@ -10,7 +10,7 @@ public interface IContractRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
-        bool includeArchived,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default);
 
     Task<Contract?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

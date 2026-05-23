@@ -12,6 +12,7 @@ public interface IUserRepository
         SortDirection sortDirection,
         int page,
         int pageSize,
+        ArchivedFilter archivedFilter = ArchivedFilter.Active,
         CancellationToken cancellationToken = default);
 
     Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

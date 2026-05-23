@@ -1,32 +1,40 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Input } from '#/components/ui/input';
 import { Badge } from '#/components/ui/badge';
+import { ArchiveFilterTabs } from '#/components/archive-filter-tabs';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
 import { cn, getAvatarColor } from '#/lib/utils';
 import type { User } from '#/features/users/users.server';
+import type { ArchiveFilter } from '#/lib/archive-filter';
 import { roleLabels } from '#/features/users/users.schemas';
 
 interface UserListPanelProps {
   users: User[];
   selectedId?: string;
   search?: string;
+  filter?: ArchiveFilter;
 }
 
-export function UserListPanel({ users, selectedId, search }: UserListPanelProps) {
+export function UserListPanel({ users, selectedId, search, filter }: UserListPanelProps) {
   const navigate = useNavigate({ from: '/admin/users/' });
 
   const handleSearch = useDebouncedCallback((value: string) => {
     void navigate({ search: (previous) => ({ ...previous, search: value || undefined }) });
   }, 300);
 
+  const handleFilterChange = (value: ArchiveFilter) => {
+    void navigate({ search: (previous) => ({ ...previous, filter: value }) });
+  };
+
   return (
     <div className="w-80 flex flex-col border rounded-lg overflow-hidden flex-shrink-0">
-      <div className="p-3 border-b">
+      <div className="p-3 border-b space-y-2">
         <Input
           placeholder="Search name or email…"
           defaultValue={search ?? ''}
           onChange={(changeEvent) => handleSearch(changeEvent.target.value)}
         />
+        <ArchiveFilterTabs value={filter} onValueChange={handleFilterChange} />
       </div>
 
       <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">
