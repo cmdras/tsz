@@ -2,6 +2,7 @@
 
 ## 2026-05-25
 
+- fix(admin): users list now refreshes immediately after saving a new or edited user, instead of showing stale data for up to 30 seconds
 - refactor(admin): UserForm decomposed into focused helpers — `useNavigateOnDone`, `useUserFormSubmit`, `UserInfoSection`, `UserLeavesSection`, `LeaveTableRow`, `LeaveModeCell`, `LeavePicker`; no function exceeds 60 lines and UserForm CRAP drops below 30
 - refactor(admin): the Contracts and Leave Types list panels now share a common shell — search input, filter tabs, pagination footer — reducing duplication; behavior is unchanged
 - fix(admin): the search input in list panels now correctly reflects the URL state on browser back/forward navigation

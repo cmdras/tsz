@@ -62,10 +62,12 @@ function useNavigateOnDone(onDone?: () => void) {
 }
 
 function useUserFormSubmit(onSubmit: (values: UserInput) => Promise<unknown>, navigateOnDone: () => void) {
+  const router = useRouter();
   return async ({ value }: { value: UserInput }) => {
     try {
       await onSubmit(value);
       toast.success('User saved');
+      void router.invalidate();
       navigateOnDone();
     } catch (error) {
       if (error instanceof Error && error.message === 'EMAIL_ALREADY_IN_USE') {
