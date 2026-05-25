@@ -1,0 +1,36 @@
+packages/web/src/routes/_authed/time-entry/-components/week-grid-navigation.ts
+  s_c193f4f332b833::t_6cf34251d8d705 1-2,4-52
+  s_c193f4f332b833::t_179fa662ec28e5 3
+packages/web/src/routes/_authed/time-entry/-components/week-grid-model.ts
+  s_c193f4f332b833::t_0cd0ffa8729bd0 75-87,122,134
+  s_c193f4f332b833::t_ecab57907a1877 1,5-6,88-116,118-121,123-133
+packages/web/src/routes/_authed/time-entry/-components/week-grid-rows.tsx
+  s_c193f4f332b833::t_8ff67fb06ff083 51
+  s_c193f4f332b833::t_b2a6289b689e83 180,182
+  s_c193f4f332b833::t_6c76cd5e087239 6
+  s_c193f4f332b833::t_f15f98cfbaa0b3 204
+  s_c193f4f332b833::t_fe383fc03c003f 36
+  s_c193f4f332b833::t_5a951efc490afd 2,4-5,8-13,60-179,181,183-203
+  s_c193f4f332b833::t_e9a69aaa940dcd 14
+CHANGELOG.md
+  s_c193f4f332b833::t_bb746c799f94dd 5-6
+packages/web/src/routes/_authed/time-entry/-components/week-grid.tsx
+  s_c193f4f332b833::t_8a5fa76e86109a 2,5-7,12,19,54-55
+  s_c193f4f332b833::t_b95e29d5c73f93 1,4,8-11,13,15,18,31,42,49,53,75-76,89-90,111,119-132
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ad3bb85b726d2aab704523302b9e03ef37fb245f",
+  "prompts": {},
+  "sessions": {
+    "s_c193f4f332b833": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "240dc2a8-2017-4dcf-bbf6-2e1bef3744f7",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
