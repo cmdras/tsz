@@ -1,0 +1,21 @@
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_e93c6ce5a0b01b::t_b06f50f0b4f890 65,70
+CHANGELOG.md
+  s_e93c6ce5a0b01b::t_cba2630d85f956 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "66a10a1738ed554c8a8fbedd70f980383cb01487",
+  "prompts": {},
+  "sessions": {
+    "s_e93c6ce5a0b01b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "057deda9-39b4-4ab2-a83d-9881a84e2f84",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
