@@ -10,9 +10,28 @@ interface LastWeekCardProps {
   onCopy: () => void;
 }
 
-export function LastWeekCard({ summary, isSubmitted, onCopy }: LastWeekCardProps) {
-  const hasChips = summary.chips.length > 0 || summary.overflow !== null;
+function OverflowIndicator({ overflow }: { overflow: string | null }) {
+  if (!overflow) return null;
+  return <span className="text-xs text-muted-foreground">{overflow}</span>;
+}
 
+function ChipSummary({ chips, overflow }: { chips: WeekPreviousSummaryResponse['chips']; overflow: string | null }) {
+  const hasEntries = chips.length > 0 || overflow !== null;
+  if (!hasEntries) return <span className="text-sm text-muted-foreground">No entries</span>;
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {chips.map((chip) => (
+        <Badge key={chip.label} variant="secondary" className="gap-1.5 text-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {chip.label} · {chip.hours}h
+        </Badge>
+      ))}
+      <OverflowIndicator overflow={overflow} />
+    </div>
+  );
+}
+
+export function LastWeekCard({ summary, isSubmitted, onCopy }: LastWeekCardProps) {
   return (
     <Card className="h-full py-4">
       <CardContent className="flex h-full flex-col gap-3">
@@ -25,21 +44,7 @@ export function LastWeekCard({ summary, isSubmitted, onCopy }: LastWeekCardProps
             </Button>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {hasChips ? (
-            <>
-              {summary.chips.map((chip) => (
-                <Badge key={chip.label} variant="secondary" className="gap-1.5 text-xs">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  {chip.label} · {chip.hours}h
-                </Badge>
-              ))}
-              {summary.overflow && <span className="text-xs text-muted-foreground">{summary.overflow}</span>}
-            </>
-          ) : (
-            <span className="text-sm text-muted-foreground">No entries</span>
-          )}
-        </div>
+        <ChipSummary chips={summary.chips} overflow={summary.overflow} />
       </CardContent>
     </Card>
   );

@@ -42,19 +42,25 @@ const updateUserSchema = z.object({
   data: userSchema,
 });
 
+function classifyConflict(errorBody: string | undefined): string {
+  if (errorBody?.includes('leave allowance')) return 'DUPLICATE_LEAVE_ALLOWANCE';
+  return 'EMAIL_ALREADY_IN_USE';
+}
+
+function handleUpdateConflictError(error: unknown): never {
+  if (error instanceof ApiRequestError && error.status === 409) {
+    throw new Error(classifyConflict(error.body), { cause: error });
+  }
+  throw error;
+}
+
 export const updateUserFn = createServerFn({ method: 'POST' })
   .inputValidator(updateUserSchema)
   .handler(async ({ data: { id, data } }) => {
     try {
       return await updateUser(id, data);
     } catch (error) {
-      if (error instanceof ApiRequestError && error.status === 409) {
-        if (error.body?.includes('leave allowance')) {
-          throw new Error('DUPLICATE_LEAVE_ALLOWANCE', { cause: error });
-        }
-        throw new Error('EMAIL_ALREADY_IN_USE', { cause: error });
-      }
-      throw error;
+      handleUpdateConflictError(error);
     }
   });
 

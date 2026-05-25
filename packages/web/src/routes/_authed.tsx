@@ -4,13 +4,17 @@ import { AppNavbar } from '#/components/app-navbar';
 import { ApiRequestError, client } from '#/api/client';
 import { getSessionServerFn } from '#/lib/session';
 
+function returnNullIfUnauthorized(error: unknown): null {
+  if (!(error instanceof ApiRequestError) || error.status !== 401) throw error;
+  return null;
+}
+
 const getCurrentUser = createServerFn({ method: 'GET' }).handler(async () => {
   try {
     const { data } = await client.GET('/api/users/me');
     return data ?? null;
   } catch (error) {
-    if (error instanceof ApiRequestError && error.status === 401) return null;
-    throw error;
+    return returnNullIfUnauthorized(error);
   }
 });
 
