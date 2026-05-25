@@ -1,0 +1,19 @@
+.claude/skills/app-do-work-tdd/SKILL.md
+  s_b000f1342a37a0::t_25b60a29353514 61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "adcf2b6e141d4f975950c69cef8354c48589fe2f",
+  "prompts": {},
+  "sessions": {
+    "s_b000f1342a37a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8de0d8df-ff2e-4b24-b77b-eaeb278897d2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
