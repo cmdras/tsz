@@ -48,10 +48,9 @@ Run `Skill('code-review')` to simplify the code.
 Run the validation loops again and fix any issues. Repeat until all pass cleanly.
 
 ```bash
-bun run check     # static analysis of Typescript code with linting, typechecking, and formatting
-bun run fallow    # identify issues like dead code, duplication, and complexity.
-bun run test:web  # runs frontend unit tests
-bun run test:api  # runs backend unit tests
+bun run check        # static analysis of Typescript code with linting, typechecking, and formatting
+bun run test:web     # runs frontend unit tests
+bun run test:api     # runs backend unit tests
 bun run test:api:int # runs integration tests
 ```
 
@@ -68,6 +67,12 @@ Once static analysis and tests pass
 
 - ✅ "Log in as admin → open Users page → click Add → submit form → new user appears in list"
 - ❌ "Verify UserService works"
+
+**Worktree path** — print the `cd` command the user needs to enter the worktree and run the dev server or inspect files manually:
+
+```
+cd <absolute-path-to-worktree>
+```
 
 **Lessons for CLAUDE.md** — surprises, gotchas, or conventions discovered during the work that future runs should know. Keep each point tight and rule-shaped:
 
