@@ -1,0 +1,20 @@
+packages/web/src/routes/_authed/time-entry/-components/hour-cell.tsx
+  s_f5975a8eacca7b::t_b2a1117096d222 19-27,53-58,65-72,74,76-79,89-98,100,109,113-131
+  s_f5975a8eacca7b::t_5a839a36aa421f 46,49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "532197ecab6c91c1e601b1b429905cc1f6d453ca",
+  "prompts": {},
+  "sessions": {
+    "s_f5975a8eacca7b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "afcb16ac-caf0-4626-8d72-3db4a93d03da",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
