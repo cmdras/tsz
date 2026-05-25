@@ -1,0 +1,21 @@
+packages/web/src/routes/_authed/admin/users/$id/index.tsx
+  s_88bf5d66a4a3b0::t_14ff9032322f4c 16-17
+packages/web/src/routes/_authed/admin/customers/$id/index.tsx
+  s_88bf5d66a4a3b0::t_62cbfd35d01a04 16-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d864295713703236c300cf10cd49fe197f91390e",
+  "prompts": {},
+  "sessions": {
+    "s_88bf5d66a4a3b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d7a41493-e299-4ab6-ba84-6307cfaa0c33",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
