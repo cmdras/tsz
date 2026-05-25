@@ -1,0 +1,33 @@
+packages/web/src/components/admin-list-panel.tsx
+  s_29e20a725ad3c5::t_54f9e54340aab0 47-51
+  s_29e20a725ad3c5::t_6013b7d6fc891e 36-41
+  s_29e20a725ad3c5::t_47d358f3fc772f 1
+CHANGELOG.md
+  s_29e20a725ad3c5::t_78f52b33cbcd32 6
+.gitignore
+  s_e6ca544c57a4d7::t_bcfe13a9a02744 57-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "b86baaf54795754802c743e0cd929222088eb554",
+  "prompts": {},
+  "sessions": {
+    "s_29e20a725ad3c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bff9f9ae-de66-47bc-8a0d-5b0624b4d36b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    },
+    "s_e6ca544c57a4d7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b52a0ac6-1f88-43b9-a22b-54af0e1d1d41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
