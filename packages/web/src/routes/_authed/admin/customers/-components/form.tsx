@@ -39,6 +39,7 @@ export function CustomerForm({ initial, onSubmit, title, onDone }: CustomerFormP
       try {
         await onSubmit(value);
         toast.success('Customer saved');
+        void router.invalidate();
         navigateOnDone();
       } catch {
         toast.error('Failed to save customer');

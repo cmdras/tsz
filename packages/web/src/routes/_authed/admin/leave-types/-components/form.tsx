@@ -40,6 +40,7 @@ export function LeaveTypeForm({ initial, onSubmit, title, onDone }: LeaveTypeFor
       try {
         await onSubmit(value);
         toast.success('Leave type saved');
+        void router.invalidate();
         navigateOnDone();
       } catch (error) {
         toast.error(error instanceof Error ? error.message : 'Failed to save leave type');

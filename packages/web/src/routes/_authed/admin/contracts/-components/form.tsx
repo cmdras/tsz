@@ -49,6 +49,7 @@ export function ContractForm({ initial, customers, consultants, onSubmit, title,
       try {
         await onSubmit(value);
         toast.success('Contract saved');
+        void router.invalidate();
         navigateOnDone();
       } catch {
         toast.error('Failed to save contract');
