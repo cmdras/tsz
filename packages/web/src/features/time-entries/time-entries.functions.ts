@@ -22,24 +22,19 @@ const weekCellSchema = z.object({
   hours: z.number(),
 });
 
+const weekMutationSchema = z.object({
+  week: z.string(),
+  cells: z.array(weekCellSchema),
+});
+
 export const saveDraft = createServerFn({ method: 'POST' })
-  .inputValidator(
-    z.object({
-      week: z.string(),
-      cells: z.array(weekCellSchema),
-    }),
-  )
+  .inputValidator(weekMutationSchema)
   .handler(async ({ data }) => {
     return await saveWeekDraft(data.week, data.cells as WeekCell[]);
   });
 
 export const submitWeekFn = createServerFn({ method: 'POST' })
-  .inputValidator(
-    z.object({
-      week: z.string(),
-      cells: z.array(weekCellSchema),
-    }),
-  )
+  .inputValidator(weekMutationSchema)
   .handler(async ({ data }) => {
     return await submitWeek(data.week, data.cells as WeekCell[]);
   });

@@ -2,6 +2,8 @@
 
 ## 2026-05-25
 
+- refactor(time-entries): the shared input schema for save-draft and submit-week is now defined once instead of duplicated inline in each server function
+
 - refactor(admin): the Contracts and Leave Types list panels now share a common shell — search input, filter tabs, pagination footer — reducing duplication; behavior is unchanged
 - fix(admin): the search input in list panels now correctly reflects the URL state on browser back/forward navigation
 - refactor(admin): the cancel/save button row in all four admin forms is now a shared FormFooter component; the save button is also disabled while a submission is in flight to prevent double-submit
