@@ -16,10 +16,15 @@ export interface HourCellHandle {
   triggerFocus: () => void;
 }
 
-export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourCell(
-  { value, dailyOtherTotal, isWeekend, isLeave = false, onCommit, onFocusNext, onFocusPrev },
-  ref,
-) {
+interface UseHourCellParams {
+  value: number | null;
+  dailyOtherTotal: number;
+  onCommit: (value: number | null) => void;
+  onFocusNext?: () => void;
+  onFocusPrev?: () => void;
+}
+
+function useHourCell({ value, dailyOtherTotal, onCommit, onFocusNext, onFocusPrev }: UseHourCellParams) {
   const [rawInput, setRawInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isOver24, setIsOver24] = useState(false);
@@ -32,29 +37,23 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
     setIsFocused(true);
   }
 
-  // Expose triggerFocus so WeekGrid can programmatically focus a specific cell.
-  useImperativeHandle(ref, () => ({ triggerFocus }));
-
   useEffect(() => {
     if (isFocused) {
       inputRef.current?.focus();
     }
   }, [isFocused]);
 
-  if (isWeekend) {
-    return (
-      <div className="border-l p-2 bg-muted/40">
-        <div className="flex h-8 items-center justify-center text-muted-foreground/30 select-none">—</div>
-      </div>
-    );
-  }
-
-  function commitAndAdvance(newValue: number | null, direction: 'next' | 'prev' | 'none') {
+  function commitAndAdvance(newValue: number | null, moveFocus?: () => void) {
     hotkeyCommittedRef.current = true;
     onCommit(newValue);
-    if (direction === 'next') onFocusNext?.();
-    else if (direction === 'prev') onFocusPrev?.();
+    moveFocus?.();
     inputRef.current?.blur();
+  }
+
+  function resolveCommitValue(): number | null {
+    if (isOver24) return value;
+    const parsed = parseHourInput(rawInput);
+    return parsed === null || parsed === 0 ? null : parsed;
   }
 
   function handleBlur() {
@@ -63,15 +62,21 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
       hotkeyCommittedRef.current = false;
       return;
     }
-    const parsed = parseHourInput(rawInput);
-    if (isOver24) {
-      onCommit(value); // revert to saved value rather than clearing
-    } else if (parsed === null || parsed === 0) {
-      onCommit(null);
-    } else {
-      onCommit(parsed);
-    }
+    onCommit(resolveCommitValue());
     setIsOver24(false);
+  }
+
+  function handleHotkeyChar(hotkeyValue: number) {
+    if (dailyOtherTotal + hotkeyValue > 24) {
+      setRawInput(String(hotkeyValue));
+      setIsOver24(true);
+    } else {
+      commitAndAdvance(hotkeyValue, onFocusNext);
+    }
+  }
+
+  function handleEnterKey() {
+    commitAndAdvance(resolveCommitValue(), onFocusNext);
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -81,22 +86,19 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
 
     if (hotkeyValue !== undefined) {
       event.preventDefault();
-      if (dailyOtherTotal + hotkeyValue > 24) {
-        setRawInput(String(hotkeyValue));
-        setIsOver24(true);
-        return;
-      }
-      commitAndAdvance(hotkeyValue, 'next');
-    } else if (key === 'enter') {
-      event.preventDefault();
-      const parsed = parseHourInput(rawInput);
-      const committed = isOver24 ? value : parsed === null || parsed === 0 ? null : parsed;
-      commitAndAdvance(committed, 'next');
-    } else if (key === 'delete') {
-      event.preventDefault();
-      commitAndAdvance(null, 'prev');
+      handleHotkeyChar(hotkeyValue);
+      return;
     }
-    // Backspace: default browser behavior (delete character before cursor)
+
+    const specialKeyHandlers: Record<string, () => void> = {
+      enter: handleEnterKey,
+      delete: () => commitAndAdvance(null, onFocusPrev),
+    };
+    const specialHandler = specialKeyHandlers[key];
+    if (specialHandler) {
+      event.preventDefault();
+      specialHandler();
+    }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -104,9 +106,29 @@ export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourC
     const filtered = event.target.value.replace(/[^\d.,]/g, '');
     const newRaw = filtered.replaceAll(',', '.');
     const numericValue = Number(newRaw);
-    const exceeds = !Number.isNaN(numericValue) && dailyOtherTotal + numericValue > 24;
-    setIsOver24(exceeds);
+    setIsOver24(!Number.isNaN(numericValue) && dailyOtherTotal + numericValue > 24);
     setRawInput(newRaw);
+  }
+
+  return { rawInput, isFocused, isOver24, inputRef, triggerFocus, handleBlur, handleKeyDown, handleChange };
+}
+
+export const HourCell = forwardRef<HourCellHandle, HourCellProps>(function HourCell(
+  { value, dailyOtherTotal, isWeekend, isLeave = false, onCommit, onFocusNext, onFocusPrev },
+  ref,
+) {
+  const { rawInput, isFocused, isOver24, inputRef, triggerFocus, handleBlur, handleKeyDown, handleChange } =
+    useHourCell({ value, dailyOtherTotal, onCommit, onFocusNext, onFocusPrev });
+
+  // Expose triggerFocus so WeekGrid can programmatically focus a specific cell.
+  useImperativeHandle(ref, () => ({ triggerFocus }));
+
+  if (isWeekend) {
+    return (
+      <div className="border-l p-2 bg-muted/40">
+        <div className="flex h-8 items-center justify-center text-muted-foreground/30 select-none">—</div>
+      </div>
+    );
   }
 
   if (isFocused) {
