@@ -2,8 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { customerSchema, type CustomerInput } from '#/features/customers/customers.schemas';
-import { FormFooter } from '#/components/form-footer';
-import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
+import { FormCard } from '#/components/form-card';
 import { TextField } from '#/components/text-field';
 
 interface CustomerFormProps {
@@ -48,40 +47,20 @@ export function CustomerForm({ initial, onSubmit, title, onDone }: CustomerFormP
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form
-          onSubmit={(submitEvent) => {
-            submitEvent.preventDefault();
-            submitEvent.stopPropagation();
-            form.handleSubmit();
-          }}
-          className="grid gap-4"
-        >
-          <form.Field name="name">{(field) => <TextField field={field} label="Name" autoFocus />}</form.Field>
-          <form.Field name="street">{(field) => <TextField field={field} label="Street" />}</form.Field>
+    <FormCard title={title} form={form} onCancel={navigateOnDone}>
+      <form.Field name="name">{(field) => <TextField field={field} label="Name" autoFocus />}</form.Field>
+      <form.Field name="street">{(field) => <TextField field={field} label="Street" />}</form.Field>
 
-          <div className="grid grid-cols-2 gap-4">
-            <form.Field name="zip">{(field) => <TextField field={field} label="Zip" />}</form.Field>
-            <form.Field name="city">{(field) => <TextField field={field} label="City" />}</form.Field>
-          </div>
+      <div className="grid grid-cols-2 gap-4">
+        <form.Field name="zip">{(field) => <TextField field={field} label="Zip" />}</form.Field>
+        <form.Field name="city">{(field) => <TextField field={field} label="City" />}</form.Field>
+      </div>
 
-          <form.Field name="country">{(field) => <TextField field={field} label="Country" />}</form.Field>
-          <form.Field name="contactName">{(field) => <TextField field={field} label="Contact Name" />}</form.Field>
-          <form.Field name="contactEmail">
-            {(field) => <TextField field={field} label="Contact Email" type="email" />}
-          </form.Field>
-
-          <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting] as const}>
-            {([canSubmit, isSubmitting]) => (
-              <FormFooter canSubmit={canSubmit} isPending={isSubmitting} onCancel={navigateOnDone} />
-            )}
-          </form.Subscribe>
-        </form>
-      </CardContent>
-    </Card>
+      <form.Field name="country">{(field) => <TextField field={field} label="Country" />}</form.Field>
+      <form.Field name="contactName">{(field) => <TextField field={field} label="Contact Name" />}</form.Field>
+      <form.Field name="contactEmail">
+        {(field) => <TextField field={field} label="Contact Email" type="email" />}
+      </form.Field>
+    </FormCard>
   );
 }
