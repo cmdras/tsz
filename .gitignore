@@ -54,3 +54,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Claude worktrees:
 .claude/worktrees/
+
+# Local utility scripts
+kill-api.sh

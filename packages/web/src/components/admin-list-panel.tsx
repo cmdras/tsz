@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { ArchiveFilterTabs } from '#/components/archive-filter-tabs';
@@ -33,13 +33,22 @@ export function AdminListPanel({
   emptyMessage,
   children,
 }: AdminListPanelProps) {
+  const [localSearch, setLocalSearch] = useState(search ?? '');
+
+  useEffect(() => {
+    setLocalSearch(search ?? '');
+  }, [search]);
+
   return (
     <div className="w-80 flex flex-col border rounded-lg overflow-hidden flex-shrink-0">
       <div className="p-3 border-b space-y-2">
         <Input
           placeholder={searchPlaceholder}
-          defaultValue={search ?? ''}
-          onChange={(changeEvent) => onSearchChange(changeEvent.target.value)}
+          value={localSearch}
+          onChange={(changeEvent) => {
+            setLocalSearch(changeEvent.target.value);
+            onSearchChange(changeEvent.target.value);
+          }}
         />
         <ArchiveFilterTabs value={filter} onValueChange={onFilterChange} />
       </div>
