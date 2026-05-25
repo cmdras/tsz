@@ -3,6 +3,10 @@
 ## 2026-05-25
 
 - refactor(time-entries): the Time Entry page is decomposed — copy-last-week logic lives in a dedicated `useCopyLastWeek` hook, the status card is its own component, and the header toolbar is extracted into `TimeEntryHeader`; behavior is unchanged
+- fix(admin): users list now refreshes immediately after saving a new or edited user, instead of showing stale data for up to 30 seconds
+- refactor(admin): UserForm decomposed into focused helpers — `useNavigateOnDone`, `useUserFormSubmit`, `UserInfoSection`, `UserLeavesSection`, `LeaveTableRow`, `LeaveModeCell`, `LeavePicker`; no function exceeds 60 lines and UserForm CRAP drops below 30
+- refactor(time-entry): the week grid is broken into focused modules — row rendering, keyboard navigation, and model helpers each live in their own file; `week-grid.tsx` drops from 332 to 143 lines with no change in behavior
+- refactor(time-entries): the shared input schema for save-draft and submit-week is now defined once instead of duplicated inline in each server function
 
 - refactor(admin): the Contracts and Leave Types list panels now share a common shell — search input, filter tabs, pagination footer — reducing duplication; behavior is unchanged
 - fix(admin): the search input in list panels now correctly reflects the URL state on browser back/forward navigation
