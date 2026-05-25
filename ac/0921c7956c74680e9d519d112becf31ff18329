@@ -1,0 +1,24 @@
+packages/web/src/routes/_authed.tsx
+  s_7f61f5eae8c03f::t_3e8f2907b839da 7-11,17
+packages/web/src/routes/_authed/time-entry/-components/last-week-card.tsx
+  s_7f61f5eae8c03f::t_38170bd1d1c873 14
+  s_7f61f5eae8c03f::t_1c32a36dc823a5 13,15-16,18-34,47
+packages/web/src/features/users/users.functions.ts
+  s_7f61f5eae8c03f::t_a28eb4fb6eba08 45-56,63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ac0921c7956c74680e9d519d112becf31ff18329",
+  "prompts": {},
+  "sessions": {
+    "s_7f61f5eae8c03f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b2c5fe8-dc10-415e-96c3-5dd7a680dd8f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
