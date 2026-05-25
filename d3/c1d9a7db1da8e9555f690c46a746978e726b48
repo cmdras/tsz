@@ -1,0 +1,27 @@
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_e6ca544c57a4d7::t_3ca409bff0cda3 1,3-4,20-24,27-56,58-59,61-84
+CHANGELOG.md
+  s_e6ca544c57a4d7::t_951afed64c1c80 3-6
+packages/web/src/hooks/use-admin-list-panel-navigation.ts
+  s_e6ca544c57a4d7::t_7a4903cea80579 1-32
+packages/web/src/components/admin-list-panel.tsx
+  s_e6ca544c57a4d7::t_5d8b361b84ff6c 1-84
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-list-panel.tsx
+  s_e6ca544c57a4d7::t_343d820412e478 1,3-4,27-31,34-63,65-66,68-78,80-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d3c1d9a7db1da8e9555f690c46a746978e726b48",
+  "prompts": {},
+  "sessions": {
+    "s_e6ca544c57a4d7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b52a0ac6-1f88-43b9-a22b-54af0e1d1d41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
