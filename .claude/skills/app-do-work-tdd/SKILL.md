@@ -58,6 +58,7 @@ bun run test:api:int # runs integration tests
 
 Once static analysis and tests pass
 
+- Update `CHANGELOG.md` under today's date with functional, user-facing bullet points. Each bullet answers "what can a user now do?" or "what behavior changed?" — not "what was built". No class/method names, no test counts, no migration names. **Skip this step when working in a worktree** — concurrent worktrees all editing the same date section produce predictable merge conflicts; the user adds the entry on master after merging.
 - commit the work. Run `Skill('git-commit')` to commit the work.
 - push the feature branch and create a PR. Link the current issue to the PR
 
