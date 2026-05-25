@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
 import { LeaveTypeDetailPanel } from '../-components/leave-type-detail-panel';
 
 const parentRoute = getRouteApi('/_authed/admin/leave-types/$id');
@@ -11,6 +11,7 @@ function LeaveTypeDetail() {
   const { id } = Route.useParams();
   const { items } = parentRoute.useLoaderData();
   const navigate = useNavigate();
+  const router = useRouter();
   const leaveType = items.find((candidate) => candidate.id === id);
 
   if (!leaveType) {
@@ -21,5 +22,13 @@ function LeaveTypeDetail() {
     );
   }
 
-  return <LeaveTypeDetailPanel leaveType={leaveType} onArchiveSuccess={() => navigate({ to: '/admin/leave-types' })} />;
+  return (
+    <LeaveTypeDetailPanel
+      leaveType={leaveType}
+      onArchiveSuccess={() => {
+        void router.invalidate();
+        void navigate({ to: '/admin/leave-types' });
+      }}
+    />
+  );
 }
