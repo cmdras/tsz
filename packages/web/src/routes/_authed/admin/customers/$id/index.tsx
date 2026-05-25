@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
 import { CustomerDetailPanel } from '../-components/customer-detail-panel';
 import { CustomerNotFound } from '../-components/customer-not-found';
 
@@ -13,9 +13,19 @@ function CustomerDetail() {
   const { items } = parentRoute.useLoaderData();
   const navigate = useNavigate();
 
+  const router = useRouter();
+
   const customer = items.find((candidate) => candidate.id === id);
 
   if (!customer) return <CustomerNotFound />;
 
-  return <CustomerDetailPanel customer={customer} onArchiveSuccess={() => navigate({ to: '/admin/customers' })} />;
+  return (
+    <CustomerDetailPanel
+      customer={customer}
+      onArchiveSuccess={() => {
+        void router.invalidate();
+        void navigate({ to: '/admin/customers' });
+      }}
+    />
+  );
 }

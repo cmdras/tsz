@@ -32,7 +32,14 @@ export function CopyConfirmDialog({ open, onConfirm, onCancel }: CopyConfirmDial
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Overwrite</AlertDialogAction>
+          <AlertDialogAction
+            onClick={(submitEvent) => {
+              submitEvent.preventDefault();
+              onConfirm();
+            }}
+          >
+            Overwrite
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
