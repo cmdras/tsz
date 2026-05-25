@@ -1,0 +1,39 @@
+packages/web/src/routes/_authed/admin/contracts/-components/form.tsx
+  s_c4adedffa4faf8::t_c7161c3ff085f1 8
+  s_c4adedffa4faf8::t_f9f93cb416afc3 213
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_c4adedffa4faf8::t_59690f353f912d 15
+  s_c4adedffa4faf8::t_7b6ecf27d7a33f 282
+packages/web/src/components/admin-list-panel.tsx
+  s_c4adedffa4faf8::t_c8cd91896bb4ec 1
+  ai_agent 58-60
+packages/web/src/components/form-footer.tsx
+  s_c4adedffa4faf8::t_8bf3d8b8a8c76f 1-12,14-21
+  s_c4adedffa4faf8::t_245db78e7f2be6 13
+CHANGELOG.md
+  s_c4adedffa4faf8::t_5e58c30fb33cf5 7-8
+packages/web/src/routes/_authed/admin/leave-types/-components/form.tsx
+  s_c4adedffa4faf8::t_90ff4746ce9f89 112
+  s_c4adedffa4faf8::t_900902d02c200c 5
+packages/web/src/hooks/use-admin-list-panel-navigation.ts
+  s_c4adedffa4faf8::t_1a94609e1907af 5
+packages/web/src/routes/_authed/admin/customers/-components/form.tsx
+  s_c4adedffa4faf8::t_d00a0179680df9 5
+  s_c4adedffa4faf8::t_5d9a3bf420b6b4 80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "64f84e71b7541f6c12f225e7ec75585eba75f3b2",
+  "prompts": {},
+  "sessions": {
+    "s_c4adedffa4faf8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eca61562-cf14-491b-a6e7-c3474b08f904",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
