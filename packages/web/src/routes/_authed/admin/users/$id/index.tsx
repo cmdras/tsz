@@ -13,11 +13,11 @@ function UserDetail() {
   const { items } = parentRoute.useLoaderData();
   const navigate = useNavigate();
 
+  const router = useRouter();
+
   const user = items.find((candidate) => candidate.id === id);
 
   if (!user) return <UserNotFound />;
-
-  const router = useRouter();
 
   return (
     <UserDetailPanel

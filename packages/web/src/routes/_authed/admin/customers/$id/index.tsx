@@ -13,11 +13,11 @@ function CustomerDetail() {
   const { items } = parentRoute.useLoaderData();
   const navigate = useNavigate();
 
+  const router = useRouter();
+
   const customer = items.find((candidate) => candidate.id === id);
 
   if (!customer) return <CustomerNotFound />;
-
-  const router = useRouter();
 
   return (
     <CustomerDetailPanel
