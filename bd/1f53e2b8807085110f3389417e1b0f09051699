@@ -1,0 +1,33 @@
+packages/web/src/routes/_authed/time-entry/-components/status-card.tsx
+  s_477f78385f0e72::t_663e94d882057c 1-38
+packages/web/src/routes/_authed/time-entry/-components/submit-week-dialog.tsx
+  s_477f78385f0e72::t_e1f8140349c907 1-43
+packages/web/src/routes/_authed/time-entry/-components/copy-confirm-dialog.tsx
+  s_477f78385f0e72::t_ab91f2cde8c991 1-40
+packages/web/src/routes/_authed/time-entry/-components/use-copy-last-week.ts
+  s_477f78385f0e72::t_c2687d2876a8b4 1-73
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_477f78385f0e72::t_f2e5b84c235b09 11
+  s_477f78385f0e72::t_42d10744c4eae3 6-7,10,12-13,38-43,118
+  s_477f78385f0e72::t_88c2c27ed5ddc6 101-110
+packages/web/src/routes/_authed/time-entry/-components/time-entry-header.tsx
+  s_477f78385f0e72::t_41090731474d1c 1-44
+CHANGELOG.md
+  s_477f78385f0e72::t_f6ea249f6bece7 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "bd1f53e2b8807085110f3389417e1b0f09051699",
+  "prompts": {},
+  "sessions": {
+    "s_477f78385f0e72": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8d60bf10-9072-46ba-9506-496913220348",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
