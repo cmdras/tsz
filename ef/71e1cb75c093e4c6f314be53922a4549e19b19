@@ -1,0 +1,29 @@
+CHANGELOG.md
+  s_cd60ab9d172a04::t_3cc926e33edbe1 5-6
+packages/web/src/features/users/users.functions.ts
+  s_cd60ab9d172a04::t_93cc423b9bbff5 63
+packages/web/src/routes/_authed/admin/contracts/-components/contract-detail-panel.tsx
+  s_cd60ab9d172a04::t_5baf26e6b423d3 27-43,77,95
+packages/web/src/routes/_authed/admin/contracts/-components/form.tsx
+  s_cd60ab9d172a04::t_7fd289b6291976 37-38
+  s_cd60ab9d172a04::t_97473c5b9bf06d 55
+  s_cd60ab9d172a04::t_a0d6463822fa04 51
+  s_cd60ab9d172a04::t_153aac8acb8ff9 28-36
+  s_cd60ab9d172a04::t_5187d96a6dab57 26-27,39,41,48-50,52,124,128-206
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ef71e1cb75c093e4c6f314be53922a4549e19b19",
+  "prompts": {},
+  "sessions": {
+    "s_cd60ab9d172a04": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c81daad6-0c66-47fa-bb51-bd15ff31477b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
