@@ -1,0 +1,30 @@
+packages/web/src/routes/_authed/admin/users/-components/form.tsx
+  s_e93c6ce5a0b01b::t_0e01721fc9185c 44-52
+  s_e93c6ce5a0b01b::t_5b9f26bbf061c7 87
+  s_e93c6ce5a0b01b::t_2aa88dd3edca98 40-41,88,101,111-147,152,194-204,218-220,260-278,280-307
+  s_e93c6ce5a0b01b::t_79a9e998728fdc 83
+  s_e93c6ce5a0b01b::t_0e3d29cf4c9980 207-211,221-259,279,308-339
+  s_e93c6ce5a0b01b::t_8d35864377362c 154,157
+  s_e93c6ce5a0b01b::t_8158963e106248 102
+  s_e93c6ce5a0b01b::t_b629dcb25c0322 53,55,62
+  s_e93c6ce5a0b01b::t_287f8260e72a30 64-76,78-80,84,89,148-151,153,155-156,163-193,205-206,212-217
+  s_e93c6ce5a0b01b::t_0871cbafa12157 158-162
+CHANGELOG.md
+  s_e93c6ce5a0b01b::t_a6f46e778c91e2 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "4e284eae00aed73a6adde0d6c345b206d01ab790",
+  "prompts": {},
+  "sessions": {
+    "s_e93c6ce5a0b01b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "057deda9-39b4-4ab2-a83d-9881a84e2f84",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
