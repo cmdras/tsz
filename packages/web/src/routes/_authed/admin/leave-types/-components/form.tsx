@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { leaveTypeSchema, allowanceModes, type LeaveTypeInput } from '#/features/leave-types/leave-types.schemas';
-import { Button } from '#/components/ui/button';
+import { FormFooter } from '#/components/form-footer';
 import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
 import { Input } from '#/components/ui/input';
 import { Label } from '#/components/ui/label';
@@ -109,14 +109,7 @@ export function LeaveTypeForm({ initial, onSubmit, title, onDone }: LeaveTypeFor
 
           <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting] as const}>
             {([canSubmit, isSubmitting]) => (
-              <div className="flex gap-2">
-                <Button type="submit" disabled={!canSubmit}>
-                  {isSubmitting ? 'Saving…' : 'Save'}
-                </Button>
-                <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
-                  Cancel
-                </Button>
-              </div>
+              <FormFooter canSubmit={canSubmit} isPending={isSubmitting} onCancel={navigateOnDone} />
             )}
           </form.Subscribe>
         </form>

@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { Children, type ReactNode, useEffect, useState } from 'react';
 import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { ArchiveFilterTabs } from '#/components/archive-filter-tabs';
@@ -55,7 +55,9 @@ export function AdminListPanel({
 
       <div className="flex-1 overflow-y-auto min-h-0 scrollbar-euricom">
         {children}
-        {total === 0 && <p className="text-center text-muted-foreground text-sm py-8">{emptyMessage}</p>}
+        {Children.count(children) === 0 && (
+          <p className="text-center text-muted-foreground text-sm py-8">{emptyMessage}</p>
+        )}
       </div>
 
       <div className="px-3 py-2 border-t flex items-center justify-between text-xs text-muted-foreground">

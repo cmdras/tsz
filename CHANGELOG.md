@@ -4,6 +4,8 @@
 
 - refactor(admin): the Contracts and Leave Types list panels now share a common shell — search input, filter tabs, pagination footer — reducing duplication; behavior is unchanged
 - fix(admin): the search input in list panels now correctly reflects the URL state on browser back/forward navigation
+- refactor(admin): the cancel/save button row in all four admin forms is now a shared FormFooter component; the save button is also disabled while a submission is in flight to prevent double-submit
+- fix(admin): list panels no longer show a blank body without explanation when the current page has no items but the total result count is non-zero (e.g. navigating to a stale page number after filtering)
 
 ## 2026-05-23
 

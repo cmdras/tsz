@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useDebouncedCallback } from '#/hooks/use-debounced-callback';
 import type { ArchiveFilter } from '#/lib/archive-filter';
 
-type AdminListPanelRoute = '/admin/contracts/' | '/admin/leave-types/';
+type AdminListPanelRoute = '/admin/contracts/' | '/admin/leave-types/' | '/admin/customers/' | '/admin/users/';
 
 interface UseAdminListPanelNavigationOptions {
   from: AdminListPanelRoute;

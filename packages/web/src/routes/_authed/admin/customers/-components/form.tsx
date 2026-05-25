@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { customerSchema, type CustomerInput } from '#/features/customers/customers.schemas';
-import { Button } from '#/components/ui/button';
+import { FormFooter } from '#/components/form-footer';
 import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
 import { TextField } from '#/components/text-field';
 
@@ -77,14 +77,7 @@ export function CustomerForm({ initial, onSubmit, title, onDone }: CustomerFormP
 
           <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting] as const}>
             {([canSubmit, isSubmitting]) => (
-              <div className="flex gap-2">
-                <Button type="submit" disabled={!canSubmit}>
-                  {isSubmitting ? 'Saving…' : 'Save'}
-                </Button>
-                <Button type="button" variant="outline" onClick={navigateOnDone} disabled={isSubmitting}>
-                  Cancel
-                </Button>
-              </div>
+              <FormFooter canSubmit={canSubmit} isPending={isSubmitting} onCancel={navigateOnDone} />
             )}
           </form.Subscribe>
         </form>
