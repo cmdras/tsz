@@ -1,0 +1,21 @@
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_9acb3a04989625::t_83bffb18b5b9e6 25-29,31,37
+CHANGELOG.md
+  s_9acb3a04989625::t_e48c1fcf6dff50 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "37ed5a70bd002ffc3a57f6adc7571108a2deb0cc",
+  "prompts": {},
+  "sessions": {
+    "s_9acb3a04989625": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bf077b13-838c-4895-9973-04271e83a9cd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
