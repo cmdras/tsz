@@ -16,6 +16,55 @@ interface LeaveTypeListPanelProps {
   filter?: ArchiveFilter;
 }
 
+interface LeaveTypeListItemProps {
+  leaveType: LeaveType;
+  isSelected: boolean;
+}
+
+function buildLeaveTypeRowClassName(isSelected: boolean, isArchived: boolean) {
+  return cn(
+    'group relative flex flex-col px-3 py-2.5 hover:bg-muted/50 transition-colors',
+    isSelected && 'bg-muted/30',
+    isArchived && 'opacity-60',
+  );
+}
+
+function buildIndicatorClassName(isSelected: boolean) {
+  return cn(
+    'absolute left-0 top-0 h-full w-0.5 bg-primary origin-center transition-transform duration-200 ease-out',
+    isSelected ? 'scale-y-100' : 'scale-y-0',
+  );
+}
+
+function formatLeaveTypeMode(defaultMode: LeaveType['defaultMode'], defaultDays: number) {
+  return defaultMode === 'Unlimited' ? 'Unlimited' : `${defaultDays} days · Limited`;
+}
+
+function LeaveTypeListItem({ leaveType, isSelected }: LeaveTypeListItemProps) {
+  return (
+    <Link
+      to="/admin/leave-types/$id"
+      params={{ id: leaveType.id }}
+      search={(previous) => previous}
+      preload={false}
+      className={buildLeaveTypeRowClassName(isSelected, leaveType.isArchived)}
+    >
+      <span aria-hidden className={buildIndicatorClassName(isSelected)} />
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-sm font-medium truncate">{leaveType.name}</span>
+        {leaveType.isArchived && (
+          <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4 flex-shrink-0">
+            Archived
+          </Badge>
+        )}
+      </div>
+      <span className="text-xs text-muted-foreground mt-0.5">
+        {formatLeaveTypeMode(leaveType.defaultMode, leaveType.defaultDays)}
+      </span>
+    </Link>
+  );
+}
+
 export function LeaveTypeListPanel({
   leaveTypes,
   total,
@@ -44,42 +93,9 @@ export function LeaveTypeListPanel({
       onPageChange={goToPage}
       emptyMessage="No leave types found."
     >
-      {leaveTypes.map((leaveType) => {
-        const isSelected = leaveType.id === selectedId;
-        return (
-          <Link
-            key={leaveType.id}
-            to="/admin/leave-types/$id"
-            params={{ id: leaveType.id }}
-            search={(previous) => previous}
-            preload={false}
-            className={cn(
-              'group relative flex flex-col px-3 py-2.5 hover:bg-muted/50 transition-colors',
-              isSelected && 'bg-muted/30',
-              leaveType.isArchived && 'opacity-60',
-            )}
-          >
-            <span
-              aria-hidden
-              className={cn(
-                'absolute left-0 top-0 h-full w-0.5 bg-primary origin-center transition-transform duration-200 ease-out',
-                isSelected ? 'scale-y-100' : 'scale-y-0',
-              )}
-            />
-            <div className="flex items-baseline justify-between gap-2">
-              <span className="text-sm font-medium truncate">{leaveType.name}</span>
-              {leaveType.isArchived && (
-                <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4 flex-shrink-0">
-                  Archived
-                </Badge>
-              )}
-            </div>
-            <span className="text-xs text-muted-foreground mt-0.5">
-              {leaveType.defaultMode === 'Unlimited' ? 'Unlimited' : `${leaveType.defaultDays} days · Limited`}
-            </span>
-          </Link>
-        );
-      })}
+      {leaveTypes.map((leaveType) => (
+        <LeaveTypeListItem key={leaveType.id} leaveType={leaveType} isSelected={leaveType.id === selectedId} />
+      ))}
     </AdminListPanel>
   );
 }

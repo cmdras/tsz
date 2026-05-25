@@ -17,12 +17,7 @@ interface CopyConfirmDialogProps {
 
 export function CopyConfirmDialog({ open, onConfirm, onCancel }: CopyConfirmDialogProps) {
   return (
-    <AlertDialog
-      open={open}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onCancel();
-      }}
-    >
+    <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Overwrite this week?</AlertDialogTitle>
@@ -31,7 +26,7 @@ export function CopyConfirmDialog({ open, onConfirm, onCancel }: CopyConfirmDial
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm}>Overwrite</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
