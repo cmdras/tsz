@@ -24,6 +24,23 @@ interface ContractDetailPanelProps {
   onArchiveSuccess: () => void;
 }
 
+function archiveMessage(subject: string, isArchived: boolean) {
+  return isArchived
+    ? `${subject} will be restored to the active contract list.`
+    : `${subject} will be removed from the active contract list.`;
+}
+
+function ContractStatusBadge({ contract }: { contract: Contract }) {
+  if (contract.isArchived) {
+    return <Badge variant="secondary">Archived</Badge>;
+  }
+  return (
+    <Badge variant="outline" className="border-primary text-primary">
+      {contract.endDate ? 'Active' : 'Open-ended'}
+    </Badge>
+  );
+}
+
 export function ContractDetailPanel({ contract, onArchiveSuccess }: ContractDetailPanelProps) {
   const [isActionPending, setIsActionPending] = useState(false);
   const archiveLabel = contract.isArchived ? 'Unarchive' : 'Archive';
@@ -57,13 +74,7 @@ export function ContractDetailPanel({ contract, onArchiveSuccess }: ContractDeta
           </p>
           <h2 className="text-3xl font-bold leading-tight mt-1">{contract.subject}</h2>
           <div className="flex items-center gap-2 mt-2">
-            {contract.isArchived ? (
-              <Badge variant="secondary">Archived</Badge>
-            ) : (
-              <Badge variant="outline" className="border-primary text-primary">
-                {contract.endDate ? 'Active' : 'Open-ended'}
-              </Badge>
-            )}
+            <ContractStatusBadge contract={contract} />
           </div>
         </div>
         <div className="flex gap-2 flex-shrink-0">
@@ -81,11 +92,7 @@ export function ContractDetailPanel({ contract, onArchiveSuccess }: ContractDeta
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>{archiveLabel} contract?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {contract.isArchived
-                    ? `${contract.subject} will be restored to the active contract list.`
-                    : `${contract.subject} will be removed from the active contract list.`}
-                </AlertDialogDescription>
+                <AlertDialogDescription>{archiveMessage(contract.subject, contract.isArchived)}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
