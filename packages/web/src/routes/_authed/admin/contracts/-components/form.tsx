@@ -23,25 +23,36 @@ interface ContractFormProps {
   onDone?: () => void;
 }
 
-export function ContractForm({ initial, customers, consultants, onSubmit, title, onDone }: ContractFormProps) {
+type ContractFormInstance = ReturnType<typeof useForm<ContractInput>>;
+
+function buildFormDefaults({
+  customerId = '',
+  consultantId = '',
+  subject = '',
+  startDate = '',
+  endDate = '',
+  tasks = [{ name: '', dayRate: 0 }],
+}: Partial<ContractInput>): ContractInput {
+  return { customerId, consultantId, subject, startDate, endDate, tasks };
+}
+
+function useNavigateOnDone(onDone?: () => void) {
   const router = useRouter();
-  const navigateOnDone = () => {
+  return () => {
     if (onDone) {
       onDone();
       return;
     }
     router.navigate({ to: '/admin/contracts' });
   };
+}
+
+export function ContractForm({ initial, customers, consultants, onSubmit, title, onDone }: ContractFormProps) {
+  const router = useRouter();
+  const navigateOnDone = useNavigateOnDone(onDone);
 
   const form = useForm({
-    defaultValues: {
-      customerId: initial.customerId ?? '',
-      consultantId: initial.consultantId ?? '',
-      subject: initial.subject ?? '',
-      startDate: initial.startDate ?? '',
-      endDate: initial.endDate ?? '',
-      tasks: initial.tasks ?? [{ name: '', dayRate: 0 }],
-    } satisfies ContractInput,
+    defaultValues: buildFormDefaults(initial),
     validators: {
       onChange: contractSchema,
     },
@@ -110,84 +121,88 @@ export function ContractForm({ initial, customers, consultants, onSubmit, title,
         <form.Field name="endDate">{(field) => <TextField field={field} label="End Date" type="date" />}</form.Field>
       </div>
 
-      <div>
-        <Label className="mb-2 block">Tasks</Label>
-        <form.Field name="tasks" mode="array">
-          {(tasksField) => (
-            <div className="grid gap-2">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead className="w-36">Day Rate</TableHead>
-                    <TableHead className="w-10" />
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tasksField.state.value.map((_, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="py-1">
-                        <form.Field name={`tasks[${index}].name`}>
-                          {(field) => (
-                            <>
-                              <Input
-                                id={field.name}
-                                value={field.state.value}
-                                onChange={(changeEvent) => field.handleChange(changeEvent.target.value)}
-                                onBlur={field.handleBlur}
-                                placeholder="Task name"
-                              />
-                              <FieldError field={field} />
-                            </>
-                          )}
-                        </form.Field>
-                      </TableCell>
-                      <TableCell className="py-1">
-                        <form.Field name={`tasks[${index}].dayRate`}>
-                          {(field) => (
-                            <>
-                              <Input
-                                id={field.name}
-                                type="number"
-                                step="0.01"
-                                min="0.01"
-                                value={field.state.value === 0 ? '' : String(field.state.value)}
-                                onChange={(changeEvent) =>
-                                  field.handleChange(parseFloat(changeEvent.target.value) || 0)
-                                }
-                                onBlur={field.handleBlur}
-                                placeholder="0.00"
-                              />
-                              <FieldError field={field} />
-                            </>
-                          )}
-                        </form.Field>
-                      </TableCell>
-                      <TableCell className="py-1">
-                        {tasksField.state.value.length > 1 && (
-                          <Button type="button" variant="ghost" size="sm" onClick={() => tasksField.removeValue(index)}>
-                            ×
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="w-fit"
-                onClick={() => tasksField.pushValue({ name: '', dayRate: 0 } as ContractTaskInput)}
-              >
-                Add task
-              </Button>
-              <form.Field name="tasks">{(field) => <FieldError field={field} />}</form.Field>
-            </div>
-          )}
-        </form.Field>
-      </div>
+      <ContractTasksField form={form} />
     </FormCard>
+  );
+}
+
+function ContractTasksField({ form }: { form: ContractFormInstance }) {
+  return (
+    <div>
+      <Label className="mb-2 block">Tasks</Label>
+      <form.Field name="tasks" mode="array">
+        {(tasksField) => (
+          <div className="grid gap-2">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead className="w-36">Day Rate</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {tasksField.state.value.map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="py-1">
+                      <form.Field name={`tasks[${index}].name`}>
+                        {(field) => (
+                          <>
+                            <Input
+                              id={field.name}
+                              value={field.state.value}
+                              onChange={(changeEvent) => field.handleChange(changeEvent.target.value)}
+                              onBlur={field.handleBlur}
+                              placeholder="Task name"
+                            />
+                            <FieldError field={field} />
+                          </>
+                        )}
+                      </form.Field>
+                    </TableCell>
+                    <TableCell className="py-1">
+                      <form.Field name={`tasks[${index}].dayRate`}>
+                        {(field) => (
+                          <>
+                            <Input
+                              id={field.name}
+                              type="number"
+                              step="0.01"
+                              min="0.01"
+                              value={field.state.value === 0 ? '' : String(field.state.value)}
+                              onChange={(changeEvent) => field.handleChange(parseFloat(changeEvent.target.value) || 0)}
+                              onBlur={field.handleBlur}
+                              placeholder="0.00"
+                            />
+                            <FieldError field={field} />
+                          </>
+                        )}
+                      </form.Field>
+                    </TableCell>
+                    <TableCell className="py-1">
+                      {tasksField.state.value.length > 1 && (
+                        <Button type="button" variant="ghost" size="sm" onClick={() => tasksField.removeValue(index)}>
+                          ×
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-fit"
+              onClick={() => tasksField.pushValue({ name: '', dayRate: 0 } as ContractTaskInput)}
+            >
+              Add task
+            </Button>
+            <form.Field name="tasks">{(field) => <FieldError field={field} />}</form.Field>
+          </div>
+        )}
+      </form.Field>
+    </div>
   );
 }

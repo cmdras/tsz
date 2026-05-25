@@ -60,7 +60,7 @@ export const updateUserFn = createServerFn({ method: 'POST' })
     try {
       return await updateUser(id, data);
     } catch (error) {
-      handleUpdateConflictError(error);
+      return handleUpdateConflictError(error);
     }
   });
 
