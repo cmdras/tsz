@@ -1,0 +1,23 @@
+packages/web/src/routes/_authed/admin/leave-types/-components/leave-type-list-panel.tsx
+  s_02563334b1c685::t_a1dd286548f65c 19-67,96-98
+packages/web/src/routes/_authed/time-entry/-components/copy-confirm-dialog.tsx
+  s_02563334b1c685::t_d80dad78b20893 20,29
+packages/web/src/routes/_authed/admin/contracts/-components/contract-list-panel.tsx
+  s_02563334b1c685::t_8fbf7c562ce06e 19-75,97-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "6d0e843a9bdb229b49e7a646d97517a314d02514",
+  "prompts": {},
+  "sessions": {
+    "s_02563334b1c685": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dcb869a6-8834-4db5-be4a-5e29eb11b238",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
