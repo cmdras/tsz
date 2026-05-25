@@ -1,0 +1,29 @@
+packages/web/src/routes/_authed/admin/customers/$id/index.tsx
+  s_02563334b1c685::t_5caef16f25ae06 20-30
+  s_02563334b1c685::t_2e942b3f18b302 1
+packages/web/src/routes/_authed/admin/leave-types/$id/index.tsx
+  s_02563334b1c685::t_dc6d62b875bccf 14,25-33
+  s_02563334b1c685::t_105722007e5a19 1
+packages/web/src/routes/_authed/admin/users/$id/index.tsx
+  s_02563334b1c685::t_79e644d544e4a8 20-30
+  s_02563334b1c685::t_292db99338573d 1
+packages/web/src/routes/_authed/admin/contracts/$id/index.tsx
+  s_02563334b1c685::t_81f0740b3fbe32 1
+  s_02563334b1c685::t_aa4871529770b4 14,25-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "bd037a6223b93275edf758b273022d16d3b92d7d",
+  "prompts": {},
+  "sessions": {
+    "s_02563334b1c685": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dcb869a6-8834-4db5-be4a-5e29eb11b238",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
