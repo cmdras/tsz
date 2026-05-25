@@ -2,6 +2,8 @@
 
 ## 2026-05-25
 
+- fix(admin): users list now refreshes immediately after saving a new or edited user, instead of showing stale data for up to 30 seconds
+- refactor(admin): UserForm decomposed into focused helpers — `useNavigateOnDone`, `useUserFormSubmit`, `UserInfoSection`, `UserLeavesSection`, `LeaveTableRow`, `LeaveModeCell`, `LeavePicker`; no function exceeds 60 lines and UserForm CRAP drops below 30
 - refactor(time-entry): the week grid is broken into focused modules — row rendering, keyboard navigation, and model helpers each live in their own file; `week-grid.tsx` drops from 332 to 143 lines with no change in behavior
 - refactor(time-entries): the shared input schema for save-draft and submit-week is now defined once instead of duplicated inline in each server function
 
