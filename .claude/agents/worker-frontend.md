@@ -40,7 +40,7 @@ All commits stay on the current sub-branch.
 
 ## Output contract (hard)
 
-Your final message must end with a single line matching `^(SUCCESS|FAILED: .+)$` — checked by regex on the last non-blank line.
+Your final message must end with a single line matching `^(SUCCESS(: .+)?|FAILED: .+)$` — checked by regex on the last non-blank line.
 
 - Ambiguous scope → `FAILED: needs clarification: <question>`. Never ask the orchestrator clarifying questions during the run.
 - No frontend work in this issue → `SUCCESS: nothing to do`.

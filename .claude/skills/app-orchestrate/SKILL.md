@@ -72,11 +72,11 @@ For each issue, two fresh subagents run sequentially on the same sub-branch: **`
 
 If the harness pauses a subagent (tool-use cap), it returns an `agentId` instead of a SUCCESS/FAILED line. Use `SendMessage(to: <agentId>, prompt: "continue")` to resume — the subagent's incremental commits are already on the sub-branch and it picks up from there. Repeat until it emits SUCCESS or FAILED.
 
-If `SendMessage` is not in this session's tool catalog, fall back to a fresh continuation `Agent()` of the same subagent type, on the same sub-branch, with a prompt that re-states the original inputs plus: "previous run paused mid-work; commits already on branch — pick up from there." Note: `allowed-tools` in this skill's frontmatter cannot conjure `SendMessage`; it only pre-approves tools the session already has.
+If `SendMessage` is not in this session's tool catalog, fall back to a fresh continuation `Agent()` of the same subagent type, on the same sub-branch, with a prompt that re-states the original inputs plus: "previous run paused mid-work; commits already on branch — pick up from there."
 
 #### 3d. Parse the subagent responses
 
-Take the last non-blank line of each subagent's final message. Strict regex `^(SUCCESS|FAILED: .+)$`:
+Take the last non-blank line of each subagent's final message. Strict regex `^(SUCCESS(: .+)?|FAILED: .+)$`:
 
 - Backend `SUCCESS` → run 3c.ii (frontend). Frontend `SUCCESS` → 3e with combined QA bullets.
 - Backend `FAILED: <reason>` → skip frontend → 3g with the backend reason.
