@@ -2,6 +2,11 @@
 
 ## 2026-05-26
 
+- feat(leave-overview): a new `/leave-overview` page shows the whole year at a glance — 12 mini-calendars in a 4×3 grid alongside a balance sidebar; days with any logged leave are outlined, today is highlighted with a primary-colour pill, and weekend cells are tinted
+- feat(leave-overview): the sidebar lists each Limited leave type (alphabetical) with a coloured dot, inline progress bar, "rem / total LEFT" text, and a big remaining-days number that clamps at 0 when allowance is exceeded; the header summarises the year as "N types · X days left · Y taken"
+- feat(leave-overview): clickable legend chips above the calendar (one per Limited and Unlimited type) toggle a focus mode — matching days light up in the type's colour, a "FOCUSED ON …" banner appears, and the `?focus=<id>` URL param round-trips so the view restores on refresh or share
+- feat(leave-overview): year prev/next arrows and a Today button move across years; the URL `?year=YYYY` round-trips, arrows are bound-disabled at 2000/2100, and year navigation now preserves an active `?focus` selection
+- feat(leave-overview): clicking any day cell on any month navigates to `/time-entry?week=<ISO Monday>` so the calendar doubles as a year-wide week-navigator for past, current, and future weeks
 - feat(timesheets): a new `/timesheets` page shows the current month as a Mon–Sun calendar grid; prev/next chevrons, a clickable month label with a date-picker popover, a Today button, and an Export month button (toast-only for now) round out the header
 - feat(timesheets): each day cell shows total hours plus up to two colored chips (project chips share the customer avatar color; leave chips are amber) with a `+N more` chip when there are extras, and clicking any cell jumps to that week in `/time-entry`
 - feat(timesheets): a right-hand sidebar summarises the month — total workdays + hours, and a breakdown per customer and per leave type sorted by hours descending
