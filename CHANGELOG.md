@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-26
+
+- feat(skills): a dedicated `/app-changelog` skill writes one dated CHANGELOG.md section per feature branch in user-facing terms; changelog authorship is now decoupled from committing
+- feat(skills): a new `/app-orchestrate` skill processes all `ready-for-agent` issues sequentially — each lands on its own sub-branch, merges into a shared feature branch, and one PR is opened to master for human QA
+
 ## 2026-05-25
 
 - refactor(admin): ContractForm and ContractDetailPanel decomposed — tasks table moved into a dedicated `ContractTasksField` component, status badge into `ContractStatusBadge`, and archive description text into `archiveMessage`; CRAP for both functions drops below 30 and neither is flagged HIGH by fallow
