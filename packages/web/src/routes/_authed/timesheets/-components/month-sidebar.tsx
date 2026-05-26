@@ -1,9 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card';
+import { useNavigate } from '@tanstack/react-router';
+import { Card, CardContent } from '#/components/ui/card';
 import { getAvatarColor } from '#/lib/utils';
-import type { MonthDayResponse } from '#/features/timesheets/timesheets.server';
+import type { MonthDayResponse, WeekSubmissionStatusResponse } from '#/features/timesheets/timesheets.server';
+import { fromIsoDateString, toIsoDateString, getIsoMonday } from '#/lib/date-utils';
 
 interface MonthSidebarProps {
   days: MonthDayResponse[];
+  weekSubmissions: WeekSubmissionStatusResponse[];
+  today: string;
 }
 
 interface AggregatedRow {
@@ -37,7 +41,7 @@ function buildAggregatedRows(inMonthDays: MonthDayResponse[]): AggregatedRow[] {
     ...Array.from(leaveHours.entries()).map(([leaveTypeName, hours]) => ({
       label: leaveTypeName,
       hours,
-      color: '#f59e0b', // amber-500
+      color: '#f59e0b',
       isLeave: true,
     })),
   ];
@@ -45,52 +49,123 @@ function buildAggregatedRows(inMonthDays: MonthDayResponse[]): AggregatedRow[] {
   return rows.toSorted((a, b) => b.hours - a.hours);
 }
 
-export function MonthSidebar({ days }: MonthSidebarProps) {
+function countUnsubmittedPastWeeks(
+  days: MonthDayResponse[],
+  weekSubmissions: WeekSubmissionStatusResponse[],
+  today: string,
+): number {
+  const submittedWeekStarts = new Set(weekSubmissions.map((submission) => submission.weekStart));
+
+  const weekRows: MonthDayResponse[][] = [];
+  for (let index = 0; index < days.length; index += 7) {
+    weekRows.push(days.slice(index, index + 7));
+  }
+
+  return weekRows.filter((rowDays) => {
+    const sundayDate = rowDays[6].date;
+    if (sundayDate >= today) return false;
+    const mondayDate = rowDays[0].date;
+    if (submittedWeekStarts.has(mondayDate)) return false;
+    return rowDays.some((day) => day.isInMonth && day.entries.length > 0);
+  }).length;
+}
+
+function isoMondayForDate(dateString: string): string {
+  const date = fromIsoDateString(dateString);
+  return toIsoDateString(getIsoMonday(date));
+}
+
+export function MonthSidebar({ days, weekSubmissions, today }: MonthSidebarProps) {
+  const navigate = useNavigate();
   const inMonthDays = days.filter((day) => day.isInMonth);
 
-  const workdays = inMonthDays.filter((day) => day.entries.length > 0).length;
+  const daysWithEntries = inMonthDays.filter((day) => day.entries.length > 0).length;
   const totalHours = inMonthDays.reduce((sum, day) => sum + day.totalHours, 0);
+  const holidayHours = inMonthDays.reduce((sum, day) => {
+    return sum + day.entries.filter((entry) => entry.kind === 'leave').reduce((s, entry) => s + entry.hours, 0);
+  }, 0);
 
   const aggregatedRows = buildAggregatedRows(inMonthDays);
+  const unsubmittedPastWeeksCount = countUnsubmittedPastWeeks(days, weekSubmissions, today);
+
+  function handleReviewSubmission() {
+    const firstUnsubmitted = days.find((day) => {
+      if (!day.isInMonth || day.entries.length === 0) return false;
+      const submittedWeekStarts = new Set(weekSubmissions.map((s) => s.weekStart));
+      const mondayDate = isoMondayForDate(day.date);
+      const sundayDate = days.find((d) => d.date > mondayDate && new Date(d.date + 'T00:00:00').getDay() === 0)?.date;
+      return sundayDate && sundayDate < today && !submittedWeekStarts.has(mondayDate);
+    });
+    const weekParam = firstUnsubmitted ? isoMondayForDate(firstUnsubmitted.date) : isoMondayForDate(today);
+    void navigate({ to: '/time-entry', search: { week: weekParam } });
+  }
 
   return (
-    <div className="flex w-56 shrink-0 flex-col gap-4">
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Totals</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            {workdays} workdays · {totalHours}h
+    <div className="flex w-64 shrink-0 flex-col gap-4">
+      <Card className="border-primary">
+        <CardContent className="p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Totals / Approved entries
           </p>
+
+          <div className="mt-3 flex items-baseline gap-1.5">
+            <span className="text-4xl font-bold text-primary">{daysWithEntries}</span>
+            <span className="text-sm text-muted-foreground">workdays</span>
+          </div>
+
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {totalHours}h logged{holidayHours > 0 ? ` · ${holidayHours}h holidays` : ''}
+          </p>
+
+          {aggregatedRows.length > 0 && (
+            <>
+              <div className="mt-4 flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">By project</p>
+                <p className="text-xs text-muted-foreground">{aggregatedRows.length} projects</p>
+              </div>
+              <ul className="mt-2 flex flex-col gap-3">
+                {aggregatedRows.map((row) => (
+                  <li key={`${row.isLeave ? 'leave' : 'customer'}:${row.label}`}>
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex min-w-0 items-center gap-1.5">
+                        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: row.color }} />
+                        <span className="min-w-0 truncate" title={row.label}>
+                          {row.label}
+                        </span>
+                      </div>
+                      <span className="ml-2 shrink-0 text-muted-foreground">{row.hours}h</span>
+                    </div>
+                    <div className="mt-1 h-0.5 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{ width: totalHours > 0 ? `${(row.hours / totalHours) * 100}%` : '0%' }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {aggregatedRows.length === 0 && <p className="mt-4 text-sm text-muted-foreground">No entries this month.</p>}
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">By customer</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {aggregatedRows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No entries this month.</p>
-          ) : (
-            <ul className="flex flex-col gap-2">
-              {aggregatedRows.map((row) => (
-                <li
-                  key={`${row.isLeave ? 'leave' : 'customer'}:${row.label}`}
-                  className="flex items-center gap-2 text-sm"
-                >
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: row.color }} />
-                  <span className="min-w-0 flex-1 truncate" title={row.label}>
-                    {row.label}
-                  </span>
-                  <span className="shrink-0 text-muted-foreground">{row.hours}h</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+      {unsubmittedPastWeeksCount > 0 && (
+        <Card className="border-amber-500 bg-amber-500/10">
+          <CardContent className="p-4">
+            <p className="text-sm font-medium text-amber-400">
+              {unsubmittedPastWeeksCount} week{unsubmittedPastWeeksCount > 1 ? 's' : ''} awaiting submission
+            </p>
+            <button
+              onClick={handleReviewSubmission}
+              className="mt-1 text-xs text-amber-400 underline hover:text-amber-300"
+            >
+              Review submission
+            </button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

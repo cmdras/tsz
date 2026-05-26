@@ -42,7 +42,7 @@ export function MonthGrid({ days, today, weekSubmissions }: MonthGridProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border">
+    <div className="flex h-full flex-col overflow-hidden rounded-lg border">
       <div className="grid grid-cols-7">
         {DAY_HEADERS.map((header) => (
           <div
@@ -58,7 +58,7 @@ export function MonthGrid({ days, today, weekSubmissions }: MonthGridProps) {
         <div
           key={isoMondayOfRow(rowDays)}
           className={cn(
-            'grid grid-cols-7',
+            'grid flex-1 grid-cols-7',
             isPastUnsubmitted(rowDays, today, submittedWeekStarts) && 'border-l-4 border-l-amber-500',
           )}
         >

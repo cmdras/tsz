@@ -38,7 +38,7 @@ export function DayCell({ day, isToday, isWeekend }: DayCellProps) {
         if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') handleCellClick();
       }}
       className={cn(
-        'min-h-20 cursor-pointer border-b border-r p-1',
+        'cursor-pointer border-b border-r p-1',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
         isWeekend && 'bg-muted/30',
         !day.isInMonth && 'opacity-40',
