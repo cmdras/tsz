@@ -1,0 +1,24 @@
+.claude/skills/app-orchestrate/SKILL.md
+  s_7e4cd1e41311ae::t_6d2020d9200f86 75
+  s_7e4cd1e41311ae::t_19ec203c6800ba 79
+.claude/agents/worker-backend.md
+  s_7e4cd1e41311ae::t_0b90ec4aaa62bf 43
+.claude/agents/worker-frontend.md
+  s_7e4cd1e41311ae::t_abf3d8c57a7228 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "0449257e2d8e54409521b37bc6fcdc5d928dab87",
+  "prompts": {},
+  "sessions": {
+    "s_7e4cd1e41311ae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "65475e5c-a4c3-49d3-8d67-9a19755a413b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
