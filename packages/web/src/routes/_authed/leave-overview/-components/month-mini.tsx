@@ -14,19 +14,19 @@ function buildMonthDays(year: number, monthIndex: number): DayCellData[] {
 
   const lastDay = new Date(year, monthIndex + 1, 0);
   const lastDayOfWeek = lastDay.getDay();
-  // Days until Sunday: Sun=0 → 0 extra; Mon=1 → 6 extra; …
   const daysUntilSunday = lastDayOfWeek === 0 ? 0 : 7 - lastDayOfWeek;
-  const gridStartMs = gridStart.getTime();
-  const gridEndMs = lastDay.getTime() + daysUntilSunday * 24 * 60 * 60 * 1000;
-  const totalDays = Math.round((gridEndMs - gridStartMs) / (24 * 60 * 60 * 1000)) + 1;
+  const gridEnd = new Date(lastDay.getFullYear(), lastDay.getMonth(), lastDay.getDate() + daysUntilSunday);
 
-  return Array.from({ length: totalDays }, (_, dayOffset) => {
-    const date = new Date(gridStartMs + dayOffset * 24 * 60 * 60 * 1000);
-    return {
-      dateString: toIsoDateString(date),
-      isInMonth: date.getMonth() === monthIndex,
-    };
-  });
+  const days: DayCellData[] = [];
+  let cursor = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate());
+  while (cursor <= gridEnd) {
+    days.push({
+      dateString: toIsoDateString(cursor),
+      isInMonth: cursor.getMonth() === monthIndex,
+    });
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate() + 1);
+  }
+  return days;
 }
 
 interface MonthMiniProps {

@@ -37,8 +37,8 @@ builder.Services.AddCustomersModule();
 builder.Services.AddUserLeaveAllowancesModule();
 builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
-builder.Services.AddLeaveTypesModule();
 builder.Services.AddLeaveOverviewModule();
+builder.Services.AddLeaveTypesModule();
 builder.Services.AddStatsModule();
 builder.Services.AddTimeEntriesModule();
 
@@ -70,8 +70,8 @@ app.MapGet("/", () => new
 app.MapCustomersModule();
 app.MapUsersModule();
 app.MapContractsModule();
-app.MapLeaveTypesModule();
 app.MapLeaveOverviewModule();
+app.MapLeaveTypesModule();
 app.MapStatsModule();
 app.MapTimeEntriesModule();
 

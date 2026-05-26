@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_authed/leave-overview/')({
 function LeaveOverviewPage() {
   const { overview } = Route.useLoaderData();
   const search = Route.useSearch();
-  const year = search.year ?? currentYear();
+  const year = overview.year;
   const focus = search.focus;
 
   return (

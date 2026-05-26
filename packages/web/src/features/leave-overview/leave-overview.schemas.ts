@@ -11,12 +11,12 @@ export const leaveOverviewTypeItemSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   mode: z.enum(['Limited', 'Unlimited']),
-  allowance: z.number(),
-  takenDays: z.number(),
+  allowance: z.number().nonnegative(),
+  takenDays: z.number().nonnegative(),
 });
 
 export const leaveOverviewDayItemSchema = z.object({
-  date: z.string(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   leaveTypeIds: z.array(z.string().uuid()),
 });
 

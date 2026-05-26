@@ -41,7 +41,7 @@ public class LeaveOverviewAggregatorShould
             UpdatedAt = DateTime.UtcNow,
         };
 
-    // --- Tracer bullet: empty year returns empty days, zero types ---
+    // --- Tracer bullet: empty year returns empty days, types with zeroed takenDays ---
 
     [Fact]
     public void Given_EmptyYear_When_Aggregating_Then_ReturnsEmptyDaysAndZeroedTypes()

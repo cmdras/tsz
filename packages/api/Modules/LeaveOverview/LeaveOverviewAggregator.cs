@@ -16,8 +16,13 @@ public static class LeaveOverviewAggregator
             .Where(leaveType => !leaveType.IsArchived)
             .ToList();
 
+        var activeLeaveTypeIds = activeLeaveTypes.Select(leaveType => leaveType.Id).ToHashSet();
+
         var yearEntries = timeEntries
-            .Where(entry => entry.LeaveTypeId.HasValue && entry.Hours > 0 && entry.Date.Year == year)
+            .Where(entry => entry.LeaveTypeId.HasValue
+                && entry.Hours > 0
+                && entry.Date.Year == year
+                && activeLeaveTypeIds.Contains(entry.LeaveTypeId.Value))
             .ToList();
 
         var allowanceByLeaveTypeId = userAllowances

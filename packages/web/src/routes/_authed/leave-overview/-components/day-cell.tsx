@@ -54,12 +54,11 @@ export function DayCell({ dateString, isToday, isWeekend, isInMonth, typeNamesFo
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       onClick={handleCellClick}
       onKeyDown={(keyboardEvent) => {
-        if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') handleCellClick();
+        if (keyboardEvent.key === ' ') keyboardEvent.preventDefault();
       }}
       className={cn(
         'cursor-pointer p-0.5',
@@ -77,6 +76,6 @@ export function DayCell({ dateString, isToday, isWeekend, isInMonth, typeNamesFo
       >
         {dayNumber}
       </span>
-    </div>
+    </button>
   );
 }

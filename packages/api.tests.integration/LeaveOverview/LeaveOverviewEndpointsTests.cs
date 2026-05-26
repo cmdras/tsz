@@ -134,6 +134,7 @@ public class LeaveOverviewEndpointsShould(IntegrationFactory factory) : IClassFi
         var response = await factory.Client.GetAsync($"/api/leave-overview?year={invalidYear}");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
     }
 
     // --- 401 unauthenticated is covered by AuthEnforcementShould ---
