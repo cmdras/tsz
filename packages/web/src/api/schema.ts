@@ -925,6 +925,43 @@ export interface paths {
     };
     trace?: never;
   };
+  '/api/leave-overview': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query: {
+          year: number;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['LeaveOverviewResponse'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/stats/admin': {
     parameters: {
       query?: never;
@@ -1252,6 +1289,27 @@ export interface components {
     };
     /** @enum {unknown} */
     CustomerSort: 'Number' | 'Name' | 'ContactName' | 'City' | null;
+    LeaveOverviewDayItem: {
+      /** Format: date */
+      date: string;
+      leaveTypeIds: string[];
+    };
+    LeaveOverviewResponse: {
+      /** Format: int32 */
+      year: number;
+      types: components['schemas']['LeaveOverviewTypeItem'][];
+      days: components['schemas']['LeaveOverviewDayItem'][];
+    };
+    LeaveOverviewTypeItem: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      mode: string;
+      /** Format: double */
+      allowance: number;
+      /** Format: double */
+      takenDays: number;
+    };
     LeaveTypeRequest: {
       name: string;
       /** Format: double */
@@ -1280,12 +1338,17 @@ export interface components {
     MonthEntryResponse: {
       /** Format: uuid */
       id: string;
+      kind: string;
       /** Format: double */
       hours: number;
       /** Format: uuid */
       contractTaskId: null | string;
+      customerName: null | string;
+      contractSubject: null | string;
+      taskName: null | string;
       /** Format: uuid */
       leaveTypeId: null | string;
+      leaveTypeName: null | string;
     };
     MonthResponse: {
       yearMonth: string;
