@@ -37,7 +37,16 @@ public record PickerOptions(
     IReadOnlyList<PickerTaskOption> AvailableTasks,
     IReadOnlyList<PickerLeaveTypeOption> AvailableLeaveTypes);
 
-public record MonthEntryResponse(Guid Id, decimal Hours, Guid? ContractTaskId, Guid? LeaveTypeId);
+public record MonthEntryResponse(
+    Guid Id,
+    string Kind,
+    decimal Hours,
+    Guid? ContractTaskId,
+    string? CustomerName,
+    string? ContractSubject,
+    string? TaskName,
+    Guid? LeaveTypeId,
+    string? LeaveTypeName);
 
 public record MonthDayResponse(
     DateOnly Date,

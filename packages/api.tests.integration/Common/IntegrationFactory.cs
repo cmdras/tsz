@@ -127,4 +127,21 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
         await context.SaveChangesAsync();
         return leaveType;
     }
+
+    public async Task SeedTimeEntryAsync(DateOnly date, Guid? contractTaskId, Guid? leaveTypeId, decimal hours)
+    {
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.TimeEntries.Add(new Api.Modules.TimeEntries.TimeEntry
+        {
+            Id = Guid.NewGuid(),
+            UserId = TestAuthHandler.CurrentUserId,
+            Date = date,
+            ContractTaskId = contractTaskId,
+            LeaveTypeId = leaveTypeId,
+            Hours = hours,
+            UpdatedAt = DateTime.UtcNow,
+        });
+        await context.SaveChangesAsync();
+    }
 }
