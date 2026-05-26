@@ -1,0 +1,14 @@
+.claude/skills/app-orchestrate/SKILL.md
+  h_f5e73ed3339dc5 89,107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "f04e2feb5edc5a25ac96729f55b33a2e7bb6a9bf",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
