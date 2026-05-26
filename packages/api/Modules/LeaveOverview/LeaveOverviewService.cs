@@ -1,7 +1,10 @@
 using Api.Common.Database;
+using Api.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Modules.LeaveOverview;
+
+public class InvalidLeaveOverviewRequestException(string message) : DomainException(message, 400);
 
 public class LeaveOverviewService(AppDbContext dbContext)
 {
@@ -12,6 +15,9 @@ public class LeaveOverviewService(AppDbContext dbContext)
         int year,
         CancellationToken cancellationToken = default)
     {
+        if (year < 1 || year > 9999)
+            throw new InvalidLeaveOverviewRequestException($"year must be between 1 and 9999. Got: {year}.");
+
         var leaveTypes = await _dbContext.LeaveTypes
             .Where(leaveType => !leaveType.IsArchived)
             .ToListAsync(cancellationToken);

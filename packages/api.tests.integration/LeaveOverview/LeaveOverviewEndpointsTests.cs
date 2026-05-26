@@ -123,6 +123,19 @@ public class LeaveOverviewEndpointsShould(IntegrationFactory factory) : IClassFi
         Assert.Equal(0m, typeItem.GetProperty("takenDays").GetDecimal());
     }
 
+    // --- Invalid year returns 400 ---
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(10000)]
+    public async Task Given_InvalidYear_When_GettingOverview_Then_ReturnsBadRequest(int invalidYear)
+    {
+        var response = await factory.Client.GetAsync($"/api/leave-overview?year={invalidYear}");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
     // --- 401 unauthenticated is covered by AuthEnforcementShould ---
     // The AuthEnforcementShould test class asserts that every /api/* endpoint requires IAuthorizeData,
     // which guarantees that GET /api/leave-overview requires authentication.
