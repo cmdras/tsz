@@ -57,3 +57,4 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Local utility scripts
 kill-api.sh
+tmp/architecture-review.md

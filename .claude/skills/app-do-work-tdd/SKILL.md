@@ -2,7 +2,6 @@
 name: do-work-tdd
 description: Execute a unit of work end-to-end: plan, implement with tdd, validate with typecheck and tests, then commit. Use when user wants to do work, build a feature, fix a bug, or implement a phase from a plan.
 argument-hint: '[issue-file] — path to an issue markdown file.'
-disable-model-invocation: true
 ---
 
 # Do Work (TDD)
@@ -18,10 +17,6 @@ If an issue file was passed as an argument, read it first — it is the source o
 Then explore the codebase to understand the relevant files, patterns, and conventions. Delegate codebase exploration beyond ~3 greps to the built-in `Explore` agent to keep context light.
 
 If the task is ambiguous, ask the user to clarify scope before proceeding.
-
-### 1.5 Switch Branch(Optional)
-
-Ensure that the to be implemented work is in a feature branch. Create and switch if the current branch is master. Skip if we are already in a feature branch.
 
 ### 2. Implement
 
@@ -56,11 +51,9 @@ bun run test:api:int # runs integration tests
 
 ### 5. Commit
 
-Once static analysis and tests pass
+Once static analysis and tests pass, run `Skill('git-commit')` to commit the work.
 
-- Update `CHANGELOG.md` under today's date with functional, user-facing bullet points. Each bullet answers "what can a user now do?" or "what behavior changed?" — not "what was built". No class/method names, no test counts, no migration names. **Skip this step when working in a worktree** — concurrent worktrees all editing the same date section produce predictable merge conflicts; the user adds the entry on master after merging.
-- commit the work. Run `Skill('git-commit')` to commit the work.
-- push the feature branch and create a PR. Link the current issue to the PR
+Branch setup, pushing, and PR creation are the caller's responsibility — this skill assumes the working branch is already checked out and only produces commits on it.
 
 ### 6. Reporting
 

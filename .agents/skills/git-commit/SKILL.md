@@ -90,19 +90,7 @@ Analyze the diff to determine:
 - **Scope**: What area/module is affected?
 - **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
 
-### 4. Update CHANGELOG.md (before committing)
-
-Maintain a `CHANGELOG.md` at the **repo root** (the path from `git rev-parse --show-toplevel` above). It is grouped by day in reverse-chronological order.
-
-- If the Current day doesnt exist yet in the changelog: insert a new `## <today's date>` section directly below the `# Changelog` heading (above any existing day sections)
-- Update `CHANGELOG.md` under today's date with functional, user-facing bullet points. Each bullet answers "what can a user now do?" or "what behavior changed?" — not "what was built". No class/method names, no test counts, no migration names. Example:
-  - ✓ "Admins can view all users and create new ones via an Add dialog"
-  - ✓ "Creating a user automatically assigns a leave balance for each active leave type"
-  - ✗ "Added UserService.CreateAsync with single SaveChangesAsync and 10 unit tests"
-
-- Stage `CHANGELOG.md` together with the other files so it lands in the same commit.
-
-### 5. Execute Commit
+### 4. Execute Commit
 
 ```bash
 # Single line
