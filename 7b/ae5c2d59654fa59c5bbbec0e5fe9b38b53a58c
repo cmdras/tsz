@@ -1,0 +1,21 @@
+packages/web/src/lib/leave-type-color.ts
+  s_b8a1624f2028ba::t_3304c48a1be7ae 1-25
+packages/web/src/lib/leave-type-color.test.ts
+  s_b8a1624f2028ba::t_4765197d0b4ef8 1-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "7bae5c2d59654fa59c5bbbec0e5fe9b38b53a58c",
+  "prompts": {},
+  "sessions": {
+    "s_b8a1624f2028ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b4de51-f316-4b94-8791-a23d9c238dc8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
