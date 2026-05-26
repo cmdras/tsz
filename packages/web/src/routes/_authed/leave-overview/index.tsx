@@ -25,13 +25,14 @@ function LeaveOverviewPage() {
   const { overview } = Route.useLoaderData();
   const search = Route.useSearch();
   const year = search.year ?? currentYear();
+  const focus = search.focus;
 
   return (
     <div className="flex flex-col gap-6 p-6">
       <YearHeader year={year} types={overview.types} />
       <div className="flex items-start gap-6">
         <BalanceSidebar year={year} types={overview.types} />
-        <YearCalendar year={year} />
+        <YearCalendar year={year} types={overview.types} days={overview.days} focus={focus} />
       </div>
     </div>
   );

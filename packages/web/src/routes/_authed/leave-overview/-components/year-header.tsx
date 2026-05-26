@@ -26,15 +26,15 @@ export function YearHeader({ year, types }: YearHeaderProps) {
   const daysLeft = computeDaysLeft(types);
 
   function handlePreviousYear() {
-    void navigate({ search: { year: year - 1 } });
+    void navigate({ search: (previous) => ({ ...previous, year: year - 1 }) });
   }
 
   function handleNextYear() {
-    void navigate({ search: { year: year + 1 } });
+    void navigate({ search: (previous) => ({ ...previous, year: year + 1 }) });
   }
 
   function handleToday() {
-    void navigate({ search: { year: currentYear } });
+    void navigate({ search: (previous) => ({ ...previous, year: currentYear }) });
   }
 
   return (
