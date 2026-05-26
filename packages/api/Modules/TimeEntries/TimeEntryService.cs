@@ -106,6 +106,8 @@ public class TimeEntryService
             return false;
         if (!int.TryParse(value.AsSpan(0, 4), out var year) || !int.TryParse(value.AsSpan(5, 2), out var month))
             return false;
+        if (year < 1 || year > 9999)
+            return false;
         if (month < 1 || month > 12)
             return false;
         result = new DateOnly(year, month, 1);

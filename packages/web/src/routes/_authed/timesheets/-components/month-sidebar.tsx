@@ -76,7 +76,10 @@ export function MonthSidebar({ days }: MonthSidebarProps) {
           ) : (
             <ul className="flex flex-col gap-2">
               {aggregatedRows.map((row) => (
-                <li key={row.label} className="flex items-center gap-2 text-sm">
+                <li
+                  key={`${row.isLeave ? 'leave' : 'customer'}:${row.label}`}
+                  className="flex items-center gap-2 text-sm"
+                >
                   <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: row.color }} />
                   <span className="min-w-0 flex-1 truncate" title={row.label}>
                     {row.label}
