@@ -1,0 +1,23 @@
+packages/web/src/routes/_authed/leave-overview/-components/balance-row.tsx
+  s_b7f40c562dc741::t_d0009aee842c61 19
+packages/web/src/routes/_authed/leave-overview/-components/day-cell.tsx
+  s_b7f40c562dc741::t_70b3157b3ad88a 69-70
+  s_b7f40c562dc741::t_dfbb87274abd92 53
+  s_b7f40c562dc741::t_6d43a102a6d26d 52,54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d95d7b9240bc8abc7439787dbe12ccd759b8e4e0",
+  "prompts": {},
+  "sessions": {
+    "s_b7f40c562dc741": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20cc04da-72dd-478c-9962-4c4b33e51ebd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
