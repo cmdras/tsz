@@ -1,0 +1,28 @@
+packages/web/src/routes/_authed/leave-overview/-components/legend-chips.tsx
+  s_b8a1624f2028ba::t_8914c13e49fe00 1-37,41-50
+  ai_agent 38-40
+packages/web/src/routes/_authed/leave-overview/-components/year-calendar.tsx
+  s_b8a1624f2028ba::t_e7f5e5b4461bb6 1,4,10-12,15,18-34,36-56
+packages/web/src/routes/_authed/leave-overview/-components/month-mini.tsx
+  s_b8a1624f2028ba::t_d2964a8238601e 36-39,42,58,66-67
+packages/web/src/routes/_authed/leave-overview/index.tsx
+  s_b8a1624f2028ba::t_bae12bb120c30b 28,35
+packages/web/src/routes/_authed/leave-overview/-components/day-cell.tsx
+  s_b8a1624f2028ba::t_2da6b92a490152 2,11-14,22-46,50,69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "393340e54a7115fa92ce02a22b75542873f808d6",
+  "prompts": {},
+  "sessions": {
+    "s_b8a1624f2028ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b4de51-f316-4b94-8791-a23d9c238dc8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
