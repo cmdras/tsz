@@ -36,3 +36,20 @@ public record PickerLeaveTypeOption(Guid LeaveTypeId, string Name);
 public record PickerOptions(
     IReadOnlyList<PickerTaskOption> AvailableTasks,
     IReadOnlyList<PickerLeaveTypeOption> AvailableLeaveTypes);
+
+public record MonthEntryResponse(Guid Id, decimal Hours, Guid? ContractTaskId, Guid? LeaveTypeId);
+
+public record MonthDayResponse(
+    DateOnly Date,
+    bool IsInMonth,
+    decimal TotalHours,
+    IReadOnlyList<MonthEntryResponse> Entries);
+
+public record WeekSubmissionStatusResponse(DateOnly WeekStart, bool IsSubmitted);
+
+public record MonthResponse(
+    string YearMonth,
+    DateOnly FromDate,
+    DateOnly ToDate,
+    IReadOnlyList<MonthDayResponse> Days,
+    IReadOnlyList<WeekSubmissionStatusResponse> WeekSubmissions);

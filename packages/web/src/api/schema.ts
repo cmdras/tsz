@@ -1068,6 +1068,43 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/time-entries/months/{yearMonth}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          yearMonth: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['MonthResponse'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/time-entries/weeks/{weekStart}/submit': {
     parameters: {
       query?: never;
@@ -1232,6 +1269,33 @@ export interface components {
     };
     /** @enum {unknown} */
     LeaveTypeSort: 'Name' | 'DefaultDays' | null;
+    MonthDayResponse: {
+      /** Format: date */
+      date: string;
+      isInMonth: boolean;
+      /** Format: double */
+      totalHours: number;
+      entries: components['schemas']['MonthEntryResponse'][];
+    };
+    MonthEntryResponse: {
+      /** Format: uuid */
+      id: string;
+      /** Format: double */
+      hours: number;
+      /** Format: uuid */
+      contractTaskId: null | string;
+      /** Format: uuid */
+      leaveTypeId: null | string;
+    };
+    MonthResponse: {
+      yearMonth: string;
+      /** Format: date */
+      fromDate: string;
+      /** Format: date */
+      toDate: string;
+      days: components['schemas']['MonthDayResponse'][];
+      weekSubmissions: components['schemas']['WeekSubmissionStatusResponse'][];
+    };
     PagedContracts: {
       items: components['schemas']['ContractResponse'][];
       /** Format: int32 */
@@ -1373,6 +1437,11 @@ export interface components {
       leaveTypeId: null | string;
       leaveTypeName: null | string;
       hours: (null | number)[];
+    };
+    WeekSubmissionStatusResponse: {
+      /** Format: date */
+      weekStart: string;
+      isSubmitted: boolean;
     };
   };
   responses: never;
