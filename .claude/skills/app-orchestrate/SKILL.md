@@ -121,9 +121,16 @@ If at least one issue succeeded AND the loop wasn't halted by 3f:
 - `Skill('app-changelog')` to write the dated section.
 - `Skill('git-commit')` to commit the changelog
 - `git push origin feature/<name>`.
-- `gh pr create --base master --head feature/<name> --title "<feature-branch-name>: N issues" --body <body>`.
-  - Body bullets: every `ready-for-qa` issue with `#N`, title, URL, and its QA bullets.
-  - Trailing section "Skipped/failed issues" listing any `needs-triage` ones from this run with their reason.
+- **Consolidate QA bullets** across every `ready-for-qa` issue (backend + frontend, all issues in this run) into one unified checklist:
+  - **Dedupe**: bullets describing the same observable behavior collapse to one item, even if phrased differently.
+  - **Drop obsoletes**: if a later issue replaced, removed, or supersedes the behavior a bullet checks, drop that bullet (e.g. issue #5 adds endpoint X, issue #8 removes it → drop "verify X").
+  - **Drop trivia**: drop bullets that just restate generic checks already implied by the merged validation suite (typecheck/tests). Keep behaviors a human must click-through or eyeball.
+  - **Group by feature area** when it aids readability, but a flat list is fine for small runs.
+  - Rewrite for clarity if needed — these are user-facing QA instructions, not raw subagent output.
+- `gh pr create --base master --head feature/<name> --title "<feature-branch-name>: N issues" --body <body>`. The body has three sections:
+  - **Included issues** — one line per `ready-for-qa` issue: `- #N — <title> — <URL>`. No per-issue QA bullets here.
+  - **QA checklist** — the consolidated list from above as markdown checkboxes (`- [ ] <item>`).
+  - **Skipped/failed issues** — any `needs-triage` ones from this run with `#N — <reason>`. Omit the section if empty.
 - Print the PR URL.
 
 If no issues succeeded, do NOT open a PR. Report what failed.
