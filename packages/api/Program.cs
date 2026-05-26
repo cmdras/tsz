@@ -5,6 +5,7 @@ using Api.Common.Extensions;
 using Api.Common.OpenApi;
 using Api.Modules.Contracts;
 using Api.Modules.Customers;
+using Api.Modules.LeaveOverview;
 using Api.Modules.LeaveTypes;
 using Api.Modules.Stats;
 using Api.Modules.TimeEntries;
@@ -37,6 +38,7 @@ builder.Services.AddUserLeaveAllowancesModule();
 builder.Services.AddUsersModule();
 builder.Services.AddContractsModule();
 builder.Services.AddLeaveTypesModule();
+builder.Services.AddLeaveOverviewModule();
 builder.Services.AddStatsModule();
 builder.Services.AddTimeEntriesModule();
 
@@ -69,6 +71,7 @@ app.MapCustomersModule();
 app.MapUsersModule();
 app.MapContractsModule();
 app.MapLeaveTypesModule();
+app.MapLeaveOverviewModule();
 app.MapStatsModule();
 app.MapTimeEntriesModule();
 
