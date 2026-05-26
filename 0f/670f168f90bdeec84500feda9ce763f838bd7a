@@ -1,0 +1,57 @@
+packages/web/src/api/schema.ts
+  s_30305491dc96fc::t_454d70217d0e3d 1071-1107,1272-1298,1441-1445
+packages/web/src/routes/_authed/timesheets/-components/month-nav.tsx
+  s_30305491dc96fc::t_027c21b01a1780 1-88
+packages/api/Modules/TimeEntries/VisibleMonthGrid.cs
+  s_30305491dc96fc::t_2d7f99f248b579 18-19
+  s_30305491dc96fc::t_11983eb2c344e8 1-17,20-28
+packages/api/Modules/TimeEntries/MonthAggregator.cs
+  s_30305491dc96fc::t_6e060d44c793ed 1-17
+packages/web/src/features/timesheets/timesheets.schemas.ts
+  s_30305491dc96fc::t_9f6b196197f3bb 1-19
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_30305491dc96fc::t_47ce82fde9d048 42-48
+packages/web/src/routes/_authed/timesheets/index.tsx
+  s_30305491dc96fc::t_f8428379925599 2-6,8-46
+packages/api.tests/TimeEntries/VisibleMonthGridTests.cs
+  s_30305491dc96fc::t_a835fbd3fb8910 46-60
+  s_30305491dc96fc::t_3d144e59b6416e 19-31
+  s_30305491dc96fc::t_fb1a6c99fcce75 1-18,81
+  s_30305491dc96fc::t_80e98df6ceb4f3 32-45
+  s_30305491dc96fc::t_aa96fe344836d0 61-80
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_30305491dc96fc::t_250f25233dccc0 11
+packages/api.tests/TimeEntries/MonthAggregatorTests.cs
+  s_30305491dc96fc::t_e94dff3dce0acb 25-40
+  s_30305491dc96fc::t_93ec275c842130 1-24,41
+packages/api/Modules/TimeEntries/TimeEntryEndpoints.cs
+  s_30305491dc96fc::t_211e8152f01b49 43-52
+packages/api.tests.integration/TimeEntries/TimeEntryMonthEndpointTests.cs
+  s_30305491dc96fc::t_a327f5f52a456d 1-86
+packages/web/src/features/timesheets/timesheets.server.ts
+  s_30305491dc96fc::t_50d806541edfcf 1-14
+packages/api/Modules/TimeEntries/TimeEntryContracts.cs
+  s_30305491dc96fc::t_4884db40563562 39-55
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_30305491dc96fc::t_10844f54631ad7 84-113
+packages/web/src/features/timesheets/timesheets.functions.ts
+  s_30305491dc96fc::t_5a3867a9da3b73 1-9
+packages/web/src/routes/_authed/timesheets/-components/month-grid.tsx
+  s_30305491dc96fc::t_4a583d49ca4ff6 1-39,41-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "0f670f168f90bdeec84500feda9ce763f838bd7a",
+  "prompts": {},
+  "sessions": {
+    "s_30305491dc96fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2483289a-7c85-4350-8dca-9a2eec49954b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
