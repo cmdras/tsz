@@ -1,0 +1,19 @@
+.claude/skills/app-orchestrate/SKILL.md
+  s_0090c75000cb37::t_ae8def5b0c2a49 124-133
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "c00182d8847397f5027206c59516b175b3070ce0",
+  "prompts": {},
+  "sessions": {
+    "s_0090c75000cb37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d0f5ed52-8723-4582-bfd2-a443d19aaa6c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
