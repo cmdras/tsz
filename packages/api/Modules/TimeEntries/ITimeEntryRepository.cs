@@ -8,11 +8,14 @@ public interface ITimeEntryRepository
     Task<WeekData> GetWeekAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default);
     Task<PickerRawData> GetPickerDataAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<TimeEntry>> GetWeekEntriesAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default);
+    Task<MonthRawData> GetMonthDataAsync(Guid userId, DateOnly fromDate, DateOnly toDate, CancellationToken cancellationToken = default);
     Task ApplyWeekDiffAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken = default);
     Task SubmitWeekAsync(Guid userId, DateOnly weekStart, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime submittedAt, CancellationToken cancellationToken = default);
 }
 
 public record WeekData(bool IsSubmitted, DateTime? SubmittedAt, DateTime? LastSavedAt);
+
+public record MonthRawData(IReadOnlyList<TimeEntry> Entries, IReadOnlyList<WeekSubmission> Submissions);
 
 public record PickerRawData(
     IReadOnlyList<Contract> Contracts,

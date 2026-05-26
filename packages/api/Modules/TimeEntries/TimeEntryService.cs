@@ -81,6 +81,39 @@ public class TimeEntryService
         return await GetWeekAsync(userId, weekStart, cancellationToken);
     }
 
+    public async Task<MonthResponse> GetMonthAsync(Guid userId, string yearMonth, CancellationToken cancellationToken = default)
+    {
+        if (!TryParseYearMonth(yearMonth, out var monthStart))
+            throw new InvalidTimeEntryRequestException($"yearMonth must be in YYYY-MM format. Got: {yearMonth}.");
+
+        var grid = VisibleMonthGrid.Build(monthStart);
+        var monthRawData = await _repository.GetMonthDataAsync(userId, grid.FromDate, grid.ToDate, cancellationToken);
+        var days = MonthAggregator.Build(grid, monthRawData.Entries);
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, monthRawData.Submissions);
+
+        return new MonthResponse(
+            YearMonth: yearMonth,
+            FromDate: grid.FromDate,
+            ToDate: grid.ToDate,
+            Days: days,
+            WeekSubmissions: weekSubmissions);
+    }
+
+    private static bool TryParseYearMonth(string value, out DateOnly result)
+    {
+        result = default;
+        if (string.IsNullOrWhiteSpace(value) || value.Length != 7 || value[4] != '-')
+            return false;
+        if (!int.TryParse(value.AsSpan(0, 4), out var year) || !int.TryParse(value.AsSpan(5, 2), out var month))
+            return false;
+        if (year < 1 || year > 9999)
+            return false;
+        if (month < 1 || month > 12)
+            return false;
+        result = new DateOnly(year, month, 1);
+        return true;
+    }
+
     public async Task<PickerOptions> GetPickerOptionsAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
     {
         if (weekStart.DayOfWeek != DayOfWeek.Monday)

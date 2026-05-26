@@ -2,6 +2,10 @@
 
 ## 2026-05-26
 
+- feat(timesheets): a new `/timesheets` page shows the current month as a Mon–Sun calendar grid; prev/next chevrons, a clickable month label with a date-picker popover, a Today button, and an Export month button (toast-only for now) round out the header
+- feat(timesheets): each day cell shows total hours plus up to two colored chips (project chips share the customer avatar color; leave chips are amber) with a `+N more` chip when there are extras, and clicking any cell jumps to that week in `/time-entry`
+- feat(timesheets): a right-hand sidebar summarises the month — total workdays + hours, and a breakdown per customer and per leave type sorted by hours descending
+- feat(timesheets): past weeks the user never submitted are marked with an amber left-border so they stand out at a glance; submitted and future weeks have no decoration
 - feat(skills): a dedicated `/app-changelog` skill writes one dated CHANGELOG.md section per feature branch in user-facing terms; changelog authorship is now decoupled from committing
 - feat(skills): a new `/app-orchestrate` skill processes all `ready-for-agent` issues sequentially — each lands on its own sub-branch, merges into a shared feature branch, and one PR is opened to master for human QA
 
