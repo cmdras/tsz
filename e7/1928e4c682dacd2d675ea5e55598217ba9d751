@@ -1,0 +1,21 @@
+packages/web/src/routes/_authed/timesheets/-components/month-sidebar.tsx
+  s_fe0979638b36f7::t_83a33cf9c284f7 123-124
+packages/web/src/routes/_authed/timesheets/-components/day-cell.tsx
+  s_fe0979638b36f7::t_685431cd89e1cb 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "e71928e4c682dacd2d675ea5e55598217ba9d751",
+  "prompts": {},
+  "sessions": {
+    "s_fe0979638b36f7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c483df93-602a-4ea1-a24b-de94fab0d3ba",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
