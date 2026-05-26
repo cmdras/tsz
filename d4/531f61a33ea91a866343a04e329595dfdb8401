@@ -1,0 +1,25 @@
+.claude/skills/app-orchestrate/SKILL.md
+  s_7d3d1a3c06341f::t_71fb99a35ed480 58,60,62,64-65,67,69,71,73,75,81,83
+  s_7d3d1a3c06341f::t_bd4d8148caf034 56,68,70,72,74,76-79,82,84
+  s_7d3d1a3c06341f::t_394c8ca5ba463f 23-24
+.claude/agents/worker-frontend.md
+  s_7d3d1a3c06341f::t_ee1341a733ff68 1-47
+.claude/agents/worker-backend.md
+  s_7d3d1a3c06341f::t_2cc9b4344fb7d7 1-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d4531f61a33ea91a866343a04e329595dfdb8401",
+  "prompts": {},
+  "sessions": {
+    "s_7d3d1a3c06341f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05d1a8a0-9e12-4261-90f5-c7e6417d318a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
