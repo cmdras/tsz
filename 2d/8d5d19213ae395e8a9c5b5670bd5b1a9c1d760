@@ -1,0 +1,23 @@
+packages/web/src/routes/_authed/leave-overview/index.tsx
+  s_b8a1624f2028ba::t_fb52675ed5a5cb 2-4,6-32
+packages/web/src/routes/_authed/leave-overview/-components/year-header.tsx
+  s_b8a1624f2028ba::t_7acca404cbed51 6-8,24-25,47,52
+  s_b8a1624f2028ba::t_2522934ec1d4d1 4
+  s_b8a1624f2028ba::t_96e3ee8ea46365 1-3,5,9-23,26-46,48-51,53-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "2d8d5d19213ae395e8a9c5b5670bd5b1a9c1d760",
+  "prompts": {},
+  "sessions": {
+    "s_b8a1624f2028ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b4de51-f316-4b94-8791-a23d9c238dc8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
