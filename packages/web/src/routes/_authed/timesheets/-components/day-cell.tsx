@@ -4,7 +4,7 @@ import { fromIsoDateString, getIsoMonday, toIsoDateString } from '#/lib/date-uti
 import type { MonthDayResponse } from '#/features/timesheets/timesheets.server';
 import { DayChip, OverflowChip } from './day-chip';
 
-const MAX_VISIBLE_CHIPS = 2;
+const MAX_VISIBLE_CHIPS = 4;
 
 interface DayCellProps {
   day: MonthDayResponse;

@@ -120,8 +120,8 @@ export function MonthSidebar({ days, weekSubmissions, today }: MonthSidebarProps
           {aggregatedRows.length > 0 && (
             <>
               <div className="mt-4 flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">By project</p>
-                <p className="text-xs text-muted-foreground">{aggregatedRows.length} projects</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">By customer</p>
+                <p className="text-xs text-muted-foreground">{aggregatedRows.length} customers</p>
               </div>
               <ul className="mt-2 flex flex-col gap-3">
                 {aggregatedRows.map((row) => (
