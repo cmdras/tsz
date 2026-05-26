@@ -1,0 +1,41 @@
+packages/api/Modules/TimeEntries/TimeEntryContracts.cs
+  s_30305491dc96fc::t_eeb178a95ee78d 57
+packages/api/Modules/TimeEntries/MonthAggregator.cs
+  s_30305491dc96fc::t_2b3084453e7822 34-44
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_30305491dc96fc::t_7481875db35270 42,44,51-56
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_30305491dc96fc::t_e607cad1b653c7 90-92,99
+packages/api.tests.integration/Common/IntegrationFactory.cs
+  s_30305491dc96fc::t_308b419971cfa8 147-160
+packages/web/src/routes/_authed/timesheets/-components/month-grid.tsx
+  ai_agent 27
+  s_30305491dc96fc::t_1c039534836240 1-2,8,19-26,28-43,56-69
+packages/api.tests/TimeEntries/MonthAggregatorTests.cs
+  s_30305491dc96fc::t_c0611e41f4c9bd 284-356
+packages/web/src/routes/_authed/timesheets/index.tsx
+  s_30305491dc96fc::t_0bec4321363fb6 46
+packages/web/src/api/schema.ts
+  ai_agent 1444-1445
+packages/api.tests.integration/TimeEntries/TimeEntryMonthEndpointTests.cs
+  s_30305491dc96fc::t_9d00cbb9e53bf0 70,73-124
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_30305491dc96fc::t_7320612ec19271 11
+  s_30305491dc96fc::t_8b62fca345048d 18-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "e1a53fcee7aaa6bd8edb7e8d4eb064818a08e7cb",
+  "prompts": {},
+  "sessions": {
+    "s_30305491dc96fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2483289a-7c85-4350-8dca-9a2eec49954b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
