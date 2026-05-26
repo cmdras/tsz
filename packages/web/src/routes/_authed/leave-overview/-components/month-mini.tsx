@@ -33,9 +33,13 @@ interface MonthMiniProps {
   year: number;
   monthIndex: number;
   todayIso: string;
+  /** Map from ISO date string → sorted leave type names for that day */
+  dayMap: Map<string, string[]>;
+  /** Name of the focused leave type, or undefined when no focus is active */
+  focusedTypeName: string | undefined;
 }
 
-export function MonthMini({ year, monthIndex, todayIso }: MonthMiniProps) {
+export function MonthMini({ year, monthIndex, todayIso, dayMap, focusedTypeName }: MonthMiniProps) {
   const monthName = new Date(year, monthIndex, 1).toLocaleString('en-GB', { month: 'long' });
   const days = buildMonthDays(year, monthIndex);
 
@@ -51,6 +55,7 @@ export function MonthMini({ year, monthIndex, todayIso }: MonthMiniProps) {
         {days.map((day) => {
           const dayOfWeek = new Date(day.dateString + 'T00:00:00').getDay();
           const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+          const typeNamesForDay = dayMap.get(day.dateString);
           return (
             <DayCell
               key={day.dateString}
@@ -58,6 +63,8 @@ export function MonthMini({ year, monthIndex, todayIso }: MonthMiniProps) {
               isToday={day.dateString === todayIso}
               isWeekend={isWeekend}
               isInMonth={day.isInMonth}
+              typeNamesForDay={typeNamesForDay}
+              focusedTypeName={focusedTypeName}
             />
           );
         })}
