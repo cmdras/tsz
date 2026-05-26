@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { fetchLeaveOverview } from '#/features/leave-overview/leave-overview.functions';
 import { leaveOverviewSearchSchema } from '#/features/leave-overview/leave-overview.schemas';
+import { BalanceSidebar } from './-components/balance-sidebar';
 import { YearHeader } from './-components/year-header';
 
 function currentYear(): number {
@@ -27,6 +28,11 @@ function LeaveOverviewPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <YearHeader year={year} types={overview.types} />
+      <div className="flex items-start gap-6">
+        <BalanceSidebar year={year} types={overview.types} />
+        {/* Calendar grid placeholder — added in S11.3 */}
+        <div className="min-w-0 flex-1" />
+      </div>
     </div>
   );
 }
