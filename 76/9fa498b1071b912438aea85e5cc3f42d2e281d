@@ -1,0 +1,42 @@
+packages/web/src/routes/_authed/leave-overview/index.tsx
+  s_b7f40c562dc741::t_7036a159ca6cf2 27
+packages/web/src/routes/_authed/leave-overview/-components/day-cell.tsx
+  s_b7f40c562dc741::t_eea0b98f1512d0 79
+  s_b7f40c562dc741::t_3f4a9ff65c5b49 57-58,61
+packages/api/Modules/LeaveOverview/LeaveOverviewEndpoints.cs
+  s_b7f40c562dc741::t_2ef2c38d587216 20-21
+  s_b7f40c562dc741::t_ea33364df70cfd 29-32,34-35
+  s_b7f40c562dc741::t_84e8804a6deeef 1
+packages/web/src/api/schema.ts
+  s_b7f40c562dc741::t_e7798a4e820442 713-758
+packages/api.tests.integration/LeaveOverview/LeaveOverviewEndpointsTests.cs
+  s_b7f40c562dc741::t_f0d15b75482399 137
+packages/web/src/features/leave-overview/leave-overview.schemas.ts
+  s_b7f40c562dc741::t_5b2473f2a94551 19
+  s_b7f40c562dc741::t_bee6b7964b7d16 14-15
+packages/api.tests/LeaveOverview/LeaveOverviewAggregatorTests.cs
+  s_b7f40c562dc741::t_50acc589b7e27d 44
+packages/api/Modules/LeaveOverview/LeaveOverviewAggregator.cs
+  s_b7f40c562dc741::t_4206aa47d1047f 19-20,22-25
+packages/api/Program.cs
+  s_b7f40c562dc741::t_1dd41a0cfe0d30 74
+  s_b7f40c562dc741::t_cd596634f6fd52 41
+packages/web/src/routes/_authed/leave-overview/-components/month-mini.tsx
+  s_b7f40c562dc741::t_b97a7bda80c434 18,20-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "769fa498b1071b912438aea85e5cc3f42d2e281d",
+  "prompts": {},
+  "sessions": {
+    "s_b7f40c562dc741": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20cc04da-72dd-478c-9962-4c4b33e51ebd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
