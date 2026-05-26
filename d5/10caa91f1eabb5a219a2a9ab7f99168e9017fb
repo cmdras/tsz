@@ -1,0 +1,23 @@
+packages/web/src/routes/_authed/leave-overview/-components/balance-row.tsx
+  s_b8a1624f2028ba::t_0db5e469fcbf44 1-32
+packages/web/src/routes/_authed/leave-overview/-components/balance-sidebar.tsx
+  s_b8a1624f2028ba::t_e13d9a2960ff90 1-11,13-34
+packages/web/src/routes/_authed/leave-overview/index.tsx
+  s_b8a1624f2028ba::t_a3b72a52f5bcd1 4,31-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d510caa91f1eabb5a219a2a9ab7f99168e9017fb",
+  "prompts": {},
+  "sessions": {
+    "s_b8a1624f2028ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b4de51-f316-4b94-8791-a23d9c238dc8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
