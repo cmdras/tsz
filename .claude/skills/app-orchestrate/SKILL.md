@@ -20,6 +20,8 @@ If no argument is provided, abort and ask the user for one.
 - No GitHub PRs per issue. Each subagent commits onto a local sub-branch which the orchestrator merges into the feature branch with `git merge --no-ff`. Exactly ONE PR opens at the end: feature branch → master.
 - CHANGELOG is written ONCE at the end via `Skill('app-changelog')`. Never per-issue.
 - Issues are processed sequentially. No parallel subagents.
+- Each issue is split into two fresh subagents on the same sub-branch: backend (`packages/api/**`) first, then frontend (`packages/web/**`). Both subagents commit incrementally so partial progress survives a harness pause.
+- Paused subagents are resumed via `SendMessage(to: <agentId>, prompt: "continue")`, not by spawning fresh continuations (so committed state plus uncommitted working tree both carry over).
 - Failed sub-branches are kept (never `git branch -D`) so the user can inspect.
 
 ## Workflow
@@ -51,22 +53,35 @@ If any blocker carries `needs-triage` (original or applied during this run), ski
 - `git checkout feature/<name> && git checkout -b issue-<N>-<slug>`. `<slug>` = first 4 kebab-cased words from the issue title.
 - Ensure `.tmp/orchestrate/` exists. Write the issue body to `.tmp/orchestrate/issue-<N>.md` with a header line `# Issue #<N>: <title>` and the URL above the body.
 
-#### 3c. Spawn the subagent
+#### 3c. Run backend, then frontend subagent
 
-Call `Agent(subagent_type: "general-purpose", model: "sonnet", description: "Solve issue #<N>")`. The prompt must include:
+For each issue, two fresh subagents run sequentially on the same sub-branch: **`worker-backend`** first, then **`worker-frontend`** (both defined in `.claude/agents/`). No shared context between them. The split keeps each subagent's context small (which is what blew the tool-use cap in earlier runs) and lets each pick layer-specific patterns. Their scope, commit cadence, and output contract live in the agent files — the orchestrator only supplies dynamic context per spawn.
 
-- Absolute path to `.tmp/orchestrate/issue-<N>.md`, with instructions to invoke `Skill('app-do-work-tdd', '<path>')`.
-- Current sub-branch name. Hard rules: do NOT switch branches, do NOT push, do NOT create a PR. All commits stay on the sub-branch.
-- Output contract: the final message's LAST non-blank line must match `^(SUCCESS|FAILED: .+)$` exactly. Ambiguous scope → `FAILED: needs clarification: <question>`. Never ask the orchestrator clarifying questions.
-- On `SUCCESS`, the subagent must list 2–6 QA bullets above the SUCCESS marker, one per behavior the user should manually verify.
+**3c.i. Spawn worker-backend**
 
-#### 3d. Parse the subagent's response
+`Agent(subagent_type: "worker-backend", description: "Solve issue #<N> backend")`. The spawn prompt supplies only the dynamic inputs:
 
-Take the last non-blank line. Strict regex `^(SUCCESS|FAILED: .+)$`:
+- Absolute path to `.tmp/orchestrate/issue-<N>.md`.
+- Current sub-branch name (`issue-<N>-<slug>`).
 
-- `SUCCESS` → 3e.
-- `FAILED: <reason>` → 3g.
-- No match → treat as `FAILED: unparseable subagent output` → 3g.
+**3c.ii. Spawn worker-frontend** (only if backend ended `SUCCESS`)
+
+`Agent(subagent_type: "worker-frontend", description: "Solve issue #<N> frontend")` with the same two dynamic inputs.
+
+**3c.iii. Pause/resume (applies to both subagents)**
+
+If the harness pauses a subagent (tool-use cap), it returns an `agentId` instead of a SUCCESS/FAILED line. Use `SendMessage(to: <agentId>, prompt: "continue")` to resume — the subagent's incremental commits are already on the sub-branch and it picks up from there. Repeat until it emits SUCCESS or FAILED.
+
+If `SendMessage` is not in this session's tool catalog, fall back to a fresh continuation `Agent()` of the same subagent type, on the same sub-branch, with a prompt that re-states the original inputs plus: "previous run paused mid-work; commits already on branch — pick up from there." Note: `allowed-tools` in this skill's frontmatter cannot conjure `SendMessage`; it only pre-approves tools the session already has.
+
+#### 3d. Parse the subagent responses
+
+Take the last non-blank line of each subagent's final message. Strict regex `^(SUCCESS|FAILED: .+)$`:
+
+- Backend `SUCCESS` → run 3c.ii (frontend). Frontend `SUCCESS` → 3e with combined QA bullets.
+- Backend `FAILED: <reason>` → skip frontend → 3g with the backend reason.
+- Backend `SUCCESS`, frontend `FAILED: <reason>` → keep backend commits on the sub-branch (no merge into the feature branch) → 3g with the frontend reason; note in the comment that the backend half succeeded.
+- No regex match for either → treat that subagent as `FAILED: unparseable subagent output` → 3g.
 
 #### 3e. Merge and validate
 
