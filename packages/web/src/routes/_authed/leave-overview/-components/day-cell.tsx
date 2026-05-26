@@ -49,6 +49,9 @@ export function DayCell({ dateString, isToday, isWeekend, isInMonth, typeNamesFo
   const dayNumber = fromIsoDateString(dateString).getDate();
   const outlineClass = resolveOutlineClass(typeNamesForDay, focusedTypeName);
 
+  const hasMatchingFocusedType = focusedTypeName !== undefined && (typeNamesForDay?.includes(focusedTypeName) ?? false);
+  const matchFillClass = hasMatchingFocusedType ? getLeaveTypeColor(focusedTypeName).dot : null;
+
   function handleCellClick() {
     void navigate({ to: '/time-entry', search: { week: weekParam } });
   }
@@ -63,7 +66,8 @@ export function DayCell({ dateString, isToday, isWeekend, isInMonth, typeNamesFo
       className={cn(
         'cursor-pointer p-0.5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
-        isWeekend && 'bg-muted/30',
+        isWeekend && !hasMatchingFocusedType && 'bg-muted/30',
+        matchFillClass,
         !isInMonth && 'opacity-40',
         outlineClass,
       )}
