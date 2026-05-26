@@ -1,0 +1,33 @@
+.agents/skills/git-commit/SKILL.md
+  s_8946569f1b8f35::t_17ca552144f674 93
+.claude/skills/app-do-work-tdd/SKILL.md
+  s_8946569f1b8f35::t_5763aaa6bf26d6 54,56
+.claude/skills/app-orchestrate/SKILL.md
+  s_8946569f1b8f35::t_0b574eb1682a04 1-4,6-132
+  s_8946569f1b8f35::t_351ccfb6d2a935 5
+.gitignore
+  h_f5e73ed3339dc5 60
+.claude/skills/app-changelog/SKILL.md
+  s_8946569f1b8f35::t_8ff71b451c8961 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "9290a1c6a9849166d4f9f42d76165d5f365608e0",
+  "prompts": {},
+  "humans": {
+    "h_f5e73ed3339dc5": {
+      "author": "Chris Ras <chris.ras@euri.com>"
+    }
+  },
+  "sessions": {
+    "s_8946569f1b8f35": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7488f2f3-2f44-4ce1-95ba-4bd50ade98ca",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
