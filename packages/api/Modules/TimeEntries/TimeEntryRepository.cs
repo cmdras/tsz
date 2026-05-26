@@ -42,6 +42,10 @@ public class TimeEntryRepository : ITimeEntryRepository
     public async Task<IReadOnlyList<TimeEntry>> GetMonthDataAsync(Guid userId, DateOnly fromDate, DateOnly toDate, CancellationToken cancellationToken = default)
     {
         return await _dbContext.TimeEntries
+            .Include(entry => entry.ContractTask)
+                .ThenInclude(task => task!.Contract)
+                    .ThenInclude(contract => contract.Customer)
+            .Include(entry => entry.LeaveType)
             .Where(entry => entry.UserId == userId && entry.Date >= fromDate && entry.Date <= toDate)
             .ToListAsync(cancellationToken);
     }

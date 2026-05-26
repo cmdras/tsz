@@ -4,6 +4,7 @@ import { monthSearchSchema } from '#/features/timesheets/timesheets.schemas';
 import { toIsoDateString } from '#/lib/date-utils';
 import { MonthGrid } from './-components/month-grid';
 import { MonthNav } from './-components/month-nav';
+import { MonthSidebar } from './-components/month-sidebar';
 
 function currentYearMonth(): string {
   const now = new Date();
@@ -40,7 +41,12 @@ function TimesheetsPage() {
         <MonthNav yearMonth={yearMonth} />
       </div>
 
-      <MonthGrid days={monthData.days} today={today} />
+      <div className="flex gap-4">
+        <div className="min-w-0 flex-1">
+          <MonthGrid days={monthData.days} today={today} />
+        </div>
+        <MonthSidebar days={monthData.days} />
+      </div>
     </div>
   );
 }
