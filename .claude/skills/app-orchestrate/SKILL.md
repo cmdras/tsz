@@ -86,6 +86,7 @@ Spawn `Agent(subagent_type: "general-purpose", model: "sonnet", description: "Fi
 - Same output contract.
 
 After the fixer returns:
+
 - `SUCCESS` → re-run the same validation. Green → behave as 3e success. Still red → 3f-halt.
 - `FAILED` → 3f-halt.
 
@@ -103,6 +104,7 @@ After the fixer returns:
 If at least one issue succeeded AND the loop wasn't halted by 3f:
 
 - `Skill('app-changelog')` to write the dated section.
+- `Skill('git-commit')` to commit the changelog
 - `git push origin feature/<name>`.
 - `gh pr create --base master --head feature/<name> --title "<feature-branch-name>: N issues" --body <body>`.
   - Body bullets: every `ready-for-qa` issue with `#N`, title, URL, and its QA bullets.
