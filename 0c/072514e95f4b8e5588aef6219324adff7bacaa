@@ -1,0 +1,23 @@
+packages/api/Modules/LeaveOverview/LeaveOverviewAggregator.cs
+  s_b8a1624f2028ba::t_db787994ff8e1e 1-67
+packages/api.tests/LeaveOverview/LeaveOverviewAggregatorTests.cs
+  s_b8a1624f2028ba::t_b68d08350c131f 1-245
+packages/api/Modules/LeaveOverview/LeaveOverviewContracts.cs
+  s_b8a1624f2028ba::t_4e182d383db5ee 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "0c072514e95f4b8e5588aef6219324adff7bacaa",
+  "prompts": {},
+  "sessions": {
+    "s_b8a1624f2028ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b4de51-f316-4b94-8791-a23d9c238dc8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
