@@ -43,7 +43,7 @@ function TimesheetsPage() {
 
       <div className="flex gap-4">
         <div className="min-w-0 flex-1">
-          <MonthGrid days={monthData.days} today={today} />
+          <MonthGrid days={monthData.days} today={today} weekSubmissions={monthData.weekSubmissions} />
         </div>
         <MonthSidebar days={monthData.days} />
       </div>

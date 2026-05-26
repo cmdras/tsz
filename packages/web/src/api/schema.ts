@@ -1280,17 +1280,12 @@ export interface components {
     MonthEntryResponse: {
       /** Format: uuid */
       id: string;
-      kind: string;
       /** Format: double */
       hours: number;
       /** Format: uuid */
       contractTaskId: null | string;
-      customerName: null | string;
-      contractSubject: null | string;
-      taskName: null | string;
       /** Format: uuid */
       leaveTypeId: null | string;
-      leaveTypeName: null | string;
     };
     MonthResponse: {
       yearMonth: string;
@@ -1446,7 +1441,8 @@ export interface components {
     WeekSubmissionStatusResponse: {
       /** Format: date */
       weekStart: string;
-      isSubmitted: boolean;
+      /** Format: date-time */
+      submittedAt: string;
     };
   };
   responses: never;

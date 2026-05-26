@@ -281,4 +281,77 @@ public class MonthAggregatorShould
         Assert.Equal("Platform Modernization", monthEntry.ContractSubject);
         Assert.Equal("Backend", monthEntry.TaskName);
     }
+
+    // --- WeekSubmissions population ---
+
+    [Fact]
+    public void Given_SubmissionForWeek_When_BuildingWeekSubmissions_Then_SubmissionAppearsWithSubmittedAt()
+    {
+        var grid = VisibleMonthGrid.Build(June2026);
+        var weekStart = new DateOnly(2026, 6, 1); // Monday
+        var submittedAt = new DateTime(2026, 6, 6, 10, 0, 0, DateTimeKind.Utc);
+        var submission = new WeekSubmission
+        {
+            Id = Guid.NewGuid(),
+            UserId = Guid.NewGuid(),
+            WeekStart = weekStart,
+            SubmittedAt = submittedAt,
+        };
+
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, [submission]);
+
+        var result = Assert.Single(weekSubmissions);
+        Assert.Equal(weekStart, result.WeekStart);
+        Assert.Equal(submittedAt, result.SubmittedAt);
+    }
+
+    [Fact]
+    public void Given_NoSubmissionsForWeek_When_BuildingWeekSubmissions_Then_ResultIsEmpty()
+    {
+        var grid = VisibleMonthGrid.Build(June2026);
+
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, []);
+
+        Assert.Empty(weekSubmissions);
+    }
+
+    [Fact]
+    public void Given_MultipleSubmissions_When_BuildingWeekSubmissions_Then_AllAppearOrdered()
+    {
+        var grid = VisibleMonthGrid.Build(June2026);
+        var weekStart1 = new DateOnly(2026, 6, 1);
+        var weekStart2 = new DateOnly(2026, 6, 8);
+        var submittedAt1 = new DateTime(2026, 6, 6, 10, 0, 0, DateTimeKind.Utc);
+        var submittedAt2 = new DateTime(2026, 6, 13, 10, 0, 0, DateTimeKind.Utc);
+        var submissions = new[]
+        {
+            new WeekSubmission { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), WeekStart = weekStart2, SubmittedAt = submittedAt2 },
+            new WeekSubmission { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), WeekStart = weekStart1, SubmittedAt = submittedAt1 },
+        };
+
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, submissions);
+
+        Assert.Equal(2, weekSubmissions.Count);
+        Assert.Equal(weekStart1, weekSubmissions[0].WeekStart);
+        Assert.Equal(weekStart2, weekSubmissions[1].WeekStart);
+    }
+
+    [Fact]
+    public void Given_SubmissionOutsideWindow_When_BuildingWeekSubmissions_Then_NotIncluded()
+    {
+        var grid = VisibleMonthGrid.Build(June2026);
+        // July 6 is outside the June visible window (toDate = 2026-07-05)
+        var outsideWeekStart = new DateOnly(2026, 7, 6);
+        var submission = new WeekSubmission
+        {
+            Id = Guid.NewGuid(),
+            UserId = Guid.NewGuid(),
+            WeekStart = outsideWeekStart,
+            SubmittedAt = DateTime.UtcNow,
+        };
+
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, [submission]);
+
+        Assert.Empty(weekSubmissions);
+    }
 }

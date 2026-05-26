@@ -67,8 +67,61 @@ public class TimeEntryMonthEndpointShould(IntegrationFactory factory) : IClassFi
     }
 
     [Fact]
-    public async Task Return_WeekSubmissions_Empty_In_This_Slice()
+    public async Task Return_WeekSubmissions_Empty_When_None_Exist()
     {
+        var response = await factory.Client.GetAsync("/api/time-entries/months/2026-06");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
+
+        Assert.Equal(0, json.GetProperty("weekSubmissions").GetArrayLength());
+    }
+
+    [Fact]
+    public async Task Given_SubmittedWeek_When_FetchingMonth_Then_WeekSubmissionsContainsEntry()
+    {
+        var weekStart = new DateOnly(2026, 6, 1);
+        var submittedAt = new DateTime(2026, 6, 6, 10, 0, 0, DateTimeKind.Utc);
+        await factory.SeedWeekSubmissionAsync(weekStart, submittedAt);
+
+        var response = await factory.Client.GetAsync("/api/time-entries/months/2026-06");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
+
+        var weekSubmissions = json.GetProperty("weekSubmissions");
+        Assert.Equal(1, weekSubmissions.GetArrayLength());
+        var submission = weekSubmissions[0];
+        Assert.Equal("2026-06-01", submission.GetProperty("weekStart").GetString());
+        Assert.NotNull(submission.GetProperty("submittedAt").GetString());
+    }
+
+    [Fact]
+    public async Task Given_SomeWeeksSubmitted_When_FetchingMonth_Then_OnlySubmittedWeeksInResponse()
+    {
+        // Week 1 (June 1) and Week 3 (June 15) submitted; Week 2 (June 8) not submitted
+        await factory.SeedWeekSubmissionAsync(new DateOnly(2026, 6, 1), new DateTime(2026, 6, 6, 10, 0, 0, DateTimeKind.Utc));
+        await factory.SeedWeekSubmissionAsync(new DateOnly(2026, 6, 15), new DateTime(2026, 6, 20, 10, 0, 0, DateTimeKind.Utc));
+
+        var response = await factory.Client.GetAsync("/api/time-entries/months/2026-06");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
+
+        var weekSubmissions = json.GetProperty("weekSubmissions");
+        Assert.Equal(2, weekSubmissions.GetArrayLength());
+
+        var submissionDates = weekSubmissions.EnumerateArray()
+            .Select(submission => submission.GetProperty("weekStart").GetString())
+            .ToList();
+        Assert.Contains("2026-06-01", submissionDates);
+        Assert.Contains("2026-06-15", submissionDates);
+        Assert.DoesNotContain("2026-06-08", submissionDates);
+    }
+
+    [Fact]
+    public async Task Given_SubmissionOutsideVisibleWindow_When_FetchingMonth_Then_NotIncludedInWeekSubmissions()
+    {
+        // July 6 is outside the June 2026 visible window (which ends 2026-07-05)
+        await factory.SeedWeekSubmissionAsync(new DateOnly(2026, 7, 6), new DateTime(2026, 7, 11, 10, 0, 0, DateTimeKind.Utc));
+
         var response = await factory.Client.GetAsync("/api/time-entries/months/2026-06");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadFromJsonAsync<JsonElement>(IntegrationFactory.JsonOptions);
