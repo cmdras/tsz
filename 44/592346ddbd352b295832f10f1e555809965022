@@ -1,0 +1,21 @@
+packages/web/src/routes/_authed/timesheets/-components/month-sidebar.tsx
+  ai_agent 79-82
+packages/api/Modules/TimeEntries/TimeEntryService.cs
+  s_7e4cd1e41311ae::t_32b82146c8e63f 109-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "44592346ddbd352b295832f10f1e555809965022",
+  "prompts": {},
+  "sessions": {
+    "s_7e4cd1e41311ae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "65475e5c-a4c3-49d3-8d67-9a19755a413b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
