@@ -40,6 +40,16 @@ public static class TimeEntryEndpoints
         })
             .ProducesProblem(StatusCodes.Status409Conflict);
 
+        group.MapGet("/months/{yearMonth}", async (
+            string yearMonth,
+            HttpContext httpContext,
+            TimeEntryService service,
+            CancellationToken cancellationToken) =>
+        {
+            var userId = GetUserIdFromClaims(httpContext);
+            return TypedResults.Ok(await service.GetMonthAsync(userId, yearMonth, cancellationToken));
+        });
+
         group.MapPost("/weeks/{weekStart}/submit", async (
             DateOnly weekStart,
             UpdateWeekRequest request,

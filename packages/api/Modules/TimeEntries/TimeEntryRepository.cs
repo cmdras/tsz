@@ -39,6 +39,13 @@ public class TimeEntryRepository : ITimeEntryRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<TimeEntry>> GetMonthDataAsync(Guid userId, DateOnly fromDate, DateOnly toDate, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TimeEntries
+            .Where(entry => entry.UserId == userId && entry.Date >= fromDate && entry.Date <= toDate)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task ApplyWeekDiffAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken = default)
     {
         await ApplyDiffWithoutSavingAsync(userId, toUpsert, toDeleteIds, updatedAt, cancellationToken);
