@@ -54,7 +54,7 @@ public record MonthDayResponse(
     decimal TotalHours,
     IReadOnlyList<MonthEntryResponse> Entries);
 
-public record WeekSubmissionStatusResponse(DateOnly WeekStart, bool IsSubmitted);
+public record WeekSubmissionStatusResponse(DateOnly WeekStart, DateTime SubmittedAt);
 
 public record MonthResponse(
     string YearMonth,

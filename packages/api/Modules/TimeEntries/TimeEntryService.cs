@@ -87,15 +87,16 @@ public class TimeEntryService
             throw new InvalidTimeEntryRequestException($"yearMonth must be in YYYY-MM format. Got: {yearMonth}.");
 
         var grid = VisibleMonthGrid.Build(monthStart);
-        var entries = await _repository.GetMonthDataAsync(userId, grid.FromDate, grid.ToDate, cancellationToken);
-        var days = MonthAggregator.Build(grid, entries);
+        var monthRawData = await _repository.GetMonthDataAsync(userId, grid.FromDate, grid.ToDate, cancellationToken);
+        var days = MonthAggregator.Build(grid, monthRawData.Entries);
+        var weekSubmissions = MonthAggregator.BuildWeekSubmissions(grid, monthRawData.Submissions);
 
         return new MonthResponse(
             YearMonth: yearMonth,
             FromDate: grid.FromDate,
             ToDate: grid.ToDate,
             Days: days,
-            WeekSubmissions: []);
+            WeekSubmissions: weekSubmissions);
     }
 
     private static bool TryParseYearMonth(string value, out DateOnly result)

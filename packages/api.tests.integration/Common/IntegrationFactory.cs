@@ -144,4 +144,18 @@ public class IntegrationFactory : WebApplicationFactory<Program>, IAsyncLifetime
         });
         await context.SaveChangesAsync();
     }
+
+    public async Task SeedWeekSubmissionAsync(DateOnly weekStart, DateTime submittedAt)
+    {
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.WeekSubmissions.Add(new Api.Modules.TimeEntries.WeekSubmission
+        {
+            Id = Guid.NewGuid(),
+            UserId = TestAuthHandler.CurrentUserId,
+            WeekStart = weekStart,
+            SubmittedAt = submittedAt,
+        });
+        await context.SaveChangesAsync();
+    }
 }

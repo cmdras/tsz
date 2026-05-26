@@ -31,6 +31,17 @@ public static class MonthAggregator
             .ToList();
     }
 
+    public static IReadOnlyList<WeekSubmissionStatusResponse> BuildWeekSubmissions(
+        VisibleMonthGridResult grid,
+        IReadOnlyList<WeekSubmission> submissions)
+    {
+        return submissions
+            .Where(submission => submission.WeekStart >= grid.FromDate && submission.WeekStart <= grid.ToDate)
+            .OrderBy(submission => submission.WeekStart)
+            .Select(submission => new WeekSubmissionStatusResponse(submission.WeekStart, submission.SubmittedAt))
+            .ToList();
+    }
+
     private static MonthEntryResponse BuildMonthEntry(TimeEntry entry)
     {
         if (entry.ContractTask is not null)
