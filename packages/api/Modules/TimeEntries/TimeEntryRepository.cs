@@ -93,6 +93,20 @@ public class TimeEntryRepository : ITimeEntryRepository
         }
     }
 
+    public async Task<bool> DeleteWeekSubmissionAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
+    {
+        var submission = await _dbContext.WeekSubmissions
+            .Where(submission => submission.UserId == userId && submission.WeekStart == weekStart)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (submission is null)
+            return false;
+
+        _dbContext.WeekSubmissions.Remove(submission);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+
     private async Task ApplyDiffWithoutSavingAsync(Guid userId, IReadOnlyList<WeekCell> toUpsert, IReadOnlyList<Guid> toDeleteIds, DateTime updatedAt, CancellationToken cancellationToken)
     {
         if (toDeleteIds.Count > 0)
