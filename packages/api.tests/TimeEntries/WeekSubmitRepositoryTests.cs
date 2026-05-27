@@ -111,4 +111,37 @@ public class WeekSubmitRepositoryShould : IDisposable
         var count = await _context.WeekSubmissions.CountAsync();
         Assert.Equal(2, count);
     }
+
+    [Fact]
+    public async Task DeleteWeekSubmission_Returns_True_And_Removes_Row_When_Submission_Exists()
+    {
+        await _repository.SubmitWeekAsync(UserId, Monday, [], [], Now);
+
+        var deleted = await _repository.DeleteWeekSubmissionAsync(UserId, Monday);
+
+        Assert.True(deleted);
+        var count = await _context.WeekSubmissions.CountAsync();
+        Assert.Equal(0, count);
+    }
+
+    [Fact]
+    public async Task DeleteWeekSubmission_Does_Not_Touch_Time_Entries()
+    {
+        var taskId = SeedContractTask();
+        var cell = new WeekCell(taskId, null, Monday, 8m);
+        await _repository.SubmitWeekAsync(UserId, Monday, [cell], [], Now);
+
+        await _repository.DeleteWeekSubmissionAsync(UserId, Monday);
+
+        var entryCount = await _context.TimeEntries.CountAsync();
+        Assert.Equal(1, entryCount);
+    }
+
+    [Fact]
+    public async Task DeleteWeekSubmission_Returns_False_When_No_Submission_Exists()
+    {
+        var deleted = await _repository.DeleteWeekSubmissionAsync(UserId, Monday);
+
+        Assert.False(deleted);
+    }
 }
