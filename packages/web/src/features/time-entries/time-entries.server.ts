@@ -38,3 +38,10 @@ export const submitWeek = async (weekStart: string, cells: WeekCell[]): Promise<
   });
   return response.data!;
 };
+
+export const unsubmitWeek = async (weekStart: string): Promise<WeekResponse> => {
+  const response = await client.DELETE('/api/time-entries/weeks/{weekStart}/submit', {
+    params: { path: { weekStart } },
+  });
+  return response.data!;
+};
