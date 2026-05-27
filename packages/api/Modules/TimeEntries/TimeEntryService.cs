@@ -5,6 +5,7 @@ namespace Api.Modules.TimeEntries;
 
 public class InvalidTimeEntryRequestException(string message) : DomainException(message, 400);
 public class WeekAlreadySubmittedException() : DomainException("This week has already been submitted.", 409);
+public class WeekNotSubmittedException() : DomainException("No submission exists for this week.", 404);
 
 public class TimeEntryService
 {
@@ -77,6 +78,21 @@ public class TimeEntryService
         var existing = await _repository.GetWeekEntriesAsync(userId, weekStart, cancellationToken);
         var (toUpsert, toDeleteIds) = WeekDiffer.Diff(existing, request.Cells);
         await _repository.SubmitWeekAsync(userId, weekStart, toUpsert, toDeleteIds, _clock.UtcNow, cancellationToken);
+
+        return await GetWeekAsync(userId, weekStart, cancellationToken);
+    }
+
+    // NOTE: The endpoint for this method has no backend admin enforcement.
+    // Admin restriction is demo-only and enforced on the frontend only — this endpoint
+    // is accessible to any authenticated user and is NOT real authorization.
+    public async Task<WeekResponse> UnsubmitWeekAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
+    {
+        if (weekStart.DayOfWeek != DayOfWeek.Monday)
+            throw new InvalidTimeEntryRequestException("weekStart must be a Monday.");
+
+        var deleted = await _repository.DeleteWeekSubmissionAsync(userId, weekStart, cancellationToken);
+        if (!deleted)
+            throw new WeekNotSubmittedException();
 
         return await GetWeekAsync(userId, weekStart, cancellationToken);
     }
