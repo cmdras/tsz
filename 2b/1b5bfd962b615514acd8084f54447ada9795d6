@@ -1,0 +1,29 @@
+packages/web/src/routes/_authed/leave-overview/-components/year-calendar.tsx
+  s_9da6af712239f2::t_1f83f94c157b17 14,31-41
+  s_9da6af712239f2::t_3a6e1da0ab9fe7 11
+packages/web/src/routes/_authed/leave-overview/-components/balance-sidebar.tsx
+  s_9da6af712239f2::t_d34e0528ec6408 1,23-48
+packages/web/src/routes/_authed/leave-overview/index.tsx
+  s_9da6af712239f2::t_dd197551cc5b14 30,35-42,44
+  s_9da6af712239f2::t_7b5c364d29e856 5
+packages/web/src/routes/_authed/leave-overview/-components/month-mini.tsx
+  s_9da6af712239f2::t_74f396cd0cdf4e 47-48
+packages/web/src/routes/_authed/leave-overview/-components/balance-row.tsx
+  s_9da6af712239f2::t_c719c680a3cb5d 16-20,22-25,27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "2b1b5bfd962b615514acd8084f54447ada9795d6",
+  "prompts": {},
+  "sessions": {
+    "s_9da6af712239f2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "45cb0386-5a05-4414-b5a7-787971a806ab",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
