@@ -4,7 +4,6 @@ import { buildHomeViewModel } from '#/features/home/home-view';
 import { toIsoDateString } from '#/lib/date-utils';
 import { CaughtUpHero } from './index/-components/caught-up-hero';
 import { Greeting } from './index/-components/greeting';
-import { QuickLinks } from './index/-components/quick-links';
 import { StatStrip } from './index/-components/stat-strip';
 import { TasksHero } from './index/-components/tasks-hero';
 import { TaskRow } from './index/-components/task-row';
@@ -43,26 +42,20 @@ function Home() {
 
   if (viewModel.tone === 'caughtUp') {
     return (
-      <div className="flex flex-col items-center gap-8 py-12">
-        <Greeting
-          name={viewModel.greetingName}
-          loadTime={new Date(loadTime)}
-          accent={{ text: 'all caught up.', className: 'text-primary' }}
-        />
+      <div className="flex min-h-full flex-col items-center justify-center gap-8 py-12">
+        <Greeting name={viewModel.greetingName} accent={{ text: 'all caught up.', className: 'text-primary' }} />
         <div className="w-full max-w-sm">
           <CaughtUpHero />
           <StatStrip stats={viewModel.stats} />
         </div>
-        <QuickLinks />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 py-12">
+    <div className="flex min-h-full flex-col items-center justify-center gap-8 py-12">
       <Greeting
         name={viewModel.greetingName}
-        loadTime={new Date(loadTime)}
         accent={{ text: `${viewModel.tasks.length} things to do.`, className: 'text-amber-400' }}
       />
       <div className="w-full max-w-sm">
@@ -74,7 +67,6 @@ function Home() {
         </div>
         <StatStrip stats={viewModel.stats} />
       </div>
-      <QuickLinks />
     </div>
   );
 }
