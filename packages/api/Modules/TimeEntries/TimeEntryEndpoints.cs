@@ -61,6 +61,20 @@ public static class TimeEntryEndpoints
             return TypedResults.Ok(await service.SubmitWeekAsync(userId, weekStart, request, cancellationToken));
         })
             .ProducesProblem(StatusCodes.Status409Conflict);
+
+        // NOTE: Admin restriction is demo-only and enforced on the frontend only.
+        // This endpoint is accessible to any authenticated user and is NOT real authorization.
+        group.MapDelete("/weeks/{weekStart}/submit", async (
+            DateOnly weekStart,
+            HttpContext httpContext,
+            TimeEntryService service,
+            CancellationToken cancellationToken) =>
+        {
+            var userId = GetUserIdFromClaims(httpContext);
+            return TypedResults.Ok(await service.UnsubmitWeekAsync(userId, weekStart, cancellationToken));
+        })
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status400BadRequest);
     }
 
     private static Guid GetUserIdFromClaims(HttpContext httpContext)
