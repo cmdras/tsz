@@ -1,0 +1,27 @@
+packages/web/src/routes/_authed/index.tsx
+  s_d5ca25d3467046::t_c28474ed1ce440 1-8,10-33,36-55,57-63
+packages/web/src/routes/_authed/index/-components/caught-up-hero.tsx
+  s_d5ca25d3467046::t_4c61815592c8c2 1-46
+packages/web/src/routes/_authed/index/-components/stat-strip.tsx
+  s_d5ca25d3467046::t_4b3ea8e351d26b 1-31
+packages/web/src/routes/_authed/index/-components/quick-links.tsx
+  s_d5ca25d3467046::t_08d399c968d577 1-18
+packages/web/src/routes/_authed/index/-components/greeting.tsx
+  s_d5ca25d3467046::t_207e1878746b4d 1-33,35-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "876443df9ce26dd84ae681b8fb05b76a027b6607",
+  "prompts": {},
+  "sessions": {
+    "s_d5ca25d3467046": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "86fceaa9-e97e-4ff5-93df-a3682da409a7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
