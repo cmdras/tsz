@@ -1,0 +1,32 @@
+packages/web/src/routes/_authed/time-entry/-components/unsubmit-week-dialog.tsx
+  s_747143cac8caa4::t_f387c850864eac 1-44
+packages/web/src/routes/_authed/time-entry/-components/time-entry-header.tsx
+  s_747143cac8caa4::t_dec6ddf838b845 3,8,12,17,22,26,31,47
+packages/web/src/features/time-entries/time-entries.server.ts
+  s_747143cac8caa4::t_2386be9fb9272b 41-47
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_747143cac8caa4::t_09ed52dd00bfe9 3
+  s_747143cac8caa4::t_2d9190131f0c5c 41-46
+packages/web/src/routes/_authed/time-entry/index.tsx
+  s_747143cac8caa4::t_a3c84f61169855 109-121
+  s_747143cac8caa4::t_752acac6d3a478 1,4-10
+  s_747143cac8caa4::t_b50aa836d9b189 126,130,135
+  s_747143cac8caa4::t_b44108995d1735 38,43
+  s_747143cac8caa4::t_81621a58fef259 72-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9580e67bcb4d337d01d8810ed3aff40c2cf17ace",
+  "prompts": {},
+  "sessions": {
+    "s_747143cac8caa4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d3a0f577-8790-4a57-8d4c-af9797d86624",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
