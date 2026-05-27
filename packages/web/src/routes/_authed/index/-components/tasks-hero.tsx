@@ -44,8 +44,10 @@ export function TasksHero({ taskCount }: TasksHeroProps) {
 
           {/* Green count badge — top-right */}
           <div
-            className="absolute -right-2 -top-2 flex h-[38px] w-[38px] items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground ring-2 ring-card"
-            style={{ boxShadow: '0 0 12px 3px color-mix(in oklab, var(--primary) 35%, transparent)' }}
+            className="absolute -right-2 -top-2 flex h-[38px] w-[38px] items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
+            style={{
+              boxShadow: '0 0 0 2px var(--card), 0 0 12px 3px color-mix(in oklab, var(--primary) 35%, transparent)',
+            }}
             aria-label={`${taskCount} open tasks`}
           >
             {taskCount}

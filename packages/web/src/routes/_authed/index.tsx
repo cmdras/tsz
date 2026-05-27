@@ -1,5 +1,6 @@
 import { createFileRoute, useRouteContext } from '@tanstack/react-router';
-import { fetchHomeLeaveOverview, fetchHomeMonth } from '#/features/home/home.functions';
+import { fetchHomeMonth } from '#/features/home/home.functions';
+import { fetchLeaveOverview } from '#/features/leave-overview/leave-overview.functions';
 import { buildHomeViewModel } from '#/features/home/home-view';
 import { toIsoDateString } from '#/lib/date-utils';
 import { CaughtUpHero } from './index/-components/caught-up-hero';
@@ -8,24 +9,15 @@ import { StatStrip } from './index/-components/stat-strip';
 import { TasksHero } from './index/-components/tasks-hero';
 import { TaskRow } from './index/-components/task-row';
 
-function currentYearMonth(): string {
-  const now = new Date();
-  return toIsoDateString(now).slice(0, 7);
-}
-
-function currentYear(): number {
-  return new Date().getFullYear();
-}
-
 export const Route = createFileRoute('/_authed/')({
   loader: async () => {
     const loadTime = new Date();
-    const yearMonth = currentYearMonth();
-    const year = currentYear();
+    const yearMonth = toIsoDateString(loadTime).slice(0, 7);
+    const year = loadTime.getFullYear();
 
     const [month, leaveOverview] = await Promise.all([
       fetchHomeMonth({ data: { yearMonth } }),
-      fetchHomeLeaveOverview({ data: { year } }),
+      fetchLeaveOverview({ data: { year } }),
     ]);
 
     return { month, leaveOverview, loadTime };
