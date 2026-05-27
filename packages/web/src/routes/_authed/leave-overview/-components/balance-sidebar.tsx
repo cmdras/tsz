@@ -1,3 +1,4 @@
+import { Card, CardContent } from '#/components/ui/card';
 import type { LeaveOverviewTypeItem } from '#/features/leave-overview/leave-overview.schemas';
 import { BalanceRow } from './balance-row';
 
@@ -19,16 +20,32 @@ export function BalanceSidebar({ year, types }: BalanceSidebarProps) {
   const typeCount = limitedTypes.length;
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col gap-4 rounded-lg border p-4">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        LEAVE TYPES · {year} · {typeCount} {typeCount === 1 ? 'type' : 'types'} · {totalDaysLeft} days left ·{' '}
-        {totalDaysTaken} taken
-      </p>
-      <div className="flex flex-col gap-4">
-        {limitedTypes.map((leaveType) => (
-          <BalanceRow key={leaveType.id} leaveType={leaveType} />
-        ))}
-      </div>
+    <aside className="w-64 shrink-0">
+      <Card className="border-primary">
+        <CardContent className="p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leave Types · {year}</p>
+          <div className="mt-3 flex items-baseline gap-1.5">
+            <span className="text-4xl font-bold text-primary">{totalDaysLeft}</span>
+            <span className="text-sm text-muted-foreground">days left</span>
+          </div>
+          <p className="mt-1.5 text-xs text-muted-foreground">{totalDaysTaken} taken</p>
+          {limitedTypes.length > 0 && (
+            <>
+              <div className="mt-4 flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">By type</p>
+                <p className="text-xs text-muted-foreground">
+                  {typeCount} {typeCount === 1 ? 'type' : 'types'}
+                </p>
+              </div>
+              <ul className="mt-2 flex flex-col gap-3">
+                {limitedTypes.map((leaveType) => (
+                  <BalanceRow key={leaveType.id} leaveType={leaveType} />
+                ))}
+              </ul>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </aside>
   );
 }
