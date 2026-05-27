@@ -85,6 +85,7 @@ public class TimeEntryService
     // NOTE: The endpoint for this method has no backend admin enforcement.
     // Admin restriction is demo-only and enforced on the frontend only — this endpoint
     // is accessible to any authenticated user and is NOT real authorization.
+    // TODO: enforce server-side admin authorization — https://github.com/cmdras/tsz/issues/74
     public async Task<WeekResponse> UnsubmitWeekAsync(Guid userId, DateOnly weekStart, CancellationToken cancellationToken = default)
     {
         if (weekStart.DayOfWeek != DayOfWeek.Monday)

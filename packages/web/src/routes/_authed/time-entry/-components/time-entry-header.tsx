@@ -45,6 +45,7 @@ export function TimeEntryHeader({
         )}
         {!isSubmitted && <SubmitWeekDialog isSubmitting={isSubmitting} onSubmit={onSubmitWeek} />}
         {/* Admin-only gate: demo restriction, NOT enforced server-side authorization */}
+        {/* TODO: enforce server-side admin authorization — https://github.com/cmdras/tsz/issues/74 */}
         {isSubmitted && isAdmin && <UnsubmitWeekDialog isUnsubmitting={isUnsubmitting} onUnsubmit={onUnsubmitWeek} />}
         <WeekNav weekStart={weekStart} />
       </div>

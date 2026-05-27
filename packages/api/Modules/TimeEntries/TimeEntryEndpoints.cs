@@ -64,6 +64,7 @@ public static class TimeEntryEndpoints
 
         // NOTE: Admin restriction is demo-only and enforced on the frontend only.
         // This endpoint is accessible to any authenticated user and is NOT real authorization.
+        // TODO: enforce server-side admin authorization — https://github.com/cmdras/tsz/issues/74
         group.MapDelete("/weeks/{weekStart}/submit", async (
             DateOnly weekStart,
             HttpContext httpContext,
