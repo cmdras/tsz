@@ -1,0 +1,19 @@
+packages/api/Modules/TimeEntries/TimeEntryEndpoints.cs
+  s_747143cac8caa4::t_158df9aaf68c29 64-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b35ba46e10c180745ef5053cbab516c4d86f0fe2",
+  "prompts": {},
+  "sessions": {
+    "s_747143cac8caa4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d3a0f577-8790-4a57-8d4c-af9797d86624",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
