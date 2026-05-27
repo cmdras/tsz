@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_c233d87ea17fad::t_f1e5bc0a26239e 3-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "622b49a789bba139fb86a0dd50933b483b70cb55",
+  "prompts": {},
+  "sessions": {
+    "s_c233d87ea17fad": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec742537-1f95-421c-9dda-3756ace5c795",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
