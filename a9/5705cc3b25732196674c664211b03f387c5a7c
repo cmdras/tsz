@@ -1,0 +1,28 @@
+packages/web/src/routes/_authed/index.tsx
+  s_d5ca25d3467046::t_166e59495df0eb 9-10,47-51,63-67,69-74
+packages/web/src/routes/_authed/index/-components/greeting.tsx
+  s_d5ca25d3467046::t_6f7fd8e09ab6d4 33,40
+  s_d5ca25d3467046::t_61cd0333bb180f 1-5,9
+packages/web/src/routes/_authed/index/-components/tasks-hero.tsx
+  s_d5ca25d3467046::t_7dc0770a8fc680 1-39,41-57
+  s_d5ca25d3467046::t_89cbf117b55021 40
+packages/web/src/routes/_authed/index/-components/task-row.tsx
+  s_d5ca25d3467046::t_b6b6d29f169db4 26-29
+  s_d5ca25d3467046::t_d246c4b2fb3a18 1-25,30-68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a95705cc3b25732196674c664211b03f387c5a7c",
+  "prompts": {},
+  "sessions": {
+    "s_d5ca25d3467046": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "86fceaa9-e97e-4ff5-93df-a3682da409a7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
