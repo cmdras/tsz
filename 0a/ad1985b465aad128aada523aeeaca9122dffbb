@@ -1,0 +1,24 @@
+packages/api/Modules/TimeEntries/TimeEntryRepository.cs
+  s_747143cac8caa4::t_ef683821f6a8fe 96-109
+packages/api/Modules/TimeEntries/ITimeEntryRepository.cs
+  s_747143cac8caa4::t_fd12f076664862 14
+packages/api.tests/TimeEntries/WeekSubmitRepositoryTests.cs
+  s_747143cac8caa4::t_a60a1ea42a8467 126-146
+  s_747143cac8caa4::t_d7eff634aff22c 114-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0aad1985b465aad128aada523aeeaca9122dffbb",
+  "prompts": {},
+  "sessions": {
+    "s_747143cac8caa4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d3a0f577-8790-4a57-8d4c-af9797d86624",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
