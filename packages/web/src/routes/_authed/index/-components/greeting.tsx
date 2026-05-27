@@ -1,6 +1,12 @@
+interface GreetingAccent {
+  text: string;
+  className: string;
+}
+
 interface GreetingProps {
   name: string;
   loadTime: Date;
+  accent: GreetingAccent;
 }
 
 const dutchWeekdayMonthFormatter = new Intl.DateTimeFormat('nl-NL', {
@@ -24,14 +30,14 @@ function formatLoadTimestamp(date: Date): string {
   return `${capitalisedDate} · ${timePart}`;
 }
 
-export function Greeting({ name, loadTime }: GreetingProps) {
+export function Greeting({ name, loadTime, accent }: GreetingProps) {
   const timestamp = formatLoadTimestamp(loadTime);
 
   return (
     <div className="flex flex-col items-center gap-2 text-center">
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{timestamp}</p>
       <h1 className="text-4xl font-bold tracking-tight">
-        Hi {name}, <em className="not-italic text-primary">all caught up.</em>
+        Hi {name}, <em className={`not-italic ${accent.className}`}>{accent.text}</em>
       </h1>
     </div>
   );
