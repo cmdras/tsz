@@ -1,0 +1,24 @@
+packages/web/src/features/home/home-view.ts
+  s_d5ca25d3467046::t_9dcf6a90b59eb2 1
+  s_d5ca25d3467046::t_cb8db05bdf1c0a 2-154
+packages/web/src/features/home/home-view.test.ts
+  s_d5ca25d3467046::t_5b727a70299568 1-16,18-146,148-258,260-329
+packages/web/src/lib/date-utils.ts
+  s_d5ca25d3467046::t_da75b485f4924c 29-35,37-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "65a40532725350077010e598982d2ac9365151e9",
+  "prompts": {},
+  "sessions": {
+    "s_d5ca25d3467046": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "86fceaa9-e97e-4ff5-93df-a3682da409a7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
