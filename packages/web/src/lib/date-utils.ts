@@ -26,3 +26,15 @@ export function addDays(date: Date, days: number): Date {
 }
 
 export const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
+
+/**
+ * Returns the ISO 8601 week number for a given date.
+ * Week 1 is the week containing the first Thursday of the year.
+ */
+export function getIsoWeekNumber(date: Date): number {
+  const thursday = new Date(date);
+  thursday.setDate(date.getDate() + (4 - (((date.getDay() + 6) % 7) + 1)));
+  thursday.setHours(0, 0, 0, 0);
+  const yearStart = new Date(thursday.getFullYear(), 0, 1);
+  return Math.ceil(((thursday.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+}
