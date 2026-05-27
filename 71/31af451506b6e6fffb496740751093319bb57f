@@ -1,0 +1,24 @@
+packages/web/src/routes/_authed/index/-components/greeting.tsx
+  s_d5ca25d3467046::t_9063fe2d1e62ba 11
+CHANGELOG.md
+  s_d5ca25d3467046::t_ea53e9ae15add3 8
+packages/web/src/routes/_authed/index.tsx
+  s_d5ca25d3467046::t_c7617f9f43f587 45,56
+  s_d5ca25d3467046::t_00a079e3ec202c 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "7131af451506b6e6fffb496740751093319bb57f",
+  "prompts": {},
+  "sessions": {
+    "s_d5ca25d3467046": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "86fceaa9-e97e-4ff5-93df-a3682da409a7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
