@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-27
+
+- feat(leave-overview): the balance sidebar is redesigned — total remaining days is now the headline number; a "By type" section below shows each leave type with a progress bar coloured in that type's own colour
+- feat(leave-overview): each month mini-calendar now renders as a bordered card with a distinct header bar, giving the year grid a cleaner structure
+- feat(leave-overview): the legend chips and "Focused on …" banner have moved above the calendar area so they span the full width; the year calendar is now positioned to the left of the balance sidebar
+
 ## 2026-05-26
 
 - feat(leave-overview): a new `/leave-overview` page shows the whole year at a glance — 12 mini-calendars in a 4×3 grid alongside a balance sidebar; days with any logged leave are outlined, today is highlighted with a primary-colour pill, and weekend cells are tinted

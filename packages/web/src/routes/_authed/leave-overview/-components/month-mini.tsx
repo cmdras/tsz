@@ -44,8 +44,8 @@ export function MonthMini({ year, monthIndex, todayIso, dayMap, focusedTypeName 
   const days = buildMonthDays(year, monthIndex);
 
   return (
-    <div className="flex flex-col gap-1">
-      <p className="text-sm font-medium text-center">{monthName}</p>
+    <div className="flex flex-col overflow-hidden rounded-lg border">
+      <div className="border-b px-2 py-1 text-center text-sm font-medium">{monthName}</div>
       <div className="grid grid-cols-7">
         {COLUMN_HEADERS.map((header) => (
           <div key={header} className="px-0.5 py-0.5 text-center text-xs font-medium text-muted-foreground">

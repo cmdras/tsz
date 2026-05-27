@@ -13,17 +13,17 @@ export function BalanceRow({ leaveType }: BalanceRowProps) {
   const colors = getLeaveTypeColor(name);
 
   return (
-    <div className="flex items-center gap-3">
-      <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${colors.dot}`} aria-hidden />
-      <div className="min-w-0 flex-1">
-        <div className="mb-1">
-          <span className="truncate text-sm font-medium">{name}</span>
+    <li>
+      <div className="flex items-center justify-between text-sm">
+        <div className="flex min-w-0 items-center gap-1.5">
+          <span className={`h-2 w-2 shrink-0 rounded-full ${colors.dot}`} aria-hidden />
+          <span className="min-w-0 truncate">{name}</span>
         </div>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-          <div className="h-full rounded-full bg-foreground/60 transition-all" style={{ width: `${fillPercent}%` }} />
-        </div>
+        <span className="ml-2 shrink-0 tabular-nums text-muted-foreground">{remaining}</span>
       </div>
-      <span className="shrink-0 text-2xl font-bold tabular-nums">{remaining}</span>
-    </div>
+      <div className="mt-1 h-0.5 overflow-hidden rounded-full bg-muted">
+        <div className={`h-full rounded-full ${colors.dot}`} style={{ width: `${fillPercent}%` }} />
+      </div>
+    </li>
   );
 }
