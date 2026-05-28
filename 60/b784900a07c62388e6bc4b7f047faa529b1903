@@ -1,0 +1,19 @@
+packages/web/src/features/time-entries/time-entries.functions.ts
+  s_747143cac8caa4::t_c83b4d206e5baf 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "60b784900a07c62388e6bc4b7f047faa529b1903",
+  "prompts": {},
+  "sessions": {
+    "s_747143cac8caa4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d3a0f577-8790-4a57-8d4c-af9797d86624",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chris Ras <chris.ras@euri.com>"
+    }
+  }
+}
