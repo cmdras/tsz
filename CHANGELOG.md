@@ -7,6 +7,7 @@
 - feat(leave-overview): the legend chips and "Focused on …" banner have moved above the calendar area so they span the full width; the year calendar is now positioned to the left of the balance sidebar
 - feat(home): the Home page is now a personalised to-do hub — it greets you by name and, when every week of the month is submitted, shows an "all caught up" hero card with a stat strip (weeks submitted, hours logged this month, leave days left)
 - feat(home): when you have unsubmitted weeks this month, Home switches to a "things to do" mode — an amber hero with a count badge plus one row per outstanding week showing its number, date range, and logged hours, marked EMPTY or DRAFT, with the current week highlighted; clicking a row opens Time entry on that exact week
+- feat(time-entries): admins can now reopen one of their own submitted weeks for editing — a "Unsubmit week" button appears on the time-entry page when the week is submitted, and confirming in its dialog reverts the week to an editable draft with all entries intact
 
 ## 2026-05-26
 

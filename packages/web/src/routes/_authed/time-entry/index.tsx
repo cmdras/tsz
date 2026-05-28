@@ -1,7 +1,13 @@
-import { createFileRoute, useBlocker } from '@tanstack/react-router';
+import { createFileRoute, useBlocker, useRouteContext } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { fetchPickerOptions, fetchWeek, saveDraft, submitWeekFn } from '#/features/time-entries/time-entries.functions';
+import {
+  fetchPickerOptions,
+  fetchWeek,
+  saveDraft,
+  submitWeekFn,
+  unsubmitWeekFn,
+} from '#/features/time-entries/time-entries.functions';
 import { weekSearchSchema } from '#/features/time-entries/time-entries.schemas';
 import { getIsoMonday, toIsoDateString } from '#/lib/date-utils';
 import { CopyConfirmDialog } from './-components/copy-confirm-dialog';
@@ -29,10 +35,12 @@ export const Route = createFileRoute('/_authed/time-entry/')({
 
 function TimeEntryPage() {
   const { weekData, pickerOptions } = Route.useLoaderData();
+  const { currentUser } = useRouteContext({ from: '/_authed' });
   const navigate = Route.useNavigate();
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUnsubmitting, setIsUnsubmitting] = useState(false);
   const gridRef = useRef<WeekGridHandle>(null);
 
   const { handleCopyLastWeek, pendingCopyRows, applyPendingCopy, clearPendingCopy } = useCopyLastWeek({
@@ -61,6 +69,8 @@ function TimeEntryPage() {
 
   const hasRows = weekData.rows.length > 0;
   const isSubmitted = weekData.isSubmitted;
+  // Admin-only gate: demo restriction, NOT enforced server-side authorization
+  const isAdmin = currentUser.role === 'Admin';
 
   async function handleSaveDraft() {
     if (!gridRef.current) return;
@@ -96,17 +106,33 @@ function TimeEntryPage() {
     }
   }
 
+  async function handleUnsubmitWeek() {
+    setIsUnsubmitting(true);
+    try {
+      await unsubmitWeekFn({ data: { week: weekData.weekStart } });
+      await navigate({ search: (previous) => previous });
+      toast.success('Week reopened for editing.');
+    } catch {
+      toast.error('Failed to unsubmit week.');
+    } finally {
+      setIsUnsubmitting(false);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-6 p-6">
       <TimeEntryHeader
         isSubmitted={isSubmitted}
+        isAdmin={isAdmin}
         isDirty={isDirty}
         isSaving={isSaving}
         isSubmitting={isSubmitting}
+        isUnsubmitting={isUnsubmitting}
         hasRows={hasRows}
         weekStart={weekData.weekStart}
         onSaveDraft={handleSaveDraft}
         onSubmitWeek={handleSubmitWeek}
+        onUnsubmitWeek={handleUnsubmitWeek}
       />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.8fr_1.2fr]">

@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
-import { getWeek, getPickerOptions, saveWeekDraft, submitWeek } from './time-entries.server';
+import { getWeek, getPickerOptions, saveWeekDraft, submitWeek, unsubmitWeek } from './time-entries.server';
 import type { WeekCell } from './time-entries.server';
 
 export const fetchWeek = createServerFn({ method: 'GET' })
@@ -37,4 +37,10 @@ export const submitWeekFn = createServerFn({ method: 'POST' })
   .inputValidator(weekMutationSchema)
   .handler(async ({ data }) => {
     return await submitWeek(data.week, data.cells as WeekCell[]);
+  });
+
+export const unsubmitWeekFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ week: z.string() }))
+  .handler(async ({ data }) => {
+    return await unsubmitWeek(data.week);
   });
