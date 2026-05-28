@@ -39,7 +39,7 @@ export const submitWeekFn = createServerFn({ method: 'POST' })
     return await submitWeek(data.week, data.cells as WeekCell[]);
   });
 
-export const unsubmitWeekFn = createServerFn({ method: 'DELETE' })
+export const unsubmitWeekFn = createServerFn({ method: 'POST' })
   .inputValidator(z.object({ week: z.string() }))
   .handler(async ({ data }) => {
     return await unsubmitWeek(data.week);
